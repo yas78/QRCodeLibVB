@@ -178,9 +178,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' データブロックを返します。
         ''' </summary>
-        Private Function GetDataBlock() As Byte()()
+        Private Function BuildDataBlock() As Byte()()
 
-            Dim dataBytes As Byte() = GetSymbolBytes()
+            Dim dataBytes As Byte() = GetDataBytes()
 
             Dim numPreBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
@@ -224,7 +224,7 @@ Namespace Ys.QRCode
         ''' 誤り訂正データ領域のブロックを生成します。
         ''' </summary>
         ''' <param name="dataBlock">データ領域のブロック</param>
-        Private Function GetErrorCorrectionBlock(dataBlock()() As Byte) As Byte()()
+        Private Function BuildErrorCorrectionBlock(dataBlock()() As Byte) As Byte()()
 
             Dim numECCodewords As Integer = RSBlock.GetNumberECCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion)
@@ -281,8 +281,8 @@ Namespace Ys.QRCode
         ''' </summary>
         Private Function GetEncodingRegionBytes() As Byte()
 
-            Dim dataBlock   As Byte()() = GetDataBlock()
-            Dim ecBlock     As Byte()() = GetErrorCorrectionBlock(dataBlock)
+            Dim dataBlock   As Byte()() = BuildDataBlock()
+            Dim ecBlock     As Byte()() = BuildErrorCorrectionBlock(dataBlock)
                 
             Dim numCodewords As Integer = Codeword.GetTotalNumber(_currVersion)
 
@@ -327,24 +327,24 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' シンボルの完全なバイトデータを返します。
         ''' </summary>
-        Private Function GetSymbolBytes() As Byte()
+        Private Function GetDataBytes() As Byte()
 
             Dim bs = New BitSequence()
 
             If _parent.Count > 1 Then
-                BuildStructuredAppendHeader(bs)
+                WriteStructuredAppendHeader(bs)
             End If
 
-            BuildSegments(bs)
-            BuildTerminator(bs)
-            BuildPaddingBits(bs)
-            BuildPadCodewords(bs)
+            WriteSegments(bs)
+            WriteTerminator(bs)
+            WritePaddingBits(bs)
+            WritePadCodewords(bs)
                 
             Return bs.GetBytes()
 
         End Function
 
-        Private Sub BuildStructuredAppendHeader(bs As BitSequence)
+        Private Sub WriteStructuredAppendHeader(bs As BitSequence)
 
             bs.Append(ModeIndicator.STRUCTURED_APPEND_VALUE, ModeIndicator.LENGTH)
             bs.Append(_position, SymbolSequenceIndicator.POSITION_LENGTH)
@@ -353,7 +353,7 @@ Namespace Ys.QRCode
 
         End Sub
         
-        Private Sub BuildSegments(bs As BitSequence)
+        Private Sub WriteSegments(bs As BitSequence)
 
             For Each segment As QRCodeEncoder In _segments
                 bs.Append(segment.ModeIndicator, ModeIndicator.LENGTH)
@@ -377,7 +377,7 @@ Namespace Ys.QRCode
 
         End Sub
 
-        Private Sub BuildTerminator(bs As BitSequence)
+        Private Sub WriteTerminator(bs As BitSequence)
 
             Dim terminatorLength As Integer = If(
                     _dataBitCapacity - _dataBitCounter > ModeIndicator.LENGTH,
@@ -388,7 +388,7 @@ Namespace Ys.QRCode
 
         End Sub
 
-        Private Sub BuildPaddingBits(bs As BitSequence)
+        Private Sub WritePaddingBits(bs As BitSequence)
 
             If bs.Length Mod 8 > 0 Then
                 bs.Append(&H0, 8 - (bs.Length Mod 8))
@@ -396,7 +396,7 @@ Namespace Ys.QRCode
 
         End Sub
 
-        Private Sub BuildPadCodewords(bs As BitSequence)
+        Private Sub WritePadCodewords(bs As BitSequence)
                 
             Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(
                 _parent.ErrorCorrectionLevel, _currVersion)
