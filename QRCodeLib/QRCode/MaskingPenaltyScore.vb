@@ -210,12 +210,12 @@ Namespace Ys.QRCode
                 Next
             Next
 
-            Dim tmp As Double
-            tmp = darkCount / moduleMatrix.Length ^ 2
-            tmp = Math.Abs(0.5 - tmp)
-            tmp = Math.Floor(tmp / 0.05)
+            Dim tmp As Integer
+            tmp = CInt(Math.Ceiling(darkCount / moduleMatrix.Length ^ 2)) * 100
+            tmp = Math.Abs(tmp - 50)
+            tmp = (tmp + 4) \ 5
 
-            Return CInt(tmp) * 10
+            Return tmp * 10
 
         End Function
         
