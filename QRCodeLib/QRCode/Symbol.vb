@@ -379,12 +379,10 @@ Namespace Ys.QRCode
 
         Private Sub WriteTerminator(bs As BitSequence)
 
-            Dim terminatorLength As Integer
+            Dim terminatorLength As Integer = _dataBitCapacity - _dataBitCounter
 
-            If _dataBitCapacity - _dataBitCounter > ModeIndicator.LENGTH Then
+            If terminatorLength > ModeIndicator.LENGTH Then
                 terminatorLength = ModeIndicator.LENGTH
-            Else
-                terminatorLength = _dataBitCapacity - _dataBitCounter
             End If
 
             bs.Append(ModeIndicator.TERMINATOR_VALUE, terminatorLength)
