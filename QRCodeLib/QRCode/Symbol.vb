@@ -514,6 +514,15 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 1bppビットマップファイルのバイトデータを返します。
         ''' </summary>
+        Public Function Get1bppDIB() As Byte()
+
+            Return Get1bppDIB(5)
+
+        End Function
+        
+        ''' <summary>
+        ''' 1bppビットマップファイルのバイトデータを返します。
+        ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get1bppDIB(moduleSize As Integer) As Byte()
 
@@ -637,6 +646,16 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 24bppビットマップファイルのバイトデータを返します。
         ''' </summary>
+        Public Function Get24bppDIB() As Byte()
+
+            Return Get24bppDIB(5)
+
+        End Function
+
+
+        ''' <summary>
+        ''' 24bppビットマップファイルのバイトデータを返します。
+        ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get24bppDIB(moduleSize As Integer) As Byte()
 
@@ -738,6 +757,16 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 1bppのシンボル画像を返します。
         ''' </summary>
+        Public Function Get1bppImage() As System.Drawing.Image
+
+            Return Get1bppImage(5)
+
+        End Function
+
+
+        ''' <summary>
+        ''' 1bppのシンボル画像を返します。
+        ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get1bppImage(moduleSize As Integer) As System.Drawing.Image
 
@@ -768,6 +797,15 @@ Namespace Ys.QRCode
                 converter.ConvertFrom(dib), System.Drawing.Image)
 
             Return ret
+
+        End Function
+
+        ''' <summary>
+        ''' 24bppのシンボル画像を返します。
+        ''' </summary>
+        Public Function Get24bppImage() As System.Drawing.Image
+            
+            Return Get24bppImage(5)
 
         End Function
 
@@ -811,6 +849,20 @@ Namespace Ys.QRCode
         ''' 1bppシンボル画像をファイルに保存します
         ''' </summary>
         ''' <param name="fileName">ファイル名</param>
+        Public Sub Save1bppDIB(fileName As String)
+
+            If String.IsNullOrEmpty(fileName) Then
+                Throw New ArgumentNullException(NameOf(fileName))
+            End If
+
+            Save1bppDIB(fileName, 5)
+
+        End Sub
+        
+        ''' <summary>
+        ''' 1bppシンボル画像をファイルに保存します
+        ''' </summary>
+        ''' <param name="fileName">ファイル名</param>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Sub Save1bppDIB(fileName As String, moduleSize As Integer)
 
@@ -845,6 +897,20 @@ Namespace Ys.QRCode
 
             Dim dib As Byte() = Get1bppDIB(moduleSize, foreColor, backColor)
             File.WriteAllBytes(fileName, dib)
+
+        End Sub
+
+        ''' <summary>
+        ''' 24bppシンボル画像をファイルに保存します
+        ''' </summary>
+        ''' <param name="fileName">ファイル名</param>
+        Public Sub Save24bppDIB(fileName As String)
+
+            If String.IsNullOrEmpty(fileName) Then
+                Throw New ArgumentNullException(NameOf(fileName))
+            End If
+
+            Save24bppDIB(fileName, 5)
 
         End Sub
 
