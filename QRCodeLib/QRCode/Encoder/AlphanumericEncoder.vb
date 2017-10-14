@@ -82,11 +82,11 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         Public Overrides Function GetBytes() As Byte()
 
-            Dim bb = New BitSequence()
+            Dim bs = New BitSequence()
             Dim bitLength As Integer = 11 
 
             For i As Integer = 0 To (_codeWords.Count - 1) - 1
-                bb.Append(_codeWords(i), bitLength)
+                bs.Append(_codeWords(i), bitLength)
             Next
 
             If (_charCounter Mod 2) = 0 Then
@@ -95,9 +95,9 @@ Namespace Ys.QRCode.Encoder
                 bitLength = 6
             End If
 
-            bb.Append(_codeWords(_codeWords.Count - 1), bitLength)
+            bs.Append(_codeWords(_codeWords.Count - 1), bitLength)
 
-            Return bb.GetBytes()
+            Return bs.GetBytes()
 
         End Function
 

@@ -180,7 +180,7 @@ Namespace Ys.QRCode
         ''' </summary>
         Private Function BuildDataBlock() As Byte()()
 
-            Dim dataBytes As Byte() = GetDataBytes()
+            Dim dataBytes As Byte() = GetMessageBytes()
 
             Dim numPreBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
@@ -325,9 +325,9 @@ Namespace Ys.QRCode
         End Function
 
         ''' <summary>
-        ''' シンボルの完全なバイトデータを返します。
+        ''' コード語に変換するメッセージビット列を返します。
         ''' </summary>
-        Private Function GetDataBytes() As Byte()
+        Private Function GetMessageBytes() As Byte()
 
             Dim bs = New BitSequence()
 
@@ -547,22 +547,22 @@ Namespace Ys.QRCode
             Dim pack8bit  As Integer = If(width Mod 8 = 0, 0, 8 - (width Mod 8))
             Dim pack32bit As Integer = If(hByteLen Mod 4 = 0, 0, (4 - (hByteLen Mod 4)) * 8)
 
-            Dim bb = New BitSequence()
+            Dim bs = New BitSequence()
 
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
                 For i As Integer = 1 To moduleSize
                     For c As Integer = 0 To UBound(moduleMatrix(r))
                         For j As Integer = 1 To moduleSize
-                            bb.Append(If(moduleMatrix(r)(c) > 0, 0, 1), 1)
+                            bs.Append(If(moduleMatrix(r)(c) > 0, 0, 1), 1)
                         Next
                     Next
 
-                    bb.Append(0, pack8bit)
-                    bb.Append(0, pack32bit)
+                    bs.Append(0, pack8bit)
+                    bs.Append(0, pack32bit)
                 Next
             Next
 
-            Dim dataBlock As Byte() = bb.GetBytes()
+            Dim dataBlock As Byte() = bs.GetBytes()
 
             Dim bfh As BITMAPFILEHEADER
             Dim bih As BITMAPINFOHEADER

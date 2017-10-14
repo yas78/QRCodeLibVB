@@ -84,13 +84,13 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         Public Overrides Function GetBytes() As Byte()
 
-            Dim bb = New BitSequence()
+            Dim bs = New BitSequence()
 
             For i As Integer = 0 To _codeWords.Count - 1
-                bb.Append(_codeWords(i), 13)
+                bs.Append(_codeWords(i), 13)
             Next
 
-            Return bb.GetBytes()
+            Return bs.GetBytes()
 
         End Function
 
