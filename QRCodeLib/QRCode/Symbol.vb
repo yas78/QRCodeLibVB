@@ -352,14 +352,14 @@ Namespace Ys.QRCode
             bs.Append(_parent.StructuredAppendParity, StructuredAppend.PARITY_DATA_LENGTH)
 
         End Sub
-        
+
         Private Sub WriteSegments(bs As BitSequence)
 
             For Each segment As QRCodeEncoder In _segments
                 bs.Append(segment.ModeIndicator, ModeIndicator.LENGTH)
                 bs.Append(segment.CharCount,
                           CharCountIndicator.GetLength(_currVersion, segment.EncodingMode))
-                
+
                 Dim data As Byte() = segment.GetBytes()
 
                 For i As Integer = 0 To UBound(data) - 1
@@ -379,10 +379,13 @@ Namespace Ys.QRCode
 
         Private Sub WriteTerminator(bs As BitSequence)
 
-            Dim terminatorLength As Integer = If(
-                    _dataBitCapacity - _dataBitCounter > ModeIndicator.LENGTH,
-                    ModeIndicator.LENGTH,
-                    _dataBitCapacity - _dataBitCounter)
+            Dim terminatorLength As Integer
+
+            If _dataBitCapacity - _dataBitCounter > ModeIndicator.LENGTH Then
+                terminatorLength = ModeIndicator.LENGTH
+            Else
+                terminatorLength = _dataBitCapacity - _dataBitCounter
+            End If
 
             bs.Append(ModeIndicator.TERMINATOR_VALUE, terminatorLength)
 
