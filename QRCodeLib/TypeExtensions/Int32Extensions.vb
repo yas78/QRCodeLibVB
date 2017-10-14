@@ -5,7 +5,7 @@ Namespace Ys.TypeExtension
     ''' <summary>
     ''' Int32型の拡張メソッド
     ''' </summary>
-    Public Module Int32Extensions
+    Friend Module Int32Extensions
 
         ''' <summary>
         ''' オブジェクトのディープコピーを返します。
