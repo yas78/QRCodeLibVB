@@ -1,5 +1,6 @@
 ﻿Imports System
 Imports System.IO
+
 Imports Ys.QRCode
 
 Public Class Form1
@@ -7,24 +8,6 @@ Public Class Form1
     Public Sub New()
 
         InitializeComponent()
-        InitializeComponent2()
-
-    End Sub
-
-    Public Sub InitializeComponent2()
-
-        For i As Integer = 1 To 40
-            cmbMaxVersion.Items.Add(i)
-        Next
-
-        cmbErrorCorrectionLevel.DataSource =
-            [Enum].GetValues(GetType(ErrorCorrectionLevel))
-
-        cmbMaxVersion.Text = "20"
-        cmbErrorCorrectionLevel.Text = "M"
-        nudSize.Value = 5
-        chkStructuredAppend.Checked = True
-        btnSave.Enabled = False
 
     End Sub
 
@@ -117,6 +100,23 @@ Public Class Form1
             End If
             
         Next
+
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        For i As Integer = 1 To 40
+            cmbMaxVersion.Items.Add(i)
+        Next
+
+        cmbErrorCorrectionLevel.DataSource =
+            [Enum].GetValues(GetType(ErrorCorrectionLevel))
+
+        cmbMaxVersion.Text = "40"
+        cmbErrorCorrectionLevel.Text = "M"
+        nudSize.Value = 5
+        chkStructuredAppend.Checked = False
+        btnSave.Enabled = False
 
     End Sub
 End Class

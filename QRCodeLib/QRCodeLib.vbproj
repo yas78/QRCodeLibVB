@@ -76,7 +76,7 @@
     <Compile Include="QRCode\Format\SymbolSequenceIndicator.vb" />
     <Compile Include="QRCode\ModuleRatio.vb" />
     <Compile Include="QRCode\QuietZone.vb" />
-    <Compile Include="TypeExtensions\Int32Extensions.vb" />
+    <Compile Include="TypeExtension\Int32Extensions.vb" />
     <Compile Include="QRCode\FinderPattern.vb" />
     <Compile Include="QRCode\FormatInfo.vb" />
     <Compile Include="QRCode\Format\StructuredAppend.vb" />

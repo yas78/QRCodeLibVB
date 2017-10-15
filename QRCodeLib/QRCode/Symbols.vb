@@ -24,7 +24,7 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        ''' <param name="maxVersion">型番の最大値</param>
+        ''' <param name="maxVersion">型番の上限</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
         Public Sub New(maxVersion As Integer,
@@ -82,19 +82,19 @@ Namespace Ys.QRCode
         End Property
 
         ''' <summary>
-        ''' 最小バージョンを取得または設定します。
+        ''' 型番の下限を取得または設定します。
         ''' </summary>
         Friend Property MinVersion() As Integer
             Get
                 Return _minVersion
             End Get
             Set
-                _minVersion = Value
+                _minVersion = value
             End Set
         End Property
 
         ''' <summary>
-        ''' 最大バージョンを取得します。
+        ''' 型番の上限を取得します。
         ''' </summary>
         Friend ReadOnly Property MaxVersion() As Integer
             Get
