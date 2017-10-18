@@ -18,7 +18,9 @@ Namespace Ys.QRCode
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
-            MyClass.New(Constants.MAX_VERSION, ErrorCorrectionLevel.M, False)
+
+            MyClass.New(Constants.MAX_VERSION, ErrorCorrectionLevel.M, False, Encoding.GetEncoding("shift_jis"))
+
         End Sub
 
         ''' <summary>
@@ -29,7 +31,8 @@ Namespace Ys.QRCode
         ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
         Public Sub New(maxVersion As Integer,
                        ecLevel As ErrorCorrectionLevel,
-                       allowStructuredAppend As Boolean)
+                       allowStructuredAppend As Boolean,
+                       byteModeEncoding As Encoding)
             
             If maxVersion < Constants.MIN_VERSION OrElse 
                maxVersion > Constants.MAX_VERSION Then
@@ -42,7 +45,7 @@ Namespace Ys.QRCode
             _maxVersion                 = maxVersion
             _errorCorrectionLevel       = ecLevel
             _structuredAppendAllowed    = allowStructuredAppend
-            _textEncoding               = Encoding.GetEncoding("shift_jis")
+            _byteModeEncoding           = byteModeEncoding
 
             _structuredAppendParity = 0
 
@@ -58,7 +61,7 @@ Namespace Ys.QRCode
         Private ReadOnly _maxVersion                As Integer
         Private ReadOnly _errorCorrectionLevel      As ErrorCorrectionLevel
         Private ReadOnly _structuredAppendAllowed   As Boolean
-        Private ReadOnly _textEncoding              As Encoding
+        Private ReadOnly _byteModeEncoding          As Encoding
 
         Private _currSymbol As Symbol
         Private _structuredAppendParity As Integer
@@ -126,6 +129,18 @@ Namespace Ys.QRCode
         Friend ReadOnly Property StructuredAppendParity() As Integer
             Get
                 Return _structuredAppendParity
+            End Get
+        End Property
+
+        Friend ReadOnly Property ByteModeEncoding() As Encoding
+            Get
+                Return ByteModeEncoding1
+            End Get
+        End Property
+
+        Public ReadOnly Property ByteModeEncoding1 As Encoding
+            Get
+                Return _byteModeEncoding
             End Get
         End Property
 
@@ -515,7 +530,7 @@ Namespace Ys.QRCode
         ''' <param name="c">パリティ計算対象の文字</param>
         Friend Sub UpdateParity(c As Char)
 
-            Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+            Dim charBytes As Byte() = _byteModeEncoding.GetBytes(c.ToString())
 
             For i As Integer = 0 To UBound(charBytes)
                 _structuredAppendParity = _structuredAppendParity Xor charBytes(i)

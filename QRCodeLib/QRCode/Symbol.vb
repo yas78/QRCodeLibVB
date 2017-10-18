@@ -124,7 +124,7 @@ Namespace Ys.QRCode
         ''' <returns>シンボル容量が不足している場合は False を返します。</returns>
         Friend Function TrySetEncodingMode(encMode As EncodingMode, c As Char) As Boolean
 
-            Dim encoder As QRCodeEncoder = QRCodeEncoder.CreateEncoder(encMode)
+            Dim encoder As QRCodeEncoder = QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
             Dim bitLength As Integer = encoder.GetCodewordBitLength(c)
 
             Do While _dataBitCapacity <

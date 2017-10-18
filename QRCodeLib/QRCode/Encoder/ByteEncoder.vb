@@ -14,9 +14,22 @@ Namespace Ys.QRCode.Encoder
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
+
+            MyClass.New(Encoding.GetEncoding("shift_jis"))
+
+        End Sub
+
+        ''' <summary>
+        ''' インスタンスを初期化します。
+        ''' </summary>
+        ''' <param name="encoding">文字エンコーディング</param>
+        Public Sub New(encoding As Encoding)
+
+            _textEncoding = encoding
+
         End Sub
         
-        Private Shared ReadOnly _textEncoding As Encoding = Encoding.GetEncoding("shift_jis")
+        Private ReadOnly _textEncoding As Encoding
         
         ''' <summary>
         ''' 符号化モードを取得します。

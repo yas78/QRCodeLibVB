@@ -1,5 +1,6 @@
 ﻿Imports System
 Imports System.IO
+Imports System.Text
 
 Imports Ys.QRCode
 
@@ -12,7 +13,7 @@ Public Class Form1
     End Sub
 
     Private Sub Update_qrcodePanel(sender As Object, e As EventArgs) _
-        Handles txtData.TextChanged, nudSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged
+        Handles txtData.TextChanged, nudSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged, cmbEncoding.SelectedIndexChanged
 
         btnSave.Enabled = False
         qrcodePanel.Controls.Clear()
@@ -26,8 +27,9 @@ Public Class Form1
         Try
             symbols = New Symbols(
                 CInt(cmbMaxVersion.Text),
-                CType(cmbErrorCorrectionLevel.SelectedValue, ErrorCorrectionLevel),
-                chkStructuredAppend.Checked)
+                CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel),
+                chkStructuredAppend.Checked,
+                CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding())
 
             symbols.AppendString(txtData.Text)
 
@@ -73,8 +75,9 @@ Public Class Form1
         Try
             symbols = New Symbols(
                 CInt(cmbMaxVersion.Text),
-                CType(cmbErrorCorrectionLevel.SelectedValue, ErrorCorrectionLevel),
-                chkStructuredAppend.Checked)
+                CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel),
+                chkStructuredAppend.Checked,
+                CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding())
 
             symbols.AppendString(txtData.Text)
 
@@ -112,8 +115,13 @@ Public Class Form1
         cmbErrorCorrectionLevel.DataSource =
             [Enum].GetValues(GetType(ErrorCorrectionLevel))
 
+        cmbEncoding.DisplayMember = "DisplayName"
+        cmbEncoding.ValueMember = "Name"
+        cmbEncoding.DataSource =  Encoding.GetEncodings()
+
         cmbMaxVersion.Text = "40"
         cmbErrorCorrectionLevel.Text = "M"
+        cmbEncoding.Text = Encoding.Default.EncodingName
         nudSize.Value = 5
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False

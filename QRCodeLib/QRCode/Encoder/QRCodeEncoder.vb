@@ -1,5 +1,6 @@
 ﻿Imports System
 Imports System.Collections.Generic
+Imports System.Text
 
 Namespace Ys.QRCode.Encoder
 
@@ -65,7 +66,7 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定したエンコーディングモードのエンコーダーを返します。
         ''' </summary>
-        Public Shared Function CreateEncoder(encMode As EncodingMode) As QRCodeEncoder
+        Public Shared Function CreateEncoder(encMode As EncodingMode, byteModeEncoding As Encoding) As QRCodeEncoder
 
             Select Case encMode
                 Case EncodingMode.NUMERIC
@@ -75,7 +76,7 @@ Namespace Ys.QRCode.Encoder
                     Return New AlphanumericEncoder()
 
                 Case EncodingMode.EIGHT_BIT_BYTE
-                    Return New ByteEncoder()
+                    Return New ByteEncoder(byteModeEncoding)
 
                 Case EncodingMode.KANJI
                     Return New KanjiEncoder()
@@ -86,7 +87,7 @@ Namespace Ys.QRCode.Encoder
             End Select
 
         End Function
-        
+
     End Class
 
 End Namespace
