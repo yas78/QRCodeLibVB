@@ -11,7 +11,7 @@ Namespace Ys.QRCode
     ''' <summary>
     ''' シンボルのコレクションを表します。
     ''' </summary>
-    Partial Public Class Symbols
+    Public Class Symbols
         Implements IEnumerable(Of Symbol)
 
         ''' <summary>

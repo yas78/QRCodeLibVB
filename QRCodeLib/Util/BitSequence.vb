@@ -48,10 +48,10 @@ Namespace Ys.Util
                     _buffer.Add(&H0)
                 End If
 
-                Dim tmp As Byte = _buffer(_buffer.Count - 1)
+                Dim temp As Byte = _buffer(_buffer.Count - 1)
 
                 If _space < remainingLength Then
-                    tmp = CByte(tmp Or remainingData >> (remainingLength - _space))
+                    temp = CByte(temp Or remainingData >> (remainingLength - _space))
 
                     remainingData = remainingData And ((1 << (remainingLength - _space)) - 1)
 
@@ -59,14 +59,14 @@ Namespace Ys.Util
                     remainingLength -= _space
                     _space = 0
                 Else
-                    tmp = CByte(tmp Or remainingData << (_space - remainingLength))
+                    temp = CByte(temp Or remainingData << (_space - remainingLength))
 
                     _bitCounter += remainingLength
                     _space -= remainingLength
                     remainingLength = 0
                 End If
 
-                _buffer(_buffer.Count - 1) = tmp
+                _buffer(_buffer.Count - 1) = temp
             Loop
 
         End Sub

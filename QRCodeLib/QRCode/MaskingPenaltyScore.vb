@@ -90,12 +90,12 @@ Namespace Ys.QRCode
 
             For r As Integer = 0 To UBound(moduleMatrix) - 1
                 For c As Integer = 0 To UBound(moduleMatrix(r)) - 1
-                    Dim tmp As Boolean = moduleMatrix(r)(c) > 0
+                    Dim temp As Boolean = moduleMatrix(r)(c) > 0
                     Dim isSameColor As Boolean = True
 
-                    isSameColor = isSameColor And (moduleMatrix(r + 0)(c + 1) > 0 = tmp)
-                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 0) > 0 = tmp)
-                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 1) > 0 = tmp)
+                    isSameColor = isSameColor And (moduleMatrix(r + 0)(c + 1) > 0 = temp)
+                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 0) > 0 = temp)
+                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 1) > 0 = temp)
 
                     If isSameColor Then
                         penalty += 3
@@ -210,12 +210,12 @@ Namespace Ys.QRCode
                 Next
             Next
 
-            Dim tmp As Integer
-            tmp = CInt(Math.Ceiling((darkCount / moduleMatrix.Length ^ 2) * 100))
-            tmp = Math.Abs(tmp - 50)
-            tmp = (tmp + 4) \ 5
+            Dim temp As Integer
+            temp = CInt(Math.Ceiling((darkCount / moduleMatrix.Length ^ 2) * 100))
+            temp = Math.Abs(temp - 50)
+            temp = (temp + 4) \ 5
 
-            Return tmp * 10
+            Return temp * 10
 
         End Function
         
