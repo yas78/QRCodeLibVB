@@ -533,7 +533,7 @@ Namespace Ys.QRCode
 
         End Sub
 
-#Region "IEnumerable<Symbols.Symbol> implementation"
+#Region "IEnumerable<Symbols.Symbol> Implementation"
         Public Function GetEnumerator() As IEnumerator(Of Symbol) _
             Implements IEnumerable(Of Symbol).GetEnumerator
 

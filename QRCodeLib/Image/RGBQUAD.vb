@@ -19,14 +19,7 @@ Namespace Ys.Image
         ''' </summary>
         Public Function GetBytes() As Byte()
 
-            Dim ret As Byte() = New Byte(4 - 1) {}
-
-            Buffer.BlockCopy(BitConverter.GetBytes(rgbBlue),     0, ret,  0, 1)
-            Buffer.BlockCopy(BitConverter.GetBytes(rgbGreen),    0, ret,  1, 1)
-            Buffer.BlockCopy(BitConverter.GetBytes(rgbRed),      0, ret,  2, 1)
-            Buffer.BlockCopy(BitConverter.GetBytes(rgbReserved), 0, ret,  3, 1)
-
-            Return ret
+            Return New Byte() {rgbBlue, rgbGreen, rgbRed, rgbReserved}
 
         End Function
 

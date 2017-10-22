@@ -575,9 +575,6 @@ Namespace Ys.QRCode
             Dim dataBlock As Byte() = bs.GetBytes()
 
             Dim bfh As BITMAPFILEHEADER
-            Dim bih As BITMAPINFOHEADER
-            Dim palette As RGBQUAD()
-
             With bfh
                 .bfType         = &H4D42
                 .bfSize         = 62 + dataBlock.Length
@@ -586,6 +583,7 @@ Namespace Ys.QRCode
                 .bfOffBits      = 62
             End With
 
+            Dim bih As BITMAPINFOHEADER
             With bih
                 .biSize             = 40
                 .biWidth            = width
@@ -600,15 +598,13 @@ Namespace Ys.QRCode
                 .biClrImportant     = 0
             End With
 
-            palette = New RGBQUAD(1) {}
-
+            Dim palette As RGBQUAD() = New RGBQUAD(1) {}
             With palette(0)
                 .rgbBlue        = foreColor.B
                 .rgbGreen       = foreColor.G
                 .rgbRed         = foreColor.R
                 .rgbReserved    = 0
             End With
-
             With palette(1)
                 .rgbBlue        = backColor.B
                 .rgbGreen       = backColor.G
@@ -616,10 +612,9 @@ Namespace Ys.QRCode
                 .rgbReserved    = 0
             End With
 
-            Dim ret As Byte() = New Byte(62 + dataBlock.Length - 1) {}
-
-            Dim bytes  As Byte()
-            Dim offset As Integer = 0
+            Dim ret     As Byte() = New Byte(62 + dataBlock.Length - 1) {}
+            Dim bytes   As Byte()
+            Dim offset  As Integer = 0
 
             bytes = bfh.GetBytes()
             Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
@@ -711,8 +706,6 @@ Namespace Ys.QRCode
             Next
 
             Dim bfh As BITMAPFILEHEADER
-            Dim bih As BITMAPINFOHEADER
-
             With bfh
                 .bfType         = &H4D42
                 .bfSize         = 54 + dataBlock.Length
@@ -721,6 +714,7 @@ Namespace Ys.QRCode
                 .bfOffBits      = 54
             End With
 
+            Dim bih As BITMAPINFOHEADER
             With bih
                 .biSize             = 40
                 .biWidth            = width
@@ -735,10 +729,9 @@ Namespace Ys.QRCode
                 .biClrImportant     = 0
             End With
 
-            Dim ret As Byte() = New Byte(54 + dataBlock.Length - 1) {}
-
-            Dim bytes  As Byte()
-            Dim offset As Integer = 0
+            Dim ret     As Byte() = New Byte(54 + dataBlock.Length - 1) {}
+            Dim bytes   As Byte()
+            Dim offset  As Integer = 0
 
             bytes = bfh.GetBytes()
             Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
