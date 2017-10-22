@@ -26,16 +26,16 @@ Partial Class Form1
         Me.qrcodePanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.lblErrorCorrectionLevel = New System.Windows.Forms.Label()
         Me.lblMaxVersion = New System.Windows.Forms.Label()
-        Me.lbSize = New System.Windows.Forms.Label()
+        Me.lbModuleSize = New System.Windows.Forms.Label()
         Me.cmbErrorCorrectionLevel = New System.Windows.Forms.ComboBox()
         Me.cmbMaxVersion = New System.Windows.Forms.ComboBox()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.nudSize = New System.Windows.Forms.NumericUpDown()
+        Me.nudModuleSize = New System.Windows.Forms.NumericUpDown()
         Me.chkStructuredAppend = New System.Windows.Forms.CheckBox()
         Me.lblData = New System.Windows.Forms.Label()
         Me.cmbEncoding = New System.Windows.Forms.ComboBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
-        CType(Me.nudSize,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.nudModuleSize,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'txtData
@@ -45,9 +45,10 @@ Partial Class Form1
         Me.txtData.Location = New System.Drawing.Point(12, 355)
         Me.txtData.Multiline = true
         Me.txtData.Name = "txtData"
-        Me.txtData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtData.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtData.Size = New System.Drawing.Size(660, 85)
         Me.txtData.TabIndex = 0
+        Me.txtData.WordWrap = false
         '
         'qrcodePanel
         '
@@ -58,7 +59,7 @@ Partial Class Form1
         Me.qrcodePanel.Location = New System.Drawing.Point(12, 12)
         Me.qrcodePanel.Name = "qrcodePanel"
         Me.qrcodePanel.Size = New System.Drawing.Size(660, 319)
-        Me.qrcodePanel.TabIndex = 1
+        Me.qrcodePanel.TabIndex = 11
         '
         'lblErrorCorrectionLevel
         '
@@ -68,7 +69,7 @@ Partial Class Form1
         Me.lblErrorCorrectionLevel.Location = New System.Drawing.Point(9, 452)
         Me.lblErrorCorrectionLevel.Name = "lblErrorCorrectionLevel"
         Me.lblErrorCorrectionLevel.Size = New System.Drawing.Size(143, 13)
-        Me.lblErrorCorrectionLevel.TabIndex = 2
+        Me.lblErrorCorrectionLevel.TabIndex = 1
         Me.lblErrorCorrectionLevel.Text = "Error Correction Level :"
         '
         'lblMaxVersion
@@ -79,19 +80,19 @@ Partial Class Form1
         Me.lblMaxVersion.Location = New System.Drawing.Point(9, 482)
         Me.lblMaxVersion.Name = "lblMaxVersion"
         Me.lblMaxVersion.Size = New System.Drawing.Size(83, 13)
-        Me.lblMaxVersion.TabIndex = 3
+        Me.lblMaxVersion.TabIndex = 5
         Me.lblMaxVersion.Text = "Max Version :"
         '
-        'lbSize
+        'lbModuleSize
         '
-        Me.lbSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.lbSize.AutoSize = true
-        Me.lbSize.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
-        Me.lbSize.Location = New System.Drawing.Point(385, 482)
-        Me.lbSize.Name = "lbSize"
-        Me.lbSize.Size = New System.Drawing.Size(82, 13)
-        Me.lbSize.TabIndex = 4
-        Me.lbSize.Text = "Module Size :"
+        Me.lbModuleSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.lbModuleSize.AutoSize = true
+        Me.lbModuleSize.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
+        Me.lbModuleSize.Location = New System.Drawing.Point(384, 482)
+        Me.lbModuleSize.Name = "lbModuleSize"
+        Me.lbModuleSize.Size = New System.Drawing.Size(82, 13)
+        Me.lbModuleSize.TabIndex = 8
+        Me.lbModuleSize.Text = "Module Size :"
         '
         'cmbErrorCorrectionLevel
         '
@@ -102,7 +103,7 @@ Partial Class Form1
         Me.cmbErrorCorrectionLevel.Location = New System.Drawing.Point(164, 448)
         Me.cmbErrorCorrectionLevel.Name = "cmbErrorCorrectionLevel"
         Me.cmbErrorCorrectionLevel.Size = New System.Drawing.Size(48, 21)
-        Me.cmbErrorCorrectionLevel.TabIndex = 1
+        Me.cmbErrorCorrectionLevel.TabIndex = 2
         '
         'cmbMaxVersion
         '
@@ -113,7 +114,7 @@ Partial Class Form1
         Me.cmbMaxVersion.Location = New System.Drawing.Point(164, 478)
         Me.cmbMaxVersion.Name = "cmbMaxVersion"
         Me.cmbMaxVersion.Size = New System.Drawing.Size(48, 21)
-        Me.cmbMaxVersion.TabIndex = 2
+        Me.cmbMaxVersion.TabIndex = 6
         '
         'btnSave
         '
@@ -122,30 +123,30 @@ Partial Class Form1
         Me.btnSave.Location = New System.Drawing.Point(548, 477)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(103, 23)
-        Me.btnSave.TabIndex = 5
+        Me.btnSave.TabIndex = 10
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = true
         '
-        'nudSize
+        'nudModuleSize
         '
-        Me.nudSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.nudSize.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
-        Me.nudSize.Location = New System.Drawing.Point(473, 478)
-        Me.nudSize.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudSize.Name = "nudSize"
-        Me.nudSize.Size = New System.Drawing.Size(46, 20)
-        Me.nudSize.TabIndex = 3
-        Me.nudSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudModuleSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.nudModuleSize.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
+        Me.nudModuleSize.Location = New System.Drawing.Point(472, 478)
+        Me.nudModuleSize.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudModuleSize.Name = "nudModuleSize"
+        Me.nudModuleSize.Size = New System.Drawing.Size(46, 20)
+        Me.nudModuleSize.TabIndex = 9
+        Me.nudModuleSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'chkStructuredAppend
         '
         Me.chkStructuredAppend.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.chkStructuredAppend.AutoSize = true
         Me.chkStructuredAppend.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
-        Me.chkStructuredAppend.Location = New System.Drawing.Point(237, 480)
+        Me.chkStructuredAppend.Location = New System.Drawing.Point(230, 480)
         Me.chkStructuredAppend.Name = "chkStructuredAppend"
         Me.chkStructuredAppend.Size = New System.Drawing.Size(132, 17)
-        Me.chkStructuredAppend.TabIndex = 4
+        Me.chkStructuredAppend.TabIndex = 7
         Me.chkStructuredAppend.Text = "Structured Append"
         Me.chkStructuredAppend.UseVisualStyleBackColor = true
         '
@@ -157,26 +158,26 @@ Partial Class Form1
         Me.lblData.Location = New System.Drawing.Point(9, 339)
         Me.lblData.Name = "lblData"
         Me.lblData.Size = New System.Drawing.Size(39, 13)
-        Me.lblData.TabIndex = 9
+        Me.lblData.TabIndex = 12
         Me.lblData.Text = "Data :"
         '
         'cmbEncoding
         '
         Me.cmbEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbEncoding.FormattingEnabled = true
-        Me.cmbEncoding.Location = New System.Drawing.Point(293, 448)
+        Me.cmbEncoding.Location = New System.Drawing.Point(352, 449)
         Me.cmbEncoding.Name = "cmbEncoding"
-        Me.cmbEncoding.Size = New System.Drawing.Size(358, 20)
-        Me.cmbEncoding.TabIndex = 19
+        Me.cmbEncoding.Size = New System.Drawing.Size(299, 20)
+        Me.cmbEncoding.TabIndex = 4
         '
         'lblEncoding
         '
         Me.lblEncoding.AutoSize = true
         Me.lblEncoding.Location = New System.Drawing.Point(230, 452)
         Me.lblEncoding.Name = "lblEncoding"
-        Me.lblEncoding.Size = New System.Drawing.Size(57, 12)
-        Me.lblEncoding.TabIndex = 18
-        Me.lblEncoding.Text = "Encoding :"
+        Me.lblEncoding.Size = New System.Drawing.Size(116, 12)
+        Me.lblEncoding.TabIndex = 3
+        Me.lblEncoding.Text = "Byte mode Encoding :"
         '
         'Form1
         '
@@ -187,11 +188,11 @@ Partial Class Form1
         Me.Controls.Add(Me.lblEncoding)
         Me.Controls.Add(Me.lblData)
         Me.Controls.Add(Me.chkStructuredAppend)
-        Me.Controls.Add(Me.nudSize)
+        Me.Controls.Add(Me.nudModuleSize)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.cmbMaxVersion)
         Me.Controls.Add(Me.cmbErrorCorrectionLevel)
-        Me.Controls.Add(Me.lbSize)
+        Me.Controls.Add(Me.lbModuleSize)
         Me.Controls.Add(Me.lblMaxVersion)
         Me.Controls.Add(Me.lblErrorCorrectionLevel)
         Me.Controls.Add(Me.qrcodePanel)
@@ -199,7 +200,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "QRCode"
-        CType(Me.nudSize,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.nudModuleSize,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -208,11 +209,11 @@ End Sub
     Private WithEvents qrcodePanel As FlowLayoutPanel
     Friend WithEvents lblErrorCorrectionLevel As Label
     Friend WithEvents lblMaxVersion As Label
-    Friend WithEvents lbSize As Label
+    Friend WithEvents lbModuleSize As Label
     Private WithEvents cmbErrorCorrectionLevel As ComboBox
     Friend WithEvents cmbMaxVersion As ComboBox
     Friend WithEvents btnSave As Button
-    Friend WithEvents nudSize As NumericUpDown
+    Friend WithEvents nudModuleSize As NumericUpDown
     Friend WithEvents chkStructuredAppend As CheckBox
     Private WithEvents lblData As Label
     Private WithEvents txtData As TextBox

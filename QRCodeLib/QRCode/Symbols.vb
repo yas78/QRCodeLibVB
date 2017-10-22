@@ -29,6 +29,7 @@ Namespace Ys.QRCode
         ''' <param name="maxVersion">型番の上限</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
+        ''' <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
         Public Sub New(maxVersion As Integer,
                        ecLevel As ErrorCorrectionLevel,
                        allowStructuredAppend As Boolean,
@@ -51,7 +52,7 @@ Namespace Ys.QRCode
 
             _currSymbol = New Symbol(Me)
             _items.Add(_currSymbol)
-
+            
         End Sub
 
         Private ReadOnly _items As List(Of Symbol)
@@ -131,14 +132,8 @@ Namespace Ys.QRCode
                 Return _structuredAppendParity
             End Get
         End Property
-
-        Friend ReadOnly Property ByteModeEncoding() As Encoding
-            Get
-                Return ByteModeEncoding1
-            End Get
-        End Property
-
-        Public ReadOnly Property ByteModeEncoding1 As Encoding
+        
+        Public ReadOnly Property ByteModeEncoding() As Encoding
             Get
                 Return _byteModeEncoding
             End Get

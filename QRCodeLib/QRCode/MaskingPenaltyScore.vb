@@ -209,9 +209,10 @@ Namespace Ys.QRCode
                     End If
                 Next
             Next
-
+            
+            Dim numModules As Double = moduleMatrix.Length ^ 2
             Dim temp As Integer
-            temp = CInt(Math.Ceiling((darkCount / moduleMatrix.Length ^ 2) * 100))
+            temp = CInt(Math.Ceiling(darkCount / numModules * 100))
             temp = Math.Abs(temp - 50)
             temp = (temp + 4) \ 5
 

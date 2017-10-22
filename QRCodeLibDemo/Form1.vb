@@ -13,7 +13,7 @@ Public Class Form1
     End Sub
 
     Private Sub Update_qrcodePanel(sender As Object, e As EventArgs) _
-        Handles txtData.TextChanged, nudSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged, cmbEncoding.SelectedIndexChanged
+        Handles txtData.TextChanged, nudModuleSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged, cmbEncoding.SelectedIndexChanged
 
         btnSave.Enabled = False
         qrcodePanel.Controls.Clear()
@@ -40,7 +40,7 @@ Public Class Form1
         End Try
 
         For Each symbol As Symbol In symbols
-            Dim image As Image = symbol.Get24bppImage(CInt(nudSize.Value))
+            Dim image As Image = symbol.Get24bppImage(CInt(nudModuleSize.Value))
 
             Dim pictureBox As PictureBox = New PictureBox()
             pictureBox.Size = image.Size
@@ -97,9 +97,9 @@ Public Class Form1
             End If
 
             If isMonochrome Then
-                symbols(i).Save1bppDIB(filename, CInt(nudSize.Value))
+                symbols(i).Save1bppDIB(filename, CInt(nudModuleSize.Value))
             Else
-                symbols(i).Save24bppDIB(filename, CInt(nudSize.Value))
+                symbols(i).Save24bppDIB(filename, CInt(nudModuleSize.Value))
             End If
             
         Next
@@ -122,7 +122,7 @@ Public Class Form1
         cmbMaxVersion.Text = "40"
         cmbErrorCorrectionLevel.Text = "M"
         cmbEncoding.Text = Encoding.Default.EncodingName
-        nudSize.Value = 5
+        nudModuleSize.Value = 5
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False
 
