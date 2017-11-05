@@ -52,10 +52,13 @@ Namespace Ys.QRCode.Encoder
             Select Case wd
                 Case &H8140 To &H9FFC
                     wd -= &H8140
+
                 Case &HE040 To &HEBBF
                     wd -= &HC140
+
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(c))
+
             End Select
 
             wd = ((wd >> 8) * &HC0) + (wd And &HFF)
@@ -107,9 +110,7 @@ Namespace Ys.QRCode.Encoder
 
             Dim code As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
 
-            If code >= &H8140 AndAlso code <= &H9FFC OrElse
-               code >= &HE040 AndAlso code <= &HEBBF Then
-                
+            If code >= &H8140 AndAlso code <= &H9FFC OrElse code >= &HE040 AndAlso code <= &HEBBF Then
                 Return charBytes(1) >= &H40 AndAlso
                        charBytes(1) <= &HFC AndAlso
                        charBytes(1) <> &H7F

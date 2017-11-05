@@ -12,7 +12,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Update_qrcodePanel(sender As Object, e As EventArgs) _
+    Private Sub UpdateQRCodePanel(sender As Object, e As EventArgs) _
         Handles txtData.TextChanged, nudModuleSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged, cmbEncoding.SelectedIndexChanged
 
         btnSave.Enabled = False

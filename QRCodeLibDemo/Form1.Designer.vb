@@ -42,6 +42,7 @@ Partial Class Form1
         '
         Me.txtData.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtData.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.txtData.Location = New System.Drawing.Point(12, 355)
         Me.txtData.Multiline = true
         Me.txtData.Name = "txtData"
@@ -163,6 +164,7 @@ Partial Class Form1
         '
         'cmbEncoding
         '
+        Me.cmbEncoding.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.cmbEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbEncoding.FormattingEnabled = true
         Me.cmbEncoding.Location = New System.Drawing.Point(352, 449)
@@ -172,6 +174,7 @@ Partial Class Form1
         '
         'lblEncoding
         '
+        Me.lblEncoding.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.lblEncoding.AutoSize = true
         Me.lblEncoding.Location = New System.Drawing.Point(230, 452)
         Me.lblEncoding.Name = "lblEncoding"
