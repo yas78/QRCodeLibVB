@@ -17,20 +17,19 @@ Public Class Form1
 
         btnSave.Enabled = False
         qrcodePanel.Controls.Clear()
-        
+
         If String.IsNullOrEmpty(txtData.Text) Then
             Return
         End If
 
-        Dim symbols As Symbols
+        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
+        Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
+        Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
+        Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+
+        Dim symbols As Symbols = New Symbols(version, ecLevel, allowStructuredAppend, encoding)
 
         Try
-            symbols = New Symbols(
-                CInt(cmbMaxVersion.Text),
-                CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel),
-                chkStructuredAppend.Checked,
-                CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding())
-
             symbols.AppendString(txtData.Text)
 
         Catch ex As Exception
@@ -70,15 +69,14 @@ Public Class Form1
                 Path.GetDirectoryName(fd.FileName), Path.GetFileNameWithoutExtension(fd.FileName))
         End Using
 
-        Dim symbols As Symbols
+        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
+        Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
+        Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
+        Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+
+        Dim symbols As Symbols = New Symbols(version, ecLevel, allowStructuredAppend, encoding)
 
         Try
-            symbols = New Symbols(
-                CInt(cmbMaxVersion.Text),
-                CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel),
-                chkStructuredAppend.Checked,
-                CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding())
-
             symbols.AppendString(txtData.Text)
 
         Catch ex As Exception
@@ -119,8 +117,8 @@ Public Class Form1
         cmbEncoding.ValueMember = "Name"
         cmbEncoding.DataSource =  Encoding.GetEncodings()
 
-        cmbMaxVersion.Text = "40"
-        cmbErrorCorrectionLevel.Text = "M"
+        cmbMaxVersion.SelectedItem = 40
+        cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
         cmbEncoding.Text = Encoding.Default.EncodingName
         nudModuleSize.Value = 5
         chkStructuredAppend.Checked = False
