@@ -110,16 +110,17 @@ Public Class Form1
             cmbMaxVersion.Items.Add(i)
         Next
 
+        cmbMaxVersion.SelectedIndex = cmbMaxVersion.Items.Count - 1
+        
         cmbErrorCorrectionLevel.DataSource =
             [Enum].GetValues(GetType(ErrorCorrectionLevel))
+        cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
 
         cmbEncoding.DisplayMember = "DisplayName"
         cmbEncoding.ValueMember = "Name"
         cmbEncoding.DataSource =  Encoding.GetEncodings()
-
-        cmbMaxVersion.SelectedItem = 40
-        cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
         cmbEncoding.Text = Encoding.Default.EncodingName
+        
         nudModuleSize.Value = 5
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False
