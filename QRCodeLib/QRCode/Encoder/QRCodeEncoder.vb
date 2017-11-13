@@ -28,6 +28,22 @@ Namespace Ys.QRCode.Encoder
         ''' モード指示子を取得します。
         ''' </summary>
         Public MustOverride ReadOnly Property ModeIndicator() As Integer
+        
+        ''' <summary>
+        ''' 文字を追加します。
+        ''' </summary>
+        ''' <returns>追加した文字のビット数</returns>
+        Public MustOverride Function Append(c As Char) As Integer
+
+        ''' <summary>
+        ''' 指定の文字をエンコードしたコード語のビット数を返します。
+        ''' </summary>
+        Public MustOverride Function GetCodewordBitLength(c As Char) As Integer
+    
+        ''' <summary>
+        ''' エンコードされたデータのバイト配列を返します。
+        ''' </summary>
+        Public MustOverride Function GetBytes() As Byte()
 
         ''' <summary>
         ''' 文字数を取得します。
@@ -46,22 +62,6 @@ Namespace Ys.QRCode.Encoder
                 Return _bitCounter
             End Get
         End Property
-        
-        ''' <summary>
-        ''' 文字を追加します。
-        ''' </summary>
-        ''' <returns>追加した文字のビット数</returns>
-        Public MustOverride Function Append(c As Char) As Integer
-
-        ''' <summary>
-        ''' 指定の文字をエンコードしたコード語のビット数を返します。
-        ''' </summary>
-        Public MustOverride Function GetCodewordBitLength(c As Char) As Integer
-    
-        ''' <summary>
-        ''' エンコードされたデータのバイト配列を返します。
-        ''' </summary>
-        Public MustOverride Function GetBytes() As Byte()
 
         ''' <summary>
         ''' 指定したエンコーディングモードのエンコーダーを返します。
