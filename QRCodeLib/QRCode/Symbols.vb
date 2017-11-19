@@ -49,8 +49,8 @@ Namespace Ys.QRCode
             _byteModeEncoding           = byteModeEncoding
 
             _structuredAppendParity = 0
-
             _currSymbol = New Symbol(Me)
+
             _items.Add(_currSymbol)
             
         End Sub
@@ -64,8 +64,8 @@ Namespace Ys.QRCode
         Private ReadOnly _structuredAppendAllowed   As Boolean
         Private ReadOnly _byteModeEncoding          As Encoding
 
-        Private _currSymbol As Symbol
         Private _structuredAppendParity As Integer
+        Private _currSymbol As Symbol
         
         ''' <summary>
         ''' インデックス番号を指定してSymbolオブジェクトを取得します。
@@ -191,7 +191,7 @@ Namespace Ys.QRCode
                 If newMode <> oldMode Then
                     If Not _currSymbol.TrySetEncodingMode(newMode, s(i)) Then
                         If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
-                            Throw New ArgumentOutOfRangeException(NameOf(s), "String too long")
+                            Throw New ArgumentException("String too long", NameOf(s))
                         End If
 
                         Add()
@@ -202,7 +202,7 @@ Namespace Ys.QRCode
 
                 If Not _currSymbol.TryAppend(s(i)) Then
                     If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
-                        Throw New ArgumentOutOfRangeException(NameOf(s), "String too long")
+                        Throw New ArgumentException("String too long", NameOf(s))
                     End If
 
                     Add()

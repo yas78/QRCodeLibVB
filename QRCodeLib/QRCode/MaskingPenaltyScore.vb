@@ -16,7 +16,7 @@ Namespace Ys.QRCode
         Public Function CalcTotal(moduleMatrix As Integer()()) As Integer
 
             Dim total   As Integer = 0
-            Dim penalty As Integer
+            Dim penalty As Integer = 0
             
             penalty = CalcAdjacentModulesInSameColor(moduleMatrix)
             total += penalty
@@ -86,7 +86,7 @@ Namespace Ys.QRCode
         ''' </summary>
         Private Function CalcBlockOfModulesInSameColor(moduleMatrix As Integer()()) As Integer
 
-            Dim penalty As Integer
+            Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix) - 1
                 For c As Integer = 0 To UBound(moduleMatrix(r)) - 1

@@ -32,11 +32,9 @@ Namespace Ys.QRCode
 
             _dataBitCapacity = DataCodeword.GetTotalNumber(
                 parent.ErrorCorrectionLevel, parent.MinVersion) * 8
-
             _dataBitCounter  = 0
 
             _segments = New List(Of QRCodeEncoder)()
-
             _segmentCounter = New Dictionary(Of EncodingMode, Integer) From {
                 {EncodingMode.NUMERIC,        0},
                 {EncodingMode.ALPHA_NUMERIC,  0},
@@ -127,11 +125,10 @@ Namespace Ys.QRCode
             Dim encoder As QRCodeEncoder = QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
             Dim bitLength As Integer = encoder.GetCodewordBitLength(c)
 
-            Do While _dataBitCapacity <
-                        _dataBitCounter +
-                        ModeIndicator.LENGTH +
-                        CharCountIndicator.GetLength(_currVersion, encMode) +
-                        bitLength
+            Do While _dataBitCapacity < _dataBitCounter +
+                                        ModeIndicator.LENGTH +
+                                        CharCountIndicator.GetLength(_currVersion, encMode) +
+                                        bitLength
 
                 If _currVersion >= _parent.MaxVersion Then
                     Return False

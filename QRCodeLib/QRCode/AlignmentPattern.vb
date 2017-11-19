@@ -1,5 +1,4 @@
 ﻿Imports System
-Imports System.Drawing.Image
 Imports System.Diagnostics
 
 Namespace Ys.QRCode
