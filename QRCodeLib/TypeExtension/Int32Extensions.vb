@@ -12,7 +12,6 @@ Namespace Ys.TypeExtension
         ''' </summary>
         <System.Runtime.CompilerServices.Extension>
         Public Function CloneDeep(arg As Integer()()) As Integer()()
-
             Dim ret As Integer()() = New Integer(UBound(arg))() {}
 
             For i As Integer = 0 To UBound(arg)
@@ -21,7 +20,6 @@ Namespace Ys.TypeExtension
             Next
 
             Return ret
-
         End Function
 
         ''' <summary>
@@ -29,7 +27,6 @@ Namespace Ys.TypeExtension
         ''' </summary>
         <System.Runtime.CompilerServices.Extension>
         Public Function Rotate90(arg As Integer()()) As Integer()()
-
             Dim ret As Integer()() = New Integer(UBound(arg(0)))() {}
 
             For i As Integer = 0 To UBound(ret)
@@ -45,7 +42,6 @@ Namespace Ys.TypeExtension
             Next
 
             Return ret
-
         End Function
 
     End Module

@@ -21,7 +21,6 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="parent">親オブジェクト</param>
         Friend Sub New(parent As Symbols)
-
             _parent = parent
 
             _position = parent.Count
@@ -45,7 +44,6 @@ Namespace Ys.QRCode
             If parent.StructuredAppendAllowed Then
                 _dataBitCapacity -= StructuredAppend.HEADER_LENGTH 
             End If
-
         End Sub
 
         Private ReadOnly _parent As Symbols
@@ -95,7 +93,6 @@ Namespace Ys.QRCode
         ''' <param name="c">対象文字</param>
         ''' <returns>シンボル容量が不足している場合は False を返します。</returns>
         Friend Function TryAppend(c As Char) As Boolean
-
             Dim bitLength As Integer = _currEncoder.GetCodewordBitLength(c)
 
             Do While _dataBitCapacity < _dataBitCounter + bitLength
@@ -111,7 +108,6 @@ Namespace Ys.QRCode
             _parent.UpdateParity(c)
 
             Return True
-
         End Function
 
         ''' <summary>
@@ -121,7 +117,6 @@ Namespace Ys.QRCode
         ''' <param name="c">符号化する最初の文字。この文字はシンボルに追加されません。</param>
         ''' <returns>シンボル容量が不足している場合は False を返します。</returns>
         Friend Function TrySetEncodingMode(encMode As EncodingMode, c As Char) As Boolean
-
             Dim encoder As QRCodeEncoder = QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
             Dim bitLength As Integer = encoder.GetCodewordBitLength(c)
 
@@ -129,7 +124,6 @@ Namespace Ys.QRCode
                                         ModeIndicator.LENGTH +
                                         CharCountIndicator.GetLength(_currVersion, encMode) +
                                         bitLength
-
                 If _currVersion >= _parent.MaxVersion Then
                     Return False
                 End If
@@ -146,14 +140,12 @@ Namespace Ys.QRCode
             _currEncodingMode = encMode
                 
             Return True
-
         End Function
 
         ''' <summary>
         ''' 型番を決定します。
         ''' </summary>
         Private Sub SelectVersion()
-
             For Each encMode As EncodingMode In _segmentCounter.Keys
                 Dim num As Integer = _segmentCounter(encMode)
 
@@ -169,14 +161,12 @@ Namespace Ys.QRCode
             If _parent.StructuredAppendAllowed Then
                 _dataBitCapacity -= StructuredAppend.HEADER_LENGTH
             End If
-
         End Sub
             
         ''' <summary>
         ''' データブロックを返します。
         ''' </summary>
         Private Function BuildDataBlock() As Byte()()
-
             Dim dataBytes As Byte() = GetMessageBytes()
 
             Dim numPreBlocks As Integer = RSBlock.GetTotalNumber(
@@ -214,7 +204,6 @@ Namespace Ys.QRCode
             Next
                 
             Return ret
-
         End Function
 
         ''' <summary>
@@ -222,7 +211,6 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="dataBlock">データ領域のブロック</param>
         Private Function BuildErrorCorrectionBlock(dataBlock()() As Byte) As Byte()()
-
             Dim numECCodewords As Integer = RSBlock.GetNumberECCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion)
 
@@ -270,14 +258,12 @@ Namespace Ys.QRCode
             Next
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 符号化領域のバイトデータを返します。
         ''' </summary>
         Private Function GetEncodingRegionBytes() As Byte()
-
             Dim dataBlock   As Byte()() = BuildDataBlock()
             Dim ecBlock     As Byte()() = BuildErrorCorrectionBlock(dataBlock)
                 
@@ -318,14 +304,12 @@ Namespace Ys.QRCode
             Loop
                 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' コード語に変換するメッセージビット列を返します。
         ''' </summary>
         Private Function GetMessageBytes() As Byte()
-
             Dim bs = New BitSequence()
 
             If _parent.Count > 1 Then
@@ -338,20 +322,16 @@ Namespace Ys.QRCode
             WritePadCodewords(bs)
                 
             Return bs.GetBytes()
-
         End Function
 
         Private Sub WriteStructuredAppendHeader(bs As BitSequence)
-
             bs.Append(ModeIndicator.STRUCTURED_APPEND_VALUE, ModeIndicator.LENGTH)
             bs.Append(_position, SymbolSequenceIndicator.POSITION_LENGTH)
             bs.Append(_parent.Count - 1, SymbolSequenceIndicator.TOTAL_NUMBER_LENGTH)
             bs.Append(_parent.StructuredAppendParity, StructuredAppend.PARITY_DATA_LENGTH)
-
         End Sub
 
         Private Sub WriteSegments(bs As BitSequence)
-
             For Each segment As QRCodeEncoder In _segments
                 bs.Append(segment.ModeIndicator, ModeIndicator.LENGTH)
                 bs.Append(segment.CharCount,
@@ -371,11 +351,9 @@ Namespace Ys.QRCode
 
                 bs.Append(data(UBound(data)) >> (8 - codewordBitLength), codewordBitLength)
             Next
-
         End Sub
 
         Private Sub WriteTerminator(bs As BitSequence)
-
             Dim terminatorLength As Integer = _dataBitCapacity - _dataBitCounter
 
             If terminatorLength > ModeIndicator.LENGTH Then
@@ -383,19 +361,15 @@ Namespace Ys.QRCode
             End If
 
             bs.Append(ModeIndicator.TERMINATOR_VALUE, terminatorLength)
-
         End Sub
 
         Private Sub WritePaddingBits(bs As BitSequence)
-
             If bs.Length Mod 8 > 0 Then
                 bs.Append(&H0, 8 - (bs.Length Mod 8))
             End If
-
         End Sub
 
         Private Sub WritePadCodewords(bs As BitSequence)
-                
             Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(
                 _parent.ErrorCorrectionLevel, _currVersion)
 
@@ -405,14 +379,12 @@ Namespace Ys.QRCode
                 bs.Append(If(flag, 236, 17), 8)
                 flag = Not flag
             Loop
-                
         End Sub
 
         ''' <summary>
         ''' シンボルの明暗パターンを返します。
         ''' </summary>
         Private Function GetModuleMatrix() As Integer()()
-                
             Dim numModulesPerSide As Integer = [Module].GetNumModulesPerSide(_currVersion)
 
             Dim moduleMatrix As Integer()() = New Integer(numModulesPerSide - 1)() {}
@@ -449,14 +421,12 @@ Namespace Ys.QRCode
             End If
 
             Return moduleMatrix
-                
         End Function
 
         ''' <summary>
         ''' シンボルキャラクタを配置します。
         ''' </summary>
         Private Sub PlaceSymbolChar(moduleMatrix As Integer()())
-
             Dim data As Byte() = GetEncodingRegionBytes()
 
             Dim r As Integer = UBound(moduleMatrix)
@@ -476,7 +446,6 @@ Namespace Ys.QRCode
 
                     If toLeft Then
                         c -= 1
-
                     Else
                         If (r + rowDirection) < 0 Then
                             r = 0
@@ -486,7 +455,6 @@ Namespace Ys.QRCode
                             If c = 6 Then
                                 c = 5
                             End If
-
                         ElseIf ((r + rowDirection) > UBound(moduleMatrix)) Then
                             r = UBound(moduleMatrix)
                             rowDirection = -1
@@ -495,27 +463,22 @@ Namespace Ys.QRCode
                             If c = 6 Then
                                 c = 5
                             End If
-
                         Else
                             r += rowDirection
                             c += 1
-
                         End If
                     End If
 
                     toLeft = Not toLeft
                 Loop
             Next
-
         End Sub
 
         ''' <summary>
         ''' 1bppビットマップファイルのバイトデータを返します。
         ''' </summary>
         Public Function Get1bppDIB() As Byte()
-
             Return Get1bppDIB(5)
-
         End Function
         
         ''' <summary>
@@ -523,13 +486,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get1bppDIB(moduleSize As Integer) As Byte()
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
             Return Get1bppDIB(moduleSize, Color.Black, Color.White)
-
         End Function
 
         ''' <summary>
@@ -539,7 +500,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Function Get1bppDIB(moduleSize As Integer, foreColor As Color, backColor As Color) As Byte()
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -633,16 +593,13 @@ Namespace Ys.QRCode
             Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 24bppビットマップファイルのバイトデータを返します。
         ''' </summary>
         Public Function Get24bppDIB() As Byte()
-
             Return Get24bppDIB(5)
-
         End Function
 
 
@@ -651,13 +608,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get24bppDIB(moduleSize As Integer) As Byte()
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
             Return Get24bppDIB(moduleSize, Color.Black, Color.White)
-
         End Function
 
         ''' <summary>
@@ -667,7 +622,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Function Get24bppDIB(moduleSize As Integer, foreColor As Color, backColor As Color) As Byte()
-            
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -742,31 +696,25 @@ Namespace Ys.QRCode
             Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 1bppのシンボル画像を返します。
         ''' </summary>
         Public Function Get1bppImage() As System.Drawing.Image
-
             Return Get1bppImage(5)
-
         End Function
-
 
         ''' <summary>
         ''' 1bppのシンボル画像を返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get1bppImage(moduleSize As Integer) As System.Drawing.Image
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
             Return Get1bppImage(moduleSize, Color.Black, Color.White)
-
         End Function
 
         ''' <summary>
@@ -776,7 +724,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Function Get1bppImage(moduleSize As Integer, foreColor As Color, backColor As Color) As System.Drawing.Image
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -788,16 +735,13 @@ Namespace Ys.QRCode
                 converter.ConvertFrom(dib), System.Drawing.Image)
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 24bppのシンボル画像を返します。
         ''' </summary>
         Public Function Get24bppImage() As System.Drawing.Image
-            
             Return Get24bppImage(5)
-
         End Function
 
         ''' <summary>
@@ -805,13 +749,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Function Get24bppImage(moduleSize As Integer) As System.Drawing.Image
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
             Return Get24bppImage(moduleSize, Color.Black, Color.White)
-
         End Function
 
         ''' <summary>
@@ -821,7 +763,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Function Get24bppImage(moduleSize As Integer, foreColor As Color, backColor As Color) As System.Drawing.Image
-
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -833,7 +774,6 @@ Namespace Ys.QRCode
                 converter.ConvertFrom(dib), System.Drawing.Image)
 
             Return ret
-
         End Function
 
         ''' <summary>
@@ -841,13 +781,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="fileName">ファイル名</param>
         Public Sub Save1bppDIB(fileName As String)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
 
             Save1bppDIB(fileName, 5)
-
         End Sub
         
         ''' <summary>
@@ -856,7 +794,6 @@ Namespace Ys.QRCode
         ''' <param name="fileName">ファイル名</param>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Sub Save1bppDIB(fileName As String, moduleSize As Integer)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -866,7 +803,6 @@ Namespace Ys.QRCode
             End If
 
             Save1bppDIB(fileName, moduleSize, Color.Black, Color.White)
-
         End Sub
 
         ''' <summary>
@@ -877,7 +813,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Sub Save1bppDIB(fileName As String, moduleSize As Integer, foreColor As Color, backColor As Color)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -888,7 +823,6 @@ Namespace Ys.QRCode
 
             Dim dib As Byte() = Get1bppDIB(moduleSize, foreColor, backColor)
             File.WriteAllBytes(fileName, dib)
-
         End Sub
 
         ''' <summary>
@@ -896,13 +830,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="fileName">ファイル名</param>
         Public Sub Save24bppDIB(fileName As String)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
 
             Save24bppDIB(fileName, 5)
-
         End Sub
 
         ''' <summary>
@@ -911,7 +843,6 @@ Namespace Ys.QRCode
         ''' <param name="fileName">ファイル名</param>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         Public Sub Save24bppDIB(fileName As String, moduleSize As Integer)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -921,7 +852,6 @@ Namespace Ys.QRCode
             End If
 
             Save24bppDIB(fileName, moduleSize, Color.Black, Color.White)
-
         End Sub
 
         ''' <summary>
@@ -932,7 +862,6 @@ Namespace Ys.QRCode
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
         Public Sub Save24bppDIB(fileName As String, moduleSize As Integer, foreColor As Color, backColor As Color)
-
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -943,7 +872,6 @@ Namespace Ys.QRCode
 
             Dim dib As Byte() = Get24bppDIB(moduleSize, foreColor, backColor)
             File.WriteAllBytes(fileName, dib)
-
         End Sub
         
     End Class

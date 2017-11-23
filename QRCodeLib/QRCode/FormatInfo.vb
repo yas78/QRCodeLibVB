@@ -41,7 +41,6 @@ Namespace Ys.QRCode
                 If r1 = 6 Then
                     r1 += 1
                 End If
-
             Next
 
             Dim r2 As Integer = moduleMatrix.Length - 7
@@ -62,16 +61,13 @@ Namespace Ys.QRCode
                 If c2 = 6 Then
                     c2 -= 1
                 End If
-
             Next
-
         End Sub
 
         ''' <summary>
         ''' 形式情報の予約領域を配置します｡
         ''' </summary>
         Public Sub PlaceTempBlank(moduleMatrix As Integer()())
-
             Dim numModulesOneSide As Integer = moduleMatrix.Length
 
             For i As Integer = 0 To 8
@@ -89,7 +85,6 @@ Namespace Ys.QRCode
 
             ' 固定暗モジュールを配置(マスクの適用前に配置する)
             moduleMatrix(numModulesOneSide - 8)(8) = 2
-
         End Sub
 
         ''' <summary>
@@ -107,23 +102,17 @@ Namespace Ys.QRCode
             Select Case ecLevel
                 Case ErrorCorrectionLevel.L
                     indicator = 1
-
                 Case ErrorCorrectionLevel.M
                     indicator = 0
-
                 Case ErrorCorrectionLevel.Q
                     indicator = 3
-
                 Case ErrorCorrectionLevel.H
                     indicator = 2
-
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(ecLevel))
-
             End Select
         
             Return _formatInfoValues((indicator << 3) Or maskPatternReference)
-
         End Function
 
         ' 形式情報

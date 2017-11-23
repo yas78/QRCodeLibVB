@@ -12,7 +12,6 @@ Namespace Ys.QRCode
         ''' 位置合わせパターンを配置します。
         ''' </summary>
         Public Sub Place(moduleMatrix As Integer()(), version As Integer)
-
             Debug.Assert(version >= 2 AndAlso version <= 40)
 
             Dim centerPosArray As Integer() = _centerPosArrays(version)
@@ -29,9 +28,7 @@ Namespace Ys.QRCode
                     If i = 0        AndAlso j = 0        OrElse
                        i = 0        AndAlso j = maxIndex OrElse
                        i = maxIndex AndAlso j = 0        Then
-
                         Continue For
-
                     End If
 
                     Array.Copy(New Integer() {2,  2,  2,  2,  2}, 0, moduleMatrix(r - 2), c - 2, 5)
@@ -39,10 +36,8 @@ Namespace Ys.QRCode
                     Array.Copy(New Integer() {2, -2,  2, -2,  2}, 0, moduleMatrix(r + 0), c - 2, 5)
                     Array.Copy(New Integer() {2, -2, -2, -2,  2}, 0, moduleMatrix(r + 1), c - 2, 5)
                     Array.Copy(New Integer() {2,  2,  2,  2,  2}, 0, moduleMatrix(r + 2), c - 2, 5)
-
                 Next
             Next
-
         End Sub
 
         Private ReadOnly _centerPosArrays As Integer()() = {

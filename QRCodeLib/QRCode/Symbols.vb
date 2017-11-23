@@ -18,9 +18,7 @@ Namespace Ys.QRCode
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
-
             MyClass.New(Constants.MAX_VERSION, ErrorCorrectionLevel.M, False, Encoding.GetEncoding("shift_jis"))
-
         End Sub
 
         ''' <summary>
@@ -52,7 +50,6 @@ Namespace Ys.QRCode
             _currSymbol = New Symbol(Me)
 
             _items.Add(_currSymbol)
-            
         End Sub
 
         Private ReadOnly _items As List(Of Symbol)
@@ -143,7 +140,6 @@ Namespace Ys.QRCode
         ''' シンボルを追加します。
         ''' </summary>
         Private Function Add() As Symbol
-
             Debug.Assert(_structuredAppendAllowed)
             Debug.Assert(_items.Count < 16)
 
@@ -151,14 +147,12 @@ Namespace Ys.QRCode
             _items.Add(_currSymbol)
 
             Return _currSymbol
-
         End Function
 
         ''' <summary>
         ''' 文字列を追加します。
         ''' </summary>
         Public Sub AppendString(s As String)
-
             If String.IsNullOrEmpty(s) Then
                 Throw New ArgumentNullException(NameOf(s))
             End If
@@ -170,22 +164,16 @@ Namespace Ys.QRCode
                 Select Case oldMode
                     Case EncodingMode.UNKNOWN
                         newMode = SelectInitialMode(s, i)
-
                     Case EncodingMode.NUMERIC
                         newMode = SelectModeWhileInNumericMode(s, i)
-
                     Case EncodingMode.ALPHA_NUMERIC
                         newMode = SelectModeWhileInAlphanumericMode(s, i)
-
                     Case EncodingMode.EIGHT_BIT_BYTE
                         newMode = SelectModeWhileInByteMode(s, i)
-
                     Case EncodingMode.KANJI
                         newMode = SelectInitialMode(s, i)
-
                     Case Else
                         Throw New InvalidOperationException()
-
                 End Select
 
                 If newMode <> oldMode Then
@@ -211,7 +199,6 @@ Namespace Ys.QRCode
                     _currSymbol.TryAppend(s(i))
                 End If
             Next
-
         End Sub
 
         ''' <summary>
@@ -220,16 +207,17 @@ Namespace Ys.QRCode
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
         Private Function SelectInitialMode(s As String, startIndex As Integer) As EncodingMode
-
             Dim version As Integer = _currSymbol.Version
 
             If KanjiEncoder.IsInSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
+            End If
 
-            ElseIf ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
+            End If
 
-            ElseIf AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
                 Dim cnt As Integer = 0
                 Dim flg As Boolean = False
 
@@ -244,16 +232,12 @@ Namespace Ys.QRCode
                 Select Case version
                     Case 1 To 9
                         flg = cnt < 6
-
                     Case 10 To 26
                         flg = cnt < 7
-
                     Case 27 To 40
                         flg = cnt < 8
-
                     Case Else
                         Throw New InvalidOperationException()
-
                 End Select
 
                 If flg Then
@@ -269,8 +253,9 @@ Namespace Ys.QRCode
                 Else
                     Return EncodingMode.ALPHA_NUMERIC
                 End If
+            End If
 
-            ElseIf NumericEncoder.IsInSubset(s(startIndex)) Then
+            If NumericEncoder.IsInSubset(s(startIndex)) Then
                 Dim cnt  As Integer = 0
                 Dim flg1 As Boolean = False
                 Dim flg2 As Boolean = False
@@ -287,18 +272,14 @@ Namespace Ys.QRCode
                     Case 1 To 9
                         flg1 = cnt < 4
                         flg2 = cnt < 7
-
                     Case 10 To 26
                         flg1 = cnt < 4
                         flg2 = cnt < 8
-
                     Case 27 To 40
                         flg1 = cnt < 5
                         flg2 = cnt < 9
-                        
                     Case Else
                         Throw New InvalidOperationException()
-
                 End Select
 
                 If flg1 Then
@@ -324,12 +305,9 @@ Namespace Ys.QRCode
                 Else
                     Return EncodingMode.NUMERIC
                 End If
-
             Else
                 Throw New InvalidOperationException()
-
             End If
-
         End Function
 
         ''' <summary>
@@ -338,21 +316,19 @@ Namespace Ys.QRCode
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
         Private Function SelectModeWhileInNumericMode(s As String, startIndex As Integer) As EncodingMode
-
             If KanjiEncoder.IsInSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
-
-            ElseIf ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
-                Return EncodingMode.EIGHT_BIT_BYTE
-        
-            ElseIf AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
-                Return EncodingMode.ALPHA_NUMERIC
-
-            Else
-                Return EncodingMode.NUMERIC
-
             End If
 
+            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+                Return EncodingMode.EIGHT_BIT_BYTE
+            End If
+        
+            If AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
+                Return EncodingMode.ALPHA_NUMERIC
+            End If
+            
+            Return EncodingMode.NUMERIC
         End Function
 
         ''' <summary>
@@ -366,10 +342,10 @@ Namespace Ys.QRCode
 
             If KanjiEncoder.IsInSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
+            End If
 
-            ElseIf ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
-
             End If
 
             Dim cnt As Integer = 0
@@ -392,26 +368,20 @@ Namespace Ys.QRCode
                 Select Case version
                     Case 1 To 9
                         flg = cnt >= 13
-
                     Case 10 To 26
                         flg = cnt >= 15
-
                     Case 27 To 40
                         flg = cnt >= 17
-
                     Case Else
                         Throw New InvalidOperationException
-
                 End Select
 
                 If flg Then
                     Return EncodingMode.NUMERIC
                 End If
-
             End If
 
             Return EncodingMode.ALPHA_NUMERIC
-
         End Function
     
         ''' <summary>
@@ -437,38 +407,29 @@ Namespace Ys.QRCode
 
                 If NumericEncoder.IsInSubset(s(i)) Then
                     cnt += 1
-
                 ElseIf ByteEncoder.IsInExclusiveSubset(s(i)) Then
                     flg = True
                     Exit For
-
                 Else
                     Exit For
-
                 End If
-
             Next
 
             If flg Then
                 Select Case version
                     Case 1 To 9
                         flg = cnt >= 6
-
                     Case 10 To 26
                         flg = cnt >= 8
-
                     Case 27 To 40
                         flg = cnt >= 9
-
                     Case Else
                         Throw New InvalidOperationException()
-
                 End Select
 
                 If flg Then
                     Return EncodingMode.NUMERIC
                 End If
-
             End If
 
             cnt = 0
@@ -485,38 +446,29 @@ Namespace Ys.QRCode
                 ElseIf ByteEncoder.IsInExclusiveSubset(s(i)) Then
                     flg = True
                     Exit For
-
                 Else
                     Exit For
-
                 End If
-
             Next
 
             If flg Then
                 Select Case version
                     Case 1 To 9
                         flg = cnt >= 11
-
                     Case 10 To 26
                         flg = cnt >= 15
-
                     Case 27 To 40
                         flg = cnt >= 16
-
                     Case Else
                         Throw New InvalidOperationException()
-
                 End Select
 
                 If flg Then
                     Return EncodingMode.ALPHA_NUMERIC
                 End If
-
             End If
 
             Return EncodingMode.EIGHT_BIT_BYTE
-
         End Function
     
         ''' <summary>
@@ -524,13 +476,11 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="c">パリティ計算対象の文字</param>
         Friend Sub UpdateParity(c As Char)
-
             Dim charBytes As Byte() = _byteModeEncoding.GetBytes(c.ToString())
 
             For i As Integer = 0 To UBound(charBytes)
                 _structuredAppendParity = _structuredAppendParity Xor charBytes(i)
             Next
-
         End Sub
 
 #Region "IEnumerable<Symbols.Symbol> Implementation"
@@ -538,14 +488,12 @@ Namespace Ys.QRCode
             Implements IEnumerable(Of Symbol).GetEnumerator
 
             Return _items.GetEnumerator()
-
         End Function
         
         Private Function IEnumerable_GetEnumerator() As IEnumerator _
             Implements IEnumerable.GetEnumerator
 
             Return GetEnumerator()
-
         End Function
 #End Region
 

@@ -43,7 +43,6 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-
             Debug.Assert(IsInSubset(c))
 
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
@@ -68,25 +67,21 @@ Namespace Ys.QRCode.Encoder
             _bitCounter += 13
 
             Return 13
-
         End Function
 
         ''' <summary>
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-
             Debug.Assert(IsInSubset(c))
 
             Return 13
-
         End Function
 
         ''' <summary>
         ''' エンコードされたデータのバイト配列を返します。
         ''' </summary>
         Public Overrides Function GetBytes() As Byte()
-
             Dim bs = New BitSequence()
 
             For i As Integer = 0 To _codeWords.Count - 1
@@ -94,14 +89,12 @@ Namespace Ys.QRCode.Encoder
             Next
 
             Return bs.GetBytes()
-
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function IsInSubset(c As Char) As Boolean
-            
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
 
             If charBytes.Length <> 2 Then
@@ -110,23 +103,22 @@ Namespace Ys.QRCode.Encoder
 
             Dim code As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
 
-            If code >= &H8140 AndAlso code <= &H9FFC OrElse code >= &HE040 AndAlso code <= &HEBBF Then
+            If code >= &H8140 AndAlso code <= &H9FFC OrElse 
+               code >= &HE040 AndAlso code <= &HEBBF Then
+
                 Return charBytes(1) >= &H40 AndAlso
                        charBytes(1) <= &HFC AndAlso
                        charBytes(1) <> &H7F
             Else
                 Return False
             End If
-
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function IsInExclusiveSubset(c As Char) As Boolean
-
             Return IsInSubset(c)
-
         End Function
         
     End Class

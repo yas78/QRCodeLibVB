@@ -13,7 +13,6 @@ Namespace Ys.QRCode
         ''' クワイエットゾーンを追加します。
         ''' </summary>
         Public Function Place(moduleMatrix As Integer()()) As Integer()()
-
             Dim ret As Integer()() = New Integer(UBound(moduleMatrix) + QUIET_ZONE_WIDTH * 2)() {}
 
             For i As Integer = 0 To UBound(ret)
@@ -25,7 +24,6 @@ Namespace Ys.QRCode
             Next
 
             Return ret
-
         End Function
 
     End Module

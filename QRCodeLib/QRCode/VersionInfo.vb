@@ -14,7 +14,6 @@ Namespace Ys.QRCode
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="version">型番</param>
         Public Sub Place(moduleMatrix As Integer()(), version As Integer)
-
             Debug.Assert(version >= 7 AndAlso version <= 40)
 
             Dim numModulesPerSide As Integer = moduleMatrix.Length
@@ -37,14 +36,12 @@ Namespace Ys.QRCode
                     p2 = numModulesPerSide - 11
                 End If
             Next
-
         End Sub
         
         ''' <summary>
         ''' 型番情報の予約領域を配置します｡
         ''' </summary>
         Public Sub PlaceTempBlank(moduleMatrix As Integer()())
-
             Dim numModulesPerSide As Integer = moduleMatrix.Length
 
             For i As Integer = 0 To 5
@@ -53,7 +50,6 @@ Namespace Ys.QRCode
                     moduleMatrix(j)(i) = -3
                 Next
             Next
-
         End Sub
 
         ' 型番情報

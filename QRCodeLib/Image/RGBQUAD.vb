@@ -18,9 +18,7 @@ Namespace Ys.Image
         ''' この構造体のバイト配列を返します。
         ''' </summary>
         Public Function GetBytes() As Byte()
-
             Return New Byte() {rgbBlue, rgbGreen, rgbRed, rgbReserved}
-
         End Function
 
     End Structure

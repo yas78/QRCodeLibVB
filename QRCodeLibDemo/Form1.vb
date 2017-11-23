@@ -31,11 +31,9 @@ Public Class Form1
 
         Try
             symbols.AppendString(txtData.Text)
-
         Catch ex As Exception
             MessageBox.Show(ex.Message)
             Return
-
         End Try
 
         For Each symbol As Symbol In symbols
@@ -49,11 +47,9 @@ Public Class Form1
         Next
 
         btnSave.Enabled = txtData.TextLength > 0
-
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-
         Dim baseName As String
         Dim isMonochrome As Boolean
 
@@ -78,11 +74,9 @@ Public Class Form1
 
         Try
             symbols.AppendString(txtData.Text)
-
         Catch ex As Exception
             MessageBox.Show(ex.Message)
             Return
-
         End Try
 
         For i As Integer = 0 To symbols.Count - 1
@@ -99,13 +93,10 @@ Public Class Form1
             Else
                 symbols(i).Save24bppDIB(filename, CInt(nudModuleSize.Value))
             End If
-            
         Next
-
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         For i As Integer = 1 To 40
             cmbMaxVersion.Items.Add(i)
         Next
@@ -124,6 +115,6 @@ Public Class Form1
         nudModuleSize.Value = 5
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False
-
     End Sub
+
 End Class

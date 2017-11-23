@@ -11,7 +11,6 @@ Namespace Ys.QRCode
         ''' 位置検出パターンを配置します。
         ''' </summary>
         Public Sub Place(moduleMatrix As Integer()())
-
             Dim offset As Integer = moduleMatrix.Length - _finderPattern.Length
 
             For i As Integer = 0 To UBound(_finderPattern)
@@ -24,7 +23,6 @@ Namespace Ys.QRCode
 
                 Next
             Next
-
         End Sub
 
         ' 位置検出パターン

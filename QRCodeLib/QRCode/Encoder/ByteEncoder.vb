@@ -14,9 +14,7 @@ Namespace Ys.QRCode.Encoder
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
-
             MyClass.New(Encoding.GetEncoding("shift_jis"))
-
         End Sub
 
         ''' <summary>
@@ -24,9 +22,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <param name="encoding">文字エンコーディング</param>
         Public Sub New(encoding As Encoding)
-
             _textEncoding = encoding
-
         End Sub
         
         Private ReadOnly _textEncoding As Encoding
@@ -54,7 +50,6 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
             Dim ret       As Integer = 0
 
@@ -66,25 +61,21 @@ Namespace Ys.QRCode.Encoder
             Next
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-            
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
 
             Return charBytes.Length * 8
-
         End Function
 
         ''' <summary>
         ''' エンコードされたデータのバイト配列を返します。
         ''' </summary>
         Public Overrides Function GetBytes() As Byte()
-
             Dim ret As Byte() = New Byte(_charCounter - 1) {}
 
             For i As Integer = 0 To _codeWords.Count - 1
@@ -92,23 +83,19 @@ Namespace Ys.QRCode.Encoder
             Next
 
             Return ret
-
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function IsInSubset(c As Char) As Boolean
-
             Return True
-
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function IsInExclusiveSubset(c As Char) As Boolean
-
             If AlphanumericEncoder.IsInSubset(c) Then
                 Return False
             End If
@@ -122,7 +109,6 @@ Namespace Ys.QRCode.Encoder
             End If
 
             Return False
-            
         End Function
         
     End Class

@@ -14,7 +14,6 @@ Namespace Ys.QRCode
         ''' マスクパターン失点の合計を返します。
         ''' </summary>
         Public Function CalcTotal(moduleMatrix As Integer()()) As Integer
-
             Dim total   As Integer = 0
             Dim penalty As Integer = 0
             
@@ -31,28 +30,24 @@ Namespace Ys.QRCode
             total += penalty
 
             Return total
-
         End Function
 
         ''' <summary>
         ''' 行／列の同色隣接モジュールパターンの失点を計算します。
         ''' </summary>
         Private Function CalcAdjacentModulesInSameColor(moduleMatrix As Integer()()) As Integer
-
             Dim penalty As Integer = 0
 
             penalty += CalcAdjacentModulesInRowInSameColor(moduleMatrix)
             penalty += CalcAdjacentModulesInRowInSameColor(moduleMatrix.Rotate90())
 
             Return penalty
-
         End Function
 
         ''' <summary>
         ''' 行の同色隣接モジュールパターンの失点を計算します。
         ''' </summary>
         Private Function CalcAdjacentModulesInRowInSameColor(moduleMatrix As Integer()()) As Integer
-
             Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix)
@@ -74,18 +69,15 @@ Namespace Ys.QRCode
                 If cnt >= 5 Then
                     penalty += 3 + (cnt - 5)
                 End If
-
             Next
 
             Return penalty
-
         End Function
 
         ''' <summary>
         ''' 2x2の同色モジュールパターンの失点を計算します。
         ''' </summary>
         Private Function CalcBlockOfModulesInSameColor(moduleMatrix As Integer()()) As Integer
-
             Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix) - 1
@@ -100,19 +92,16 @@ Namespace Ys.QRCode
                     If isSameColor Then
                         penalty += 3
                     End If
-
                 Next
             Next
 
             Return penalty
-
         End Function
         
         ''' <summary>
         ''' 行／列における1 : 1 : 3 : 1 : 1 比率パターンの失点を計算します。
         ''' </summary>
         Private Function CalcModuleRatio(moduleMatrix As Integer()()) As Integer
-
             Dim moduleMatrixTemp As Integer()() = QuietZone.Place(moduleMatrix)
 
             Dim penalty As Integer = 0
@@ -121,14 +110,12 @@ Namespace Ys.QRCode
             penalty += CalcModuleRatioInRow(moduleMatrixTemp.Rotate90())
             
             Return penalty
-
         End Function
 
         ''' <summary>
         ''' 行の1 : 1 : 3 : 1 : 1 比率パターンの失点を計算します。
         ''' </summary>
         Private Function CalcModuleRatioInRow(moduleMatrix As Integer()()) As Integer
-
             Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix)
@@ -185,19 +172,16 @@ Namespace Ys.QRCode
                     If moduleRatio.PenaltyImposed() Then
                         penalty += 40
                     End If
-
                 Next
             Next
 
             Return penalty
-
         End Function
         
         ''' <summary>
         ''' 全体に対する暗モジュールの占める割合について失点を計算します。
         ''' </summary>
         Private Function CalcProportionOfDarkModules(moduleMatrix As Integer()()) As Integer
-
             Dim darkCount As Integer
 
             For r As Integer = 0 To UBound(moduleMatrix)
@@ -217,7 +201,6 @@ Namespace Ys.QRCode
             temp = (temp + 4) \ 5
 
             Return temp * 10
-
         End Function
         
     End Module

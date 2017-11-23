@@ -20,64 +20,47 @@ Namespace Ys.QRCode.Format
                     Select Case encoding
                         Case EncodingMode.NUMERIC
                             Return 10
-
                         Case EncodingMode.ALPHA_NUMERIC
                             Return 9
-
                         Case EncodingMode.EIGHT_BIT_BYTE
                             Return 8
-
                         Case EncodingMode.KANJI
                             Return 8
-
                         Case Else
                             Throw New ArgumentOutOfRangeException(NameOf(encoding))
-
                     End Select
 
                 Case 10 To 26
                     Select Case encoding
                         Case EncodingMode.NUMERIC
                             Return 12
-
                         Case EncodingMode.ALPHA_NUMERIC
                             Return 11
-
                         Case EncodingMode.EIGHT_BIT_BYTE
                             Return 16
-
                         Case EncodingMode.KANJI
                             Return 10
-
                         Case Else
                             Throw New ArgumentOutOfRangeException(NameOf(encoding))
-
                     End Select
 
                 Case 27 To 40
                     Select Case encoding
                         Case EncodingMode.NUMERIC
                             Return 14
-
                         Case EncodingMode.ALPHA_NUMERIC
                             Return 13
-
                         Case EncodingMode.EIGHT_BIT_BYTE
                             Return 16
-
                         Case EncodingMode.KANJI
                             Return 12
-
                         Case Else
                             Throw New ArgumentOutOfRangeException(NameOf(encoding))
-
                     End Select
 
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(version))
-
             End Select
-
         End Function
 
     End Module

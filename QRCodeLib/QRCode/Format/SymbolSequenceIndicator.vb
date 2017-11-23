@@ -9,10 +9,9 @@ Namespace Ys.QRCode.Format
 
         ' シンボル位置のビット数
         Public Const POSITION_LENGTH As Integer = 4
-
         ' シンボル数のビット数
         Public Const TOTAL_NUMBER_LENGTH As Integer = 4
-        
+
     End Module
 
 End Namespace

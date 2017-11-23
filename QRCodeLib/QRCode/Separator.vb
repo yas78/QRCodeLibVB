@@ -11,7 +11,6 @@ Namespace Ys.QRCode
         ''' 分離パターンを配置します。
         ''' </summary>
         Public Sub Place(moduleMatrix As Integer()())
-
             Dim offset As Integer = UBound(moduleMatrix) - 7
 
             For i As Integer = 0 To 7
@@ -24,7 +23,6 @@ Namespace Ys.QRCode
                 moduleMatrix(i)(offset + 0) = -2
                 moduleMatrix(7)(offset + i) = -2
             Next
-
         End Sub
 
     End Module

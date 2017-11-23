@@ -35,7 +35,6 @@ Namespace Ys.Util
         ''' <param name="data">追加するデータ</param>
         ''' <param name="length">データのビット数</param>
         Public Sub Append(data As Integer, length As Integer)
-
             Debug.Assert(data >= 0)
             Debug.Assert(length >= 0)
             
@@ -52,15 +51,12 @@ Namespace Ys.Util
 
                 If _space < remainingLength Then
                     temp = CByte(temp Or remainingData >> (remainingLength - _space))
-
                     remainingData = remainingData And ((1 << (remainingLength - _space)) - 1)
-
                     _bitCounter += _space
                     remainingLength -= _space
                     _space = 0
                 Else
                     temp = CByte(temp Or remainingData << (_space - remainingLength))
-
                     _bitCounter += remainingLength
                     _space -= remainingLength
                     remainingLength = 0
@@ -68,16 +64,13 @@ Namespace Ys.Util
 
                 _buffer(_buffer.Count - 1) = temp
             Loop
-
         End Sub
 
         ''' <summary>
         ''' データのバイト配列を返します。
         ''' </summary>
         Public Function GetBytes() As Byte()
-
             Return _buffer.ToArray()
-
         End Function
         
     End Class

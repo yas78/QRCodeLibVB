@@ -19,7 +19,6 @@ Namespace Ys.Image
         ''' この構造体のバイト配列を返します。
         ''' </summary>
         Public Function GetBytes() As Byte()
-
             Dim ret As Byte() = New Byte(14 - 1) {}
 
             Buffer.BlockCopy(BitConverter.GetBytes(bfType),      0, ret,  0, 2)
@@ -29,7 +28,6 @@ Namespace Ys.Image
             Buffer.BlockCopy(BitConverter.GetBytes(bfOffBits),   0, ret, 10, 4)
 
             Return ret
-
         End Function
 
     End Structure

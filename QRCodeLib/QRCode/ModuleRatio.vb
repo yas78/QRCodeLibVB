@@ -13,7 +13,6 @@ Namespace Ys.QRCode
         Public FolLightRatio4   As Integer = 0
 
         Public Function PenaltyImposed() As Boolean
-
             If PreDarkRatio1 = 0 Then
                 Return False
             End If
@@ -22,13 +21,11 @@ Namespace Ys.QRCode
                PreDarkRatio1     = FolLightRatio1   AndAlso
                PreDarkRatio1     = FolDarkRatio1    AndAlso
                PreDarkRatio1 * 3 = CenterDarkRatio3 Then
-
                 Return PreLightRatio4 >= PreDarkRatio1 * 4 OrElse
                        FolLightRatio4 >= PreDarkRatio1 * 4
             Else
                 Return False
             End If
-
         End Function
 
     End Class

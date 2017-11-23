@@ -21,13 +21,13 @@ Namespace Ys.QRCode
                               version As Integer,
                               ecLevel As ErrorCorrectionLevel) As Integer
 
-            Debug.Assert(version >= Constants.MIN_VERSION AndAlso version <= Constants.MAX_VERSION)
+            Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
+                         version <= Constants.MAX_VERSION)
 
             Dim maskPatternReference As Integer = SelectMaskPattern(moduleMatrix, version, ecLevel)
             Mask(moduleMatrix, maskPatternReference)
 
             Return maskPatternReference
-
         End Function
 
         ''' <summary>
@@ -41,10 +41,10 @@ Namespace Ys.QRCode
                                            version As Integer,
                                            ecLevel As ErrorCorrectionLevel) As Integer
 
-            Debug.Assert(version >= Constants.MIN_VERSION AndAlso version <= Constants.MAX_VERSION)
+            Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
+                         version <= Constants.MAX_VERSION)
 
             Dim minPenalty As Integer = Int32.MaxValue
-
             Dim ret As Integer = 0
 
             For maskPatternReference As Integer = 0 To 7
@@ -67,7 +67,6 @@ Namespace Ys.QRCode
             Next
 
             Return ret
-
         End Function
 
         ''' <summary>
@@ -76,7 +75,6 @@ Namespace Ys.QRCode
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
         Private Sub Mask(moduleMatrix As Integer()(), maskPatternReference As Integer)
-
             Debug.Assert(maskPatternReference >= 0 AndAlso 
                          maskPatternReference <= 7)
 
@@ -91,7 +89,6 @@ Namespace Ys.QRCode
                     End If
                 Next
             Next
-
         End Sub
         
         ''' <summary>
@@ -99,37 +96,26 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
         Private Function GetCondition(maskPatternReference As Integer) As Func(Of Integer, Integer, Boolean)
-
             Select Case maskPatternReference
                 Case 0
                     Return Function(r, c) (r + c) Mod 2 = 0
-
                 Case 1
                     Return Function(r, c) r Mod 2 = 0
-
                 Case 2
                     Return Function(r, c) c Mod 3 = 0
-
                 Case 3
                     Return Function(r, c) (r + c) Mod 3 = 0
-
                 Case 4
                     Return Function(r, c) ((r \ 2) + (c \ 3)) Mod 2 = 0
-
                 Case 5
                     Return Function(r, c) ((r * c) Mod 2 + (r * c) Mod 3) = 0
-
                 Case 6
                     Return Function(r, c) ((r * c) Mod 2 + (r * c) Mod 3) Mod 2 = 0
-
                 Case 7
                     Return Function(r, c) ((r + c) Mod 2 + (r * c) Mod 3) Mod 2 = 0
-
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(maskPatternReference))
-
             End Select
-
         End Function
         
     End Module
