@@ -18,7 +18,10 @@ Namespace Ys.QRCode
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
-            MyClass.New(Constants.MAX_VERSION, ErrorCorrectionLevel.M, False, Encoding.GetEncoding("shift_jis"))
+            MyClass.New(Constants.MAX_VERSION, 
+                        ErrorCorrectionLevel.M, 
+                        False, 
+                        Encoding.GetEncoding("shift_jis"))
         End Sub
 
         ''' <summary>
@@ -206,7 +209,9 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
-        Private Function SelectInitialMode(s As String, startIndex As Integer) As EncodingMode
+        Private Function SelectInitialMode(
+            s As String, startIndex As Integer) As EncodingMode
+
             Dim version As Integer = _currSymbol.Version
 
             If KanjiEncoder.IsInSubset(s(startIndex)) Then
@@ -315,7 +320,9 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
-        Private Function SelectModeWhileInNumericMode(s As String, startIndex As Integer) As EncodingMode
+        Private Function SelectModeWhileInNumericMode(
+            s As String, startIndex As Integer) As EncodingMode
+
             If KanjiEncoder.IsInSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
             End If
@@ -336,7 +343,8 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
-        Private Function SelectModeWhileInAlphanumericMode(s As String, startIndex As Integer) As EncodingMode
+        Private Function SelectModeWhileInAlphanumericMode(
+            s As String, startIndex As Integer) As EncodingMode
 
             Dim version As Integer = _currSymbol.Version
 
@@ -389,7 +397,8 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="startIndex">評価を開始する位置</param>
-        Private Function SelectModeWhileInByteMode(s As String, startIndex As Integer) As EncodingMode
+        Private Function SelectModeWhileInByteMode(
+            s As String, startIndex As Integer) As EncodingMode
 
             Dim version As Integer = _currSymbol.Version
 

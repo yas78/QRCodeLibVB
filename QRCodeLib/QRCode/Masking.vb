@@ -24,7 +24,8 @@ Namespace Ys.QRCode
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 
-            Dim maskPatternReference As Integer = SelectMaskPattern(moduleMatrix, version, ecLevel)
+            Dim maskPatternReference As Integer = 
+                    SelectMaskPattern(moduleMatrix, version, ecLevel)
             Mask(moduleMatrix, maskPatternReference)
 
             Return maskPatternReference
@@ -78,7 +79,7 @@ Namespace Ys.QRCode
             Debug.Assert(maskPatternReference >= 0 AndAlso 
                          maskPatternReference <= 7)
 
-            Dim condition As Func(Of Integer, Integer, Boolean) = GetCondition(maskPatternReference)
+            Dim condition = GetCondition(maskPatternReference)
 
             For r As Integer = 0 To UBound(moduleMatrix)
                 For c As Integer = 0 To UBound(moduleMatrix(r))
@@ -95,7 +96,9 @@ Namespace Ys.QRCode
         ''' マスク条件を返します。
         ''' </summary>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
-        Private Function GetCondition(maskPatternReference As Integer) As Func(Of Integer, Integer, Boolean)
+        Private Function GetCondition(
+            maskPatternReference As Integer) As Func(Of Integer, Integer, Boolean)
+
             Select Case maskPatternReference
                 Case 0
                     Return Function(r, c) (r + c) Mod 2 = 0

@@ -14,13 +14,15 @@ Namespace Ys.QRCode.Format
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="version">型番</param>
         ''' <param name="preceding">RSブロック前半部分は True を指定します。</param>
-        Public Function GetTotalNumber(
-            ecLevel As ErrorCorrectionLevel, version As Integer, preceding As Boolean) As Integer
+        Public Function GetTotalNumber(ecLevel As ErrorCorrectionLevel, 
+                                       version As Integer, 
+                                       preceding As Boolean) As Integer
 
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 
-            Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(ecLevel, version)
+            Dim numDataCodewords As Integer = 
+                    DataCodeword.GetTotalNumber(ecLevel, version)
             Dim numRSBlocks      As Integer = _totalNumbers(CInt(ecLevel))(version)
 
             Dim numFolBlocks As Integer = numDataCodewords Mod numRSBlocks
@@ -38,13 +40,15 @@ Namespace Ys.QRCode.Format
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="version">型番</param>
         ''' <param name="preceding">RSブロック前半部分は True を指定します。</param>
-        Public Function GetNumberDataCodewords(
-            ecLevel As ErrorCorrectionLevel, version As Integer, preceding As Boolean) As Integer
+        Public Function GetNumberDataCodewords(ecLevel As ErrorCorrectionLevel, 
+                                               version As Integer, 
+                                               preceding As Boolean) As Integer
 
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 
-            Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(ecLevel, version)
+            Dim numDataCodewords As Integer = 
+                    DataCodeword.GetTotalNumber(ecLevel, version)
             Dim numRSBlocks As Integer = _totalNumbers(CInt(ecLevel))(version)
 
             Dim numPreBlockCodewords As Integer = numDataCodewords \ numRSBlocks
@@ -56,7 +60,8 @@ Namespace Ys.QRCode.Format
                 Dim numFolBlocks As Integer = GetTotalNumber(ecLevel, version, False)
 
                 If numFolBlocks > 0 Then
-                    Return (numDataCodewords - numPreBlockCodewords * numPreBlocks) \ numFolBlocks
+                    Return (numDataCodewords - numPreBlockCodewords * numPreBlocks) \ 
+                           numFolBlocks
                 Else
                     Return 0
                 End If
@@ -68,13 +73,14 @@ Namespace Ys.QRCode.Format
         ''' </summary>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="version">型番</param>
-        Public Function GetNumberECCodewords(
-            ecLevel As ErrorCorrectionLevel, version As Integer) As Integer
+        Public Function GetNumberECCodewords(ecLevel As ErrorCorrectionLevel, 
+                                             version As Integer) As Integer
 
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 
-            Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(ecLevel, version)
+            Dim numDataCodewords As Integer = 
+                    DataCodeword.GetTotalNumber(ecLevel, version)
             Dim numRSBlocks      As Integer = _totalNumbers(CInt(ecLevel))(version)
 
             Return (Codeword.GetTotalNumber(version) \ numRSBlocks) -

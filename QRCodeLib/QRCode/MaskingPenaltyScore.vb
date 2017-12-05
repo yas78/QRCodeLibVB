@@ -35,7 +35,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 行／列の同色隣接モジュールパターンの失点を計算します。
         ''' </summary>
-        Private Function CalcAdjacentModulesInSameColor(moduleMatrix As Integer()()) As Integer
+        Private Function CalcAdjacentModulesInSameColor(
+            moduleMatrix As Integer()()) As Integer
+
             Dim penalty As Integer = 0
 
             penalty += CalcAdjacentModulesInRowInSameColor(moduleMatrix)
@@ -47,7 +49,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 行の同色隣接モジュールパターンの失点を計算します。
         ''' </summary>
-        Private Function CalcAdjacentModulesInRowInSameColor(moduleMatrix As Integer()()) As Integer
+        Private Function CalcAdjacentModulesInRowInSameColor(
+            moduleMatrix As Integer()()) As Integer
+
             Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix)
@@ -77,7 +81,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 2x2の同色モジュールパターンの失点を計算します。
         ''' </summary>
-        Private Function CalcBlockOfModulesInSameColor(moduleMatrix As Integer()()) As Integer
+        Private Function CalcBlockOfModulesInSameColor(
+            moduleMatrix As Integer()()) As Integer
+
             Dim penalty As Integer = 0
 
             For r As Integer = 0 To UBound(moduleMatrix) - 1
@@ -181,7 +187,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 全体に対する暗モジュールの占める割合について失点を計算します。
         ''' </summary>
-        Private Function CalcProportionOfDarkModules(moduleMatrix As Integer()()) As Integer
+        Private Function CalcProportionOfDarkModules(
+            moduleMatrix As Integer()()) As Integer
+
             Dim darkCount As Integer
 
             For r As Integer = 0 To UBound(moduleMatrix)

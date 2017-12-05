@@ -66,7 +66,9 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定したエンコーディングモードのエンコーダーを返します。
         ''' </summary>
-        Public Shared Function CreateEncoder(encMode As EncodingMode, byteModeEncoding As Encoding) As QRCodeEncoder
+        Public Shared Function CreateEncoder(
+            encMode As EncodingMode, byteModeEncoding As Encoding) As QRCodeEncoder
+
             Select Case encMode
                 Case EncodingMode.NUMERIC
                     Return New NumericEncoder()

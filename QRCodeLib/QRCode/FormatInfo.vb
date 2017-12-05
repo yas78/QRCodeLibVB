@@ -21,7 +21,8 @@ Namespace Ys.QRCode
             Debug.Assert(maskPatternReference >= 0 AndAlso 
                          maskPatternReference <= 7)
 
-            Dim formatInfoValue as Integer = GetFormatInfoValue(ecLevel, maskPatternReference)
+            Dim formatInfoValue as Integer = 
+                    GetFormatInfoValue(ecLevel, maskPatternReference)
 
             Dim r1 As Integer = 0
             Dim c1 As Integer = moduleMatrix.Length - 1

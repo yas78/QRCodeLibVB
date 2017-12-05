@@ -117,7 +117,8 @@ Namespace Ys.QRCode
         ''' <param name="c">符号化する最初の文字。この文字はシンボルに追加されません。</param>
         ''' <returns>シンボル容量が不足している場合は False を返します。</returns>
         Friend Function TrySetEncodingMode(encMode As EncodingMode, c As Char) As Boolean
-            Dim encoder As QRCodeEncoder = QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
+            Dim encoder As QRCodeEncoder = 
+                QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
             Dim bitLength As Integer = encoder.GetCodewordBitLength(c)
 
             Do While _dataBitCapacity < _dataBitCounter +
@@ -149,8 +150,9 @@ Namespace Ys.QRCode
             For Each encMode As EncodingMode In _segmentCounter.Keys
                 Dim num As Integer = _segmentCounter(encMode)
 
-                _dataBitCounter += num * CharCountIndicator.GetLength(_currVersion + 1, encMode) -
-                                   num * CharCountIndicator.GetLength(_currVersion + 0, encMode)
+                _dataBitCounter += 
+                    num * CharCountIndicator.GetLength(_currVersion + 1, encMode) -
+                    num * CharCountIndicator.GetLength(_currVersion + 0, encMode)
             Next
 
             _currVersion += 1
@@ -229,7 +231,8 @@ Namespace Ys.QRCode
             Dim gp As Integer() = GeneratorPolynomials.Item(numECCodewords)
 
             For blockIndex As Integer = 0 To UBound(dataBlock)
-                Dim data As Integer() = New Integer(UBound(dataBlock(blockIndex)) + UBound(ret(blockIndex)) + 1) {}
+                Dim data As Integer() = New Integer(
+                        UBound(dataBlock(blockIndex)) + UBound(ret(blockIndex)) + 1) {}
                 Dim eccIndex As Integer = UBound(data) 
 
                 For i As Integer = 0 To UBound(dataBlock(blockIndex))
@@ -243,7 +246,8 @@ Namespace Ys.QRCode
                         eccIndex = i
 
                         For j As Integer = UBound(gp) To 0 Step -1
-                            data(eccIndex) = data(eccIndex) Xor GaloisField256.ToInt((gp(j) + exp) Mod 255)
+                            data(eccIndex) = data(eccIndex) Xor 
+                                             GaloisField256.ToInt((gp(j) + exp) Mod 255)
                             eccIndex -= 1
                         Next
                     End If
@@ -335,7 +339,9 @@ Namespace Ys.QRCode
             For Each segment As QRCodeEncoder In _segments
                 bs.Append(segment.ModeIndicator, ModeIndicator.LENGTH)
                 bs.Append(segment.CharCount,
-                          CharCountIndicator.GetLength(_currVersion, segment.EncodingMode))
+                          CharCountIndicator.GetLength(_currVersion, 
+                                                       segment.EncodingMode)
+                )
 
                 Dim data As Byte() = segment.GetBytes()
 
@@ -349,7 +355,8 @@ Namespace Ys.QRCode
                     codewordBitLength = 8
                 End If
 
-                bs.Append(data(UBound(data)) >> (8 - codewordBitLength), codewordBitLength)
+                bs.Append(data(UBound(data)) >> (8 - codewordBitLength), 
+                          codewordBitLength)
             Next
         End Sub
 
@@ -414,7 +421,8 @@ Namespace Ys.QRCode
             Dim maskPatternReference As Integer = Masking.Apply(
                     moduleMatrix, _currVersion, _parent.ErrorCorrectionLevel)
 
-            FormatInfo.Place(moduleMatrix, _parent.ErrorCorrectionLevel, maskPatternReference)
+            FormatInfo.Place(
+                moduleMatrix, _parent.ErrorCorrectionLevel, maskPatternReference)
 
             If _currVersion >= 7 Then
                 VersionInfo.Place(moduleMatrix, _currVersion)
@@ -499,20 +507,30 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Function Get1bppDIB(moduleSize As Integer, foreColor As Color, backColor As Color) As Byte()
+        Public Function Get1bppDIB(moduleSize As Integer, 
+                                   foreColor As Color, 
+                                   backColor As Color) As Byte()
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
             
             Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
 
-            Dim width  As Integer = moduleMatrix.Length * moduleSize
+            Dim width  As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
             Dim hByteLen As Integer = (width + 7) \ 8
 
-            Dim pack8bit  As Integer = If(width Mod 8 = 0, 0, 8 - (width Mod 8))
-            Dim pack32bit As Integer = If(hByteLen Mod 4 = 0, 0, (4 - (hByteLen Mod 4)) * 8)
+            Dim pack8bit As Integer = 0
+            If width Mod 8 > 0 Then
+                pack8bit = 8 - (width Mod 8)
+            End If
+
+            Dim pack32bit As Integer = 0
+            If hByteLen Mod 4 > 0 Then
+                pack32bit = (4 - (hByteLen Mod 4)) * 8
+            End If
 
             Dim bs = New BitSequence()
 
@@ -621,19 +639,25 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Function Get24bppDIB(moduleSize As Integer, foreColor As Color, backColor As Color) As Byte()
+        Public Function Get24bppDIB(moduleSize As Integer, 
+                                    foreColor As Color, 
+                                    backColor As Color) As Byte()
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
             
             Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
 
-            Dim width  As Integer = moduleMatrix.Length * moduleSize
+            Dim width  As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
             Dim hByteLen As Integer = width * 3
 
-            Dim pack4byte As Integer = If(hByteLen Mod 4 = 0, 0, 4 - (hByteLen Mod 4))
+            Dim pack4byte As Integer = 0
+            If hByteLen Mod 4 > 0 Then
+                pack4byte = 4 - (hByteLen Mod 4)
+            End If
 
             Dim dataBlock() As Byte
             ReDim dataBlock((hByteLen + pack4byte) * (height * 3) - 1)
@@ -723,7 +747,10 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Function Get1bppImage(moduleSize As Integer, foreColor As Color, backColor As Color) As System.Drawing.Image
+        Public Function Get1bppImage(moduleSize As Integer, 
+                                     foreColor As Color, 
+                                     backColor As Color) As System.Drawing.Image
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -762,7 +789,10 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Function Get24bppImage(moduleSize As Integer, foreColor As Color, backColor As Color) As System.Drawing.Image
+        Public Function Get24bppImage(moduleSize As Integer, 
+                                      foreColor As Color, 
+                                      backColor As Color) As System.Drawing.Image
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -812,7 +842,11 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Sub Save1bppDIB(fileName As String, moduleSize As Integer, foreColor As Color, backColor As Color)
+        Public Sub Save1bppDIB(fileName As String, 
+                               moduleSize As Integer, 
+                               foreColor As Color, 
+                               backColor As Color)
+
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -861,7 +895,11 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreColor">前景色</param>
         ''' <param name="backColor">背景色</param>
-        Public Sub Save24bppDIB(fileName As String, moduleSize As Integer, foreColor As Color, backColor As Color)
+        Public Sub Save24bppDIB(fileName As String, 
+                                moduleSize As Integer, 
+                                foreColor As Color, 
+                                backColor As Color)
+
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
