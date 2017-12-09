@@ -104,11 +104,7 @@ Namespace Ys.QRCode.Encoder
                 Return False
             End If
 
-            If IsInSubset(c) Then
-                Return True
-            End If
-
-            Return False
+            Return IsInSubset(c)
         End Function
         
     End Class
