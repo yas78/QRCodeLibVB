@@ -310,9 +310,9 @@ Namespace Ys.QRCode
                 Else
                     Return EncodingMode.NUMERIC
                 End If
-            Else
-                Throw New InvalidOperationException()
             End If
+
+            Throw New InvalidOperationException()
         End Function
 
         ''' <summary>
@@ -451,7 +451,6 @@ Namespace Ys.QRCode
 
                 If AlphanumericEncoder.IsInExclusiveSubset(s(i)) Then
                     cnt += 1
-
                 ElseIf ByteEncoder.IsInExclusiveSubset(s(i)) Then
                     flg = True
                     Exit For
@@ -487,8 +486,8 @@ Namespace Ys.QRCode
         Friend Sub UpdateParity(c As Char)
             Dim charBytes As Byte() = _byteModeEncoding.GetBytes(c.ToString())
 
-            For i As Integer = 0 To UBound(charBytes)
-                _structuredAppendParity = _structuredAppendParity Xor charBytes(i)
+            For Each value As Byte In charBytes
+                _structuredAppendParity = _structuredAppendParity Xor value
             Next
         End Sub
 

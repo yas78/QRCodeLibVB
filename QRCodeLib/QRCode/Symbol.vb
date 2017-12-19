@@ -29,8 +29,8 @@ Namespace Ys.QRCode
             _currEncodingMode = EncodingMode.UNKNOWN
             _currVersion      = parent.MinVersion
 
-            _dataBitCapacity = DataCodeword.GetTotalNumber(
-                parent.ErrorCorrectionLevel, parent.MinVersion) * 8
+            _dataBitCapacity = 8 * DataCodeword.GetTotalNumber(
+                parent.ErrorCorrectionLevel, parent.MinVersion)
             _dataBitCounter  = 0
 
             _segments = New List(Of QRCodeEncoder)()
@@ -156,8 +156,8 @@ Namespace Ys.QRCode
             Next
 
             _currVersion += 1
-            _dataBitCapacity = DataCodeword.GetTotalNumber(
-                _parent.ErrorCorrectionLevel, _currVersion) * 8
+            _dataBitCapacity = 8 * DataCodeword.GetTotalNumber(
+                _parent.ErrorCorrectionLevel, _currVersion)
             _parent.MinVersion = _currVersion
 
             If _parent.StructuredAppendAllowed Then
@@ -173,16 +173,14 @@ Namespace Ys.QRCode
 
             Dim numPreBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
-
             Dim numFolBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, False)
 
             Dim ret As Byte()() = New Byte(numPreBlocks + numFolBlocks - 1)() {}
-
-            Dim index As Integer = 0
-
+            
             Dim numPreBlockDataCodewords As Integer = RSBlock.GetNumberDataCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
+            Dim index As Integer = 0
 
             For i As Integer = 0 To numPreBlocks - 1
                 Dim data As Byte() = New Byte(numPreBlockDataCodewords - 1) {}
@@ -215,10 +213,8 @@ Namespace Ys.QRCode
         Private Function BuildErrorCorrectionBlock(dataBlock()() As Byte) As Byte()()
             Dim numECCodewords As Integer = RSBlock.GetNumberECCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion)
-
             Dim numPreBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
-
             Dim numFolBlocks As Integer = RSBlock.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion, False)
 
@@ -382,7 +378,7 @@ Namespace Ys.QRCode
 
             Dim flag As Boolean = True
 
-            Do While bs.Length < numDataCodewords * 8
+            Do While bs.Length < 8 * numDataCodewords
                 bs.Append(If(flag, 236, 17), 8)
                 flag = Not flag
             Loop
@@ -529,7 +525,7 @@ Namespace Ys.QRCode
 
             Dim pack32bit As Integer = 0
             If hByteLen Mod 4 > 0 Then
-                pack32bit = (4 - (hByteLen Mod 4)) * 8
+                pack32bit = 8 * (4 - (hByteLen Mod 4))
             End If
 
             Dim bs = New BitSequence()
@@ -652,7 +648,7 @@ Namespace Ys.QRCode
             Dim width  As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
-            Dim hByteLen As Integer = width * 3
+            Dim hByteLen As Integer = 3 * width
 
             Dim pack4byte As Integer = 0
             If hByteLen Mod 4 > 0 Then
@@ -660,7 +656,7 @@ Namespace Ys.QRCode
             End If
 
             Dim dataBlock() As Byte
-            ReDim dataBlock((hByteLen + pack4byte) * (height * 3) - 1)
+            ReDim dataBlock((hByteLen + pack4byte) * (3 * height) - 1)
 
             Dim idx As Integer = 0
 

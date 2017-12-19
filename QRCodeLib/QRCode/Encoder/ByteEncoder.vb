@@ -69,7 +69,7 @@ Namespace Ys.QRCode.Encoder
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
 
-            Return charBytes.Length * 8
+            Return 8 * charBytes.Length
         End Function
 
         ''' <summary>
