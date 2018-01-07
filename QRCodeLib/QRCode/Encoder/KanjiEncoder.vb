@@ -2,7 +2,7 @@
 Imports System.Diagnostics
 Imports System.Text
 
-Imports Ys.Util
+Imports Ys.Misc
 
 Namespace Ys.QRCode.Encoder
 
@@ -12,13 +12,13 @@ Namespace Ys.QRCode.Encoder
     Friend Class KanjiEncoder
         Inherits QRCodeEncoder
         
+        Private Shared ReadOnly _textEncoding As Encoding = Encoding.GetEncoding("shift_jis")
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
         End Sub
-
-        Private Shared ReadOnly _textEncoding As Encoding = Encoding.GetEncoding("shift_jis")
 
         ''' <summary>
         ''' 符号化モードを取得します。

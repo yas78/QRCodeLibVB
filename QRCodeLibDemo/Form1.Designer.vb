@@ -123,7 +123,7 @@ Partial Class Form1
         Me.btnSave.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
         Me.btnSave.Location = New System.Drawing.Point(548, 477)
         Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(103, 23)
+        Me.btnSave.Size = New System.Drawing.Size(124, 23)
         Me.btnSave.TabIndex = 10
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = true
@@ -169,7 +169,7 @@ Partial Class Form1
         Me.cmbEncoding.FormattingEnabled = true
         Me.cmbEncoding.Location = New System.Drawing.Point(352, 449)
         Me.cmbEncoding.Name = "cmbEncoding"
-        Me.cmbEncoding.Size = New System.Drawing.Size(299, 20)
+        Me.cmbEncoding.Size = New System.Drawing.Size(320, 20)
         Me.cmbEncoding.TabIndex = 4
         '
         'lblEncoding
@@ -202,7 +202,7 @@ Partial Class Form1
         Me.Controls.Add(Me.txtData)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "QRCode"
+        Me.Text = "QR Code"
         CType(Me.nudModuleSize,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout

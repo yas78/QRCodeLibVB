@@ -7,13 +7,16 @@ Imports Ys.QRCode
 Public Class Form1
 
     Public Sub New()
-
         InitializeComponent()
-
     End Sub
 
     Private Sub UpdateQRCodePanel(sender As Object, e As EventArgs) _
-        Handles txtData.TextChanged, nudModuleSize.ValueChanged, cmbMaxVersion.SelectedIndexChanged, cmbErrorCorrectionLevel.SelectedIndexChanged, chkStructuredAppend.CheckedChanged, cmbEncoding.SelectedIndexChanged
+        Handles txtData.TextChanged, 
+                nudModuleSize.ValueChanged, 
+                cmbMaxVersion.SelectedIndexChanged, 
+                cmbErrorCorrectionLevel.SelectedIndexChanged, 
+                chkStructuredAppend.CheckedChanged, 
+                cmbEncoding.SelectedIndexChanged
 
         btnSave.Enabled = False
         qrcodePanel.Controls.Clear()
@@ -21,13 +24,13 @@ Public Class Form1
         If String.IsNullOrEmpty(txtData.Text) Then
             Return
         End If
-
-        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
+        
         Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
+        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
         Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
 
-        Dim symbols As Symbols = New Symbols(version, ecLevel, allowStructuredAppend, encoding)
+        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
         Try
             symbols.AppendString(txtData.Text)
@@ -64,13 +67,13 @@ Public Class Form1
             baseName = Path.Combine(
                 Path.GetDirectoryName(fd.FileName), Path.GetFileNameWithoutExtension(fd.FileName))
         End Using
-
-        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
+        
         Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
+        Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
         Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
 
-        Dim symbols As Symbols = New Symbols(version, ecLevel, allowStructuredAppend, encoding)
+        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
         Try
             symbols.AppendString(txtData.Text)
@@ -97,15 +100,15 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        cmbErrorCorrectionLevel.DataSource =
+            [Enum].GetValues(GetType(ErrorCorrectionLevel))
+        cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
+
         For i As Integer = 1 To 40
             cmbMaxVersion.Items.Add(i)
         Next
 
         cmbMaxVersion.SelectedIndex = cmbMaxVersion.Items.Count - 1
-        
-        cmbErrorCorrectionLevel.DataSource =
-            [Enum].GetValues(GetType(ErrorCorrectionLevel))
-        cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
 
         cmbEncoding.DisplayMember = "DisplayName"
         cmbEncoding.ValueMember = "Name"

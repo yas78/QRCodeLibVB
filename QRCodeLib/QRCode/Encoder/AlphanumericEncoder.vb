@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Diagnostics
 
-Imports Ys.Util
+Imports Ys.Misc
 
 Namespace Ys.QRCode.Encoder
     

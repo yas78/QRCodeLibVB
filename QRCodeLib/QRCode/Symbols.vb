@@ -14,47 +14,6 @@ Namespace Ys.QRCode
     Public Class Symbols
         Implements IEnumerable(Of Symbol)
 
-        ''' <summary>
-        ''' インスタンスを初期化します。
-        ''' </summary>
-        Public Sub New()
-            MyClass.New(Constants.MAX_VERSION, 
-                        ErrorCorrectionLevel.M, 
-                        False, 
-                        Encoding.GetEncoding("shift_jis"))
-        End Sub
-
-        ''' <summary>
-        ''' インスタンスを初期化します。
-        ''' </summary>
-        ''' <param name="maxVersion">型番の上限</param>
-        ''' <param name="ecLevel">誤り訂正レベル</param>
-        ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
-        ''' <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
-        Public Sub New(maxVersion As Integer,
-                       ecLevel As ErrorCorrectionLevel,
-                       allowStructuredAppend As Boolean,
-                       byteModeEncoding As Encoding)
-            
-            If maxVersion < Constants.MIN_VERSION OrElse 
-               maxVersion > Constants.MAX_VERSION Then
-                Throw New ArgumentOutOfRangeException(NameOf(maxVersion))
-            End If
-
-            _items = New List(Of Symbol)()
-
-            _minVersion                 = 1
-            _maxVersion                 = maxVersion
-            _errorCorrectionLevel       = ecLevel
-            _structuredAppendAllowed    = allowStructuredAppend
-            _byteModeEncoding           = byteModeEncoding
-
-            _structuredAppendParity = 0
-            _currSymbol = New Symbol(Me)
-
-            _items.Add(_currSymbol)
-        End Sub
-
         Private ReadOnly _items As List(Of Symbol)
 
         Private _minVersion As Integer
@@ -66,6 +25,38 @@ Namespace Ys.QRCode
 
         Private _structuredAppendParity As Integer
         Private _currSymbol As Symbol
+
+        ''' <summary>
+        ''' インスタンスを初期化します。
+        ''' </summary>
+        ''' <param name="maxVersion">型番の上限</param>
+        ''' <param name="ecLevel">誤り訂正レベル</param>
+        ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
+        ''' <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
+        Public Sub New(Optional ecLevel As ErrorCorrectionLevel = ErrorCorrectionLevel.M,
+                       Optional maxVersion As Integer = 40,
+                       Optional allowStructuredAppend As Boolean = False,
+                       Optional byteModeEncoding As String = "shift_jis")
+            
+            If maxVersion < Constants.MIN_VERSION OrElse 
+               maxVersion > Constants.MAX_VERSION Then
+                Throw New ArgumentOutOfRangeException(NameOf(maxVersion))
+            End If
+
+            _items = New List(Of Symbol)()
+
+            _minVersion = 1
+
+            _maxVersion                 = maxVersion
+            _errorCorrectionLevel       = ecLevel
+            _structuredAppendAllowed    = allowStructuredAppend
+            _byteModeEncoding           = Encoding.GetEncoding(byteModeEncoding)
+
+            _structuredAppendParity = 0
+            _currSymbol = New Symbol(Me)
+
+            _items.Add(_currSymbol)
+        End Sub
         
         ''' <summary>
         ''' インデックス番号を指定してSymbolオブジェクトを取得します。

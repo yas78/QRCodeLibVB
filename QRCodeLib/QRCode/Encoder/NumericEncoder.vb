@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Diagnostics
 
-Imports Ys.Util
+Imports Ys.Misc
 
 Namespace Ys.QRCode.Encoder
 
@@ -81,7 +81,7 @@ Namespace Ys.QRCode.Encoder
             Dim bitLength As Integer = 10
             
             For i As Integer = 0 To (_codeWords.Count - 1) - 1
-                bs.Append(_codeWords(i), 10)
+                bs.Append(_codeWords(i), bitLength)
             Next
 
             Select Case _charCounter Mod 3

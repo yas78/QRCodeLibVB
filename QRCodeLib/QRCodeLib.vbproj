@@ -60,9 +60,9 @@
     <Import Include="Microsoft.VisualBasic" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Image\BITMAPFILEHEADER.vb" />
-    <Compile Include="Image\BITMAPINFOHEADER.vb" />
-    <Compile Include="Image\RGBQUAD.vb" />
+    <Compile Include="BitmapStructure\BITMAPFILEHEADER.vb" />
+    <Compile Include="BitmapStructure\BITMAPINFOHEADER.vb" />
+    <Compile Include="BitmapStructure\RGBQUAD.vb" />
     <Compile Include="QRCode\AlignmentPattern.vb" />
     <Compile Include="QRCode\Constants.vb" />
     <Compile Include="QRCode\Enums.vb" />
@@ -85,7 +85,7 @@
     <Compile Include="QRCode\RemainderBit.vb" />
     <Compile Include="QRCode\Separator.vb" />
     <Compile Include="QRCode\TimingPattern.vb" />
-    <Compile Include="Util\BitSequence.vb" />
+    <Compile Include="Misc\BitSequence.vb" />
     <Compile Include="QRCode\Encoder\ByteEncoder.vb" />
     <Compile Include="QRCode\GaloisField256.vb" />
     <Compile Include="QRCode\GeneratorPolynomials.vb" />

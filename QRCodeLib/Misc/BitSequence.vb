@@ -2,7 +2,7 @@
 Imports System.Collections.Generic
 Imports System.Diagnostics
 
-Namespace Ys.Util
+Namespace Ys.Misc
 
     ''' <summary>
     ''' ビット列の生成機能を提供します。

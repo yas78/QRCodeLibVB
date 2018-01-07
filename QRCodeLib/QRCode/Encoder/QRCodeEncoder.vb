@@ -9,15 +9,33 @@ Namespace Ys.QRCode.Encoder
     ''' </summary>
     Friend MustInherit Class QRCodeEncoder
         
+        Protected _codeWords    As New List(Of Integer)()
+        Protected _charCounter  As Integer
+        Protected _bitCounter   As Integer
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
         End Sub
 
-        Protected _codeWords    As New List(Of Integer)()
-        Protected _charCounter  As Integer
-        Protected _bitCounter   As Integer
+        ''' <summary>
+        ''' 文字数を取得します。
+        ''' </summary>
+        Public ReadOnly Property CharCount() As Integer
+            Get
+                Return _charCounter
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' データビット数を取得します。
+        ''' </summary>
+        Public ReadOnly Property BitCount() As Integer
+            Get
+                Return _bitCounter
+            End Get
+        End Property
 
         ''' <summary>
         ''' 符号化モードを取得します。
@@ -44,24 +62,6 @@ Namespace Ys.QRCode.Encoder
         ''' エンコードされたデータのバイト配列を返します。
         ''' </summary>
         Public MustOverride Function GetBytes() As Byte()
-
-        ''' <summary>
-        ''' 文字数を取得します。
-        ''' </summary>
-        Public ReadOnly Property CharCount() As Integer
-            Get
-                Return _charCounter
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' データビット数を取得します。
-        ''' </summary>
-        Public ReadOnly Property BitCount() As Integer
-            Get
-                Return _bitCounter
-            End Get
-        End Property
 
         ''' <summary>
         ''' 指定したエンコーディングモードのエンコーダーを返します。

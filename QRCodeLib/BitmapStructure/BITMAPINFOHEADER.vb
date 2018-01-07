@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Runtime.InteropServices
 
-Namespace Ys.Image
+Namespace Ys.BitmapStructure
 
     ''' <summary>
     ''' BITMAPINFOHEADER構造体
