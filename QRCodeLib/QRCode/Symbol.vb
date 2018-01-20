@@ -624,7 +624,7 @@ Namespace Ys.QRCode
             End If
 
             Dim dataBlock As Byte() = New Byte(
-                    (hByteLen + pack4byte) * (3 * height) - 1) {}
+                    (hByteLen + pack4byte) * height - 1) {}
 
             Dim idx As Integer = 0
 
