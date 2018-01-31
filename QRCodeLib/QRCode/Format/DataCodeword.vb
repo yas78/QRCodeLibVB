@@ -13,8 +13,8 @@ Namespace Ys.QRCode.Format
         ''' </summary>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="version">型番</param>
-        Public Function GetTotalNumber(
-          ecLevel As ErrorCorrectionLevel, version As Integer) As Integer
+        Public Function GetTotalNumber(ecLevel As ErrorCorrectionLevel, 
+                                       version As Integer) As Integer
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 

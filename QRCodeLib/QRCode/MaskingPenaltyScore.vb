@@ -28,7 +28,7 @@ Namespace Ys.QRCode
 
             penalty = CalcProportionOfDarkModules(moduleMatrix)
             total += penalty
-
+            
             Return total
         End Function
 
@@ -190,13 +190,11 @@ Namespace Ys.QRCode
         Private Function CalcProportionOfDarkModules(
             moduleMatrix As Integer()()) As Integer
 
-            Dim darkCount As Integer
+            Dim darkCount As Integer = 0
 
-            For r As Integer = 0 To UBound(moduleMatrix)
-                Dim columns As Integer() = moduleMatrix(r)
-
-                For c As Integer = 0 To UBound(columns)
-                    If columns(c) > 0 Then
+            For Each columns As Integer() In moduleMatrix
+                For Each value As Integer In columns
+                    If value > 0 Then
                         darkCount += 1
                     End If
                 Next
