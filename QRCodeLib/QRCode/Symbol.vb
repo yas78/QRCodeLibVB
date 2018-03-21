@@ -230,8 +230,8 @@ Namespace Ys.QRCode
             Dim gp As Integer() = GeneratorPolynomials.Item(numECCodewords)
 
             For blockIndex As Integer = 0 To UBound(dataBlock)
-                Dim data As Integer() = New Integer(
-                        UBound(dataBlock(blockIndex)) + UBound(ret(blockIndex)) + 1) {}
+                Dim size As Integer = UBound(dataBlock(blockIndex)) + UBound(ret(blockIndex)) + 1
+                Dim data As Integer() = New Integer(size) {}
                 Dim eccIndex As Integer = UBound(data) 
 
                 For i As Integer = 0 To UBound(dataBlock(blockIndex))
