@@ -88,23 +88,23 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function IsInSubset(c As Char) As Boolean
+        Public Shared Function InSubset(c As Char) As Boolean
             Return True
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function IsInExclusiveSubset(c As Char) As Boolean
-            If AlphanumericEncoder.IsInSubset(c) Then
+        Public Shared Function InExclusiveSubset(c As Char) As Boolean
+            If AlphanumericEncoder.InSubset(c) Then
                 Return False
             End If
 
-            If KanjiEncoder.IsInSubset(c) Then
+            If KanjiEncoder.InSubset(c) Then
                 Return False
             End If
 
-            Return IsInSubset(c)
+            Return InSubset(c)
         End Function
         
     End Class

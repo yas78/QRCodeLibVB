@@ -205,20 +205,20 @@ Namespace Ys.QRCode
 
             Dim version As Integer = _currSymbol.Version
 
-            If KanjiEncoder.IsInSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
-            If AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If AlphanumericEncoder.InExclusiveSubset(s(startIndex)) Then
                 Dim cnt As Integer = 0
                 Dim flg As Boolean = False
 
                 For i As Integer = startIndex To s.Length - 1
-                    If AlphanumericEncoder.IsInExclusiveSubset(s(i)) Then
+                    If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
                         cnt += 1
                     Else
                         Exit For
@@ -238,7 +238,7 @@ Namespace Ys.QRCode
 
                 If flg Then
                     If (startIndex + cnt) < s.Length Then
-                        If ByteEncoder.IsInExclusiveSubset(s(startIndex + cnt)) Then
+                        If ByteEncoder.InExclusiveSubset(s(startIndex + cnt)) Then
                             Return EncodingMode.EIGHT_BIT_BYTE
                         Else
                             Return EncodingMode.ALPHA_NUMERIC
@@ -251,13 +251,13 @@ Namespace Ys.QRCode
                 End If
             End If
 
-            If NumericEncoder.IsInSubset(s(startIndex)) Then
+            If NumericEncoder.InSubset(s(startIndex)) Then
                 Dim cnt  As Integer = 0
                 Dim flg1 As Boolean = False
                 Dim flg2 As Boolean = False
 
                 For i As Integer = startIndex To s.Length - 1
-                    If NumericEncoder.IsInSubset(s(i)) Then
+                    If NumericEncoder.InSubset(s(i)) Then
                         cnt += 1
                     Else
                         Exit For
@@ -280,7 +280,7 @@ Namespace Ys.QRCode
 
                 If flg1 Then
                     If (startIndex + cnt) < s.Length Then
-                        flg1 = ByteEncoder.IsInExclusiveSubset(s(startIndex + cnt))
+                        flg1 = ByteEncoder.InExclusiveSubset(s(startIndex + cnt))
                     Else
                         flg1 = False
                     End If
@@ -288,7 +288,7 @@ Namespace Ys.QRCode
 
                 If flg2 Then
                     If (startIndex + cnt) < s.Length Then
-                        flg2 = AlphanumericEncoder.IsInExclusiveSubset(s(startIndex + cnt))
+                        flg2 = AlphanumericEncoder.InExclusiveSubset(s(startIndex + cnt))
                     Else
                         flg2 = False
                     End If
@@ -314,15 +314,15 @@ Namespace Ys.QRCode
         Private Function SelectModeWhileInNumericMode(
             s As String, startIndex As Integer) As EncodingMode
 
-            If KanjiEncoder.IsInSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
         
-            If AlphanumericEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If AlphanumericEncoder.InExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.ALPHA_NUMERIC
             End If
             
@@ -339,11 +339,11 @@ Namespace Ys.QRCode
 
             Dim version As Integer = _currSymbol.Version
 
-            If KanjiEncoder.IsInSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.IsInExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
@@ -351,11 +351,11 @@ Namespace Ys.QRCode
             Dim flg As Boolean = False
 
             For i As Integer = startIndex To s.Length - 1
-                If Not AlphanumericEncoder.IsInSubset(s(i)) Then
+                If Not AlphanumericEncoder.InSubset(s(i)) Then
                     Exit For
                 End if
 
-                If NumericEncoder.IsInSubset(s(i)) Then
+                If NumericEncoder.InSubset(s(i)) Then
                     cnt += 1
                 Else
                     flg = True
@@ -396,18 +396,18 @@ Namespace Ys.QRCode
             Dim cnt As Integer
             Dim flg As Boolean
             
-            If KanjiEncoder.IsInSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(startIndex)) Then
                 Return EncodingMode.KANJI
             End If
 
             For i As Integer = startIndex To s.Length - 1
-                If Not ByteEncoder.IsInSubset(s(i)) Then
+                If Not ByteEncoder.InSubset(s(i)) Then
                     Exit For
                 End If
 
-                If NumericEncoder.IsInSubset(s(i)) Then
+                If NumericEncoder.InSubset(s(i)) Then
                     cnt += 1
-                ElseIf ByteEncoder.IsInExclusiveSubset(s(i)) Then
+                ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
                     flg = True
                     Exit For
                 Else
@@ -436,13 +436,13 @@ Namespace Ys.QRCode
             flg = False
 
             For i As Integer = startIndex To s.Length - 1
-                If Not ByteEncoder.IsInSubset(s(i)) Then
+                If Not ByteEncoder.InSubset(s(i)) Then
                     Exit For
                 End If
 
-                If AlphanumericEncoder.IsInExclusiveSubset(s(i)) Then
+                If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
                     cnt += 1
-                ElseIf ByteEncoder.IsInExclusiveSubset(s(i)) Then
+                ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
                     flg = True
                     Exit For
                 Else

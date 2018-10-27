@@ -43,7 +43,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            Debug.Assert(IsInSubset(c))
+            Debug.Assert(InSubset(c))
 
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
             Dim wd As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
@@ -73,7 +73,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-            Debug.Assert(IsInSubset(c))
+            Debug.Assert(InSubset(c))
 
             Return 13
         End Function
@@ -94,7 +94,7 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function IsInSubset(c As Char) As Boolean
+        Public Shared Function InSubset(c As Char) As Boolean
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
 
             If charBytes.Length <> 2 Then
@@ -117,8 +117,8 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function IsInExclusiveSubset(c As Char) As Boolean
-            Return IsInSubset(c)
+        Public Shared Function InExclusiveSubset(c As Char) As Boolean
+            Return InSubset(c)
         End Function
         
     End Class
