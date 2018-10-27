@@ -16,7 +16,7 @@ Namespace Ys.QRCode.Format
             Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
                          version <= Constants.MAX_VERSION)
 
-            Return 17 + version * 4
+            Return 17 + 4 * version
         End Function
 
     End Module
