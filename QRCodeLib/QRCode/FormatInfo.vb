@@ -8,6 +8,19 @@ Namespace Ys.QRCode
     ''' </summary>
     Friend Module FormatInfo
         
+        ' 形式情報
+        Private ReadOnly _formatInfoValues As Integer() = {
+            &H0000, &H0537, &H0A6E, &H0F59, &H11EB, &H14DC, &H1B85, &H1EB2, &H23D6, &H26E1,
+            &H29B8, &H2C8F, &H323D, &H370A, &H3853, &H3D64, &H429B, &H47AC, &H48F5, &H4DC2,
+            &H5370, &H5647, &H591E, &H5C29, &H614D, &H647A, &H6B23, &H6E14, &H70A6, &H7591,
+            &H7AC8, &H7FFF
+        }
+
+        ' 形式情報のマスクパターン
+        Private _formatInfoMaskArray As Integer() = {
+            0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1
+        }
+
         ''' <summary>
         ''' 形式情報を配置します｡
         ''' </summary>
@@ -115,19 +128,6 @@ Namespace Ys.QRCode
         
             Return _formatInfoValues((indicator << 3) Or maskPatternReference)
         End Function
-
-        ' 形式情報
-        Private ReadOnly _formatInfoValues As Integer() = {
-            &H0000, &H0537, &H0A6E, &H0F59, &H11EB, &H14DC, &H1B85, &H1EB2, &H23D6, &H26E1,
-            &H29B8, &H2C8F, &H323D, &H370A, &H3853, &H3D64, &H429B, &H47AC, &H48F5, &H4DC2,
-            &H5370, &H5647, &H591E, &H5C29, &H614D, &H647A, &H6B23, &H6E14, &H70A6, &H7591,
-            &H7AC8, &H7FFF
-        }
-
-        ' 形式情報のマスクパターン
-        Private _formatInfoMaskArray As Integer() = {
-            0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1
-        }
 
     End Module
 

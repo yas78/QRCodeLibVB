@@ -6,15 +6,7 @@ Namespace Ys.QRCode
     ''' ガロア体 GF2^8
     ''' </summary>
     Friend Module GaloisField256
-        
-        Public Function ToExp(arg As Integer) As Integer
-            Return _intToExpTable(arg)
-        End Function
-
-        Public Function ToInt(arg As Integer) As Integer
-            Return _expToIntTable(arg)
-        End Function
-
+ 
         Private ReadOnly _intToExpTable As Integer() = {
              -1,   0,   1,  25,   2,  50,  26, 198,   3, 223,
              51, 238,  27, 104, 199,  75,   4, 100, 224,  14,
@@ -72,7 +64,15 @@ Namespace Ys.QRCode
              44,  88, 176, 125, 250, 233, 207, 131,  27,  54,
             108, 216, 173,  71, 142,   1
         }
-    
+               
+        Public Function ToExp(arg As Integer) As Integer
+            Return _intToExpTable(arg)
+        End Function
+
+        Public Function ToInt(arg As Integer) As Integer
+            Return _expToIntTable(arg)
+        End Function
+
     End Module
 
 End Namespace
