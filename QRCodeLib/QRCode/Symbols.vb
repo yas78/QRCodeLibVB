@@ -146,7 +146,7 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 文字列を追加します。
         ''' </summary>
-        Public Sub AppendString(s As String)
+        Public Sub AppendText(s As String)
             If String.IsNullOrEmpty(s) Then
                 Throw New ArgumentNullException(NameOf(s))
             End If
@@ -170,27 +170,29 @@ Namespace Ys.QRCode
                         Throw New InvalidOperationException()
                 End Select
 
+                Dim c As Char = s(i)
+
                 If newMode <> oldMode Then
-                    If Not _currSymbol.TrySetEncodingMode(newMode, s(i)) Then
+                    If Not _currSymbol.TrySetEncodingMode(newMode, c) Then
                         If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
                             Throw New ArgumentException("String too long", NameOf(s))
                         End If
 
                         Add()
                         newMode = SelectInitialMode(s, i)
-                        _currSymbol.TrySetEncodingMode(newMode, s(i))
+                        _currSymbol.TrySetEncodingMode(newMode, c)
                     End If
                 End If
 
-                If Not _currSymbol.TryAppend(s(i)) Then
+                If Not _currSymbol.TryAppend(c) Then
                     If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
                         Throw New ArgumentException("String too long", NameOf(s))
                     End If
 
                     Add()
                     newMode = SelectInitialMode(s, i)
-                    _currSymbol.TrySetEncodingMode(newMode, s(i))
-                    _currSymbol.TryAppend(s(i))
+                    _currSymbol.TrySetEncodingMode(newMode, c)
+                    _currSymbol.TryAppend(c)
                 End If
             Next
         End Sub

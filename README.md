@@ -24,7 +24,7 @@ Imports System.Drawing
 
 Public Sub Example()
     Dim symbols As Symbols = New Symbols()
-    symbols.AppendString("012345abcdefg")
+    symbols.AppendText("012345abcdefg")
 
     Dim image As Image = symbols(0).Get24bppImage()
 
@@ -61,7 +61,7 @@ Dim symbols As Symbols = New Symbols(allowStructuredAppend:=True)
 
 ```vbnet
 Dim symbols As Symbols = New Symbols(maxVersion:=1, allowStructuredAppend:=True)
-symbols.AppendString("abcdefghijklmnopqrstuvwxyz")
+symbols.AppendText("abcdefghijklmnopqrstuvwxyz")
 
 For Each symbol As Symbol In symbols
     Dim image As Image = symbol.Get24bppImage()
@@ -73,7 +73,7 @@ SymbolクラスのSave1bppDIB、またはSave24bppDIBメソッドを使用しま
 
 ```vbnet
 Dim symbols As Symbols = New Symbols()
-symbols.AppendString("012345abcdefg")
+symbols.AppendText("012345abcdefg")
 
 symbols(0).Save1bppDIB("D:\qrcode1bpp1.bmp")
 symbols(0).Save1bppDIB("D:\qrcode1bpp2.bmp", 10) ' 10 pixels per module
@@ -89,7 +89,7 @@ Imports System.Drawing
 Imports System.Drawing.Imaging
 
 Dim symbols As Symbols = New Symbols()
-symbols.AppendString("012345")
+symbols.AppendText("012345")
 
 Dim image As Image = symbols(0).Get24bppImage()
 ' PNG

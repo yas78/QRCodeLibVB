@@ -33,7 +33,7 @@ Public Class Form1
         Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
         Try
-            symbols.AppendString(txtData.Text)
+            symbols.AppendText(txtData.Text)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
             Return
@@ -76,7 +76,7 @@ Public Class Form1
         Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
         Try
-            symbols.AppendString(txtData.Text)
+            symbols.AppendText(txtData.Text)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
             Return
