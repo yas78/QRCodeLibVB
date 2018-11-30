@@ -9,17 +9,17 @@ Namespace Ys.Misc
     ''' </summary>
     Friend Class BitSequence
 
+        Private _buffer As List(Of Byte)
+        Private _bitCounter As Integer
+        Private _space      As Integer
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
+            Clear()
         End Sub
-        
-        Private ReadOnly _buffer As List(Of Byte) = New List(Of Byte)()
-
-        Private _bitCounter As Integer = 0
-        Private _space      As Integer = 0
-        
+                
         ''' <summary>
         ''' ビット数を取得します。
         ''' </summary>
@@ -29,6 +29,12 @@ Namespace Ys.Misc
             End Get
         End Property
         
+        Public sub Clear()
+            _buffer = New List(Of Byte)()
+            _bitCounter = 0
+            _space = 0
+        End sub
+
         ''' <summary>
         ''' 指定のビット数でデータを追加します。
         ''' </summary>

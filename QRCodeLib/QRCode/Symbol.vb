@@ -502,7 +502,7 @@ Namespace Ys.QRCode
             Dim width  As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
-            Dim hByteLen As Integer = (width + 7) \ 8
+            Dim rowBytesLen As Integer = (width + 7) \ 8
 
             Dim pack8bit As Integer = 0
             If width Mod 8 > 0 Then
@@ -510,87 +510,38 @@ Namespace Ys.QRCode
             End If
 
             Dim pack32bit As Integer = 0
-            If hByteLen Mod 4 > 0 Then
-                pack32bit = 8 * (4 - (hByteLen Mod 4))
+            If rowBytesLen Mod 4 > 0 Then
+                pack32bit = 8 * (4 - (rowBytesLen Mod 4))
             End If
+
+            Dim rowSize     As Integer = (width + pack8bit + pack32bit) \ 8
+            Dim bitmapData  As Byte() = New Byte(rowSize * height - 1) {}
+            Dim offset      As Integer = 0
 
             Dim bs = New BitSequence()
 
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
-                For i As Integer = 1 To moduleSize
-                    For c As Integer = 0 To UBound(moduleMatrix(r))
-                        For j As Integer = 1 To moduleSize
-                            bs.Append(If(moduleMatrix(r)(c) > 0, 0, 1), 1)
-                        Next
-                    Next
+                bs.Clear()
+                
+                For c As Integer = 0 To UBound(moduleMatrix(r))
+                    Dim color As Integer = If(moduleMatrix(r)(c) > 0, 0, 1)
 
-                    bs.Append(0, pack8bit)
-                    bs.Append(0, pack32bit)
+                    For j As Integer = 1 To moduleSize
+                        bs.Append(color, 1)
+                    Next
+                Next
+                bs.Append(0, pack8bit)
+                bs.Append(0, pack32bit)
+
+                Dim bitmapRow As Byte() = bs.GetBytes()
+
+                For i As Integer = 1 To moduleSize
+                    Buffer.BlockCopy(bitmapRow, 0, bitmapData, offset, rowSize)
+                    offset += rowSize
                 Next
             Next
 
-            Dim dataBlock As Byte() = bs.GetBytes()
-
-            Dim bfh As BITMAPFILEHEADER
-            With bfh
-                .bfType         = &H4D42
-                .bfSize         = 62 + dataBlock.Length
-                .bfReserved1    = 0
-                .bfReserved2    = 0
-                .bfOffBits      = 62
-            End With
-
-            Dim bih As BITMAPINFOHEADER
-            With bih
-                .biSize             = 40
-                .biWidth            = width
-                .biHeight           = height
-                .biPlanes           = 1
-                .biBitCount         = 1
-                .biCompression      = 0
-                .biSizeImage        = 0
-                .biXPelsPerMeter    = 3780 ' 96dpi
-                .biYPelsPerMeter    = 3780 ' 96dpi
-                .biClrUsed          = 0
-                .biClrImportant     = 0
-            End With
-
-            Dim palette As RGBQUAD() = New RGBQUAD(1) {}
-            With palette(0)
-                .rgbBlue        = foreColor.B
-                .rgbGreen       = foreColor.G
-                .rgbRed         = foreColor.R
-                .rgbReserved    = 0
-            End With
-            With palette(1)
-                .rgbBlue        = backColor.B
-                .rgbGreen       = backColor.G
-                .rgbRed         = backColor.R
-                .rgbReserved    = 0
-            End With
-
-            Dim ret     As Byte() = New Byte(62 + dataBlock.Length - 1) {}
-            Dim bytes   As Byte()
-            Dim offset  As Integer = 0
-
-            bytes = bfh.GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = bih.GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = palette(0).GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = palette(1).GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = dataBlock
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
+            Dim ret As Byte() = DIB.Build1bppDIB(bitmapData, width, height, foreColor, backColor)
 
             Return ret
         End Function
@@ -616,73 +567,40 @@ Namespace Ys.QRCode
             Dim width  As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
-            Dim hByteLen As Integer = 3 * width
+            Dim rowBytesLen As Integer = 3 * width
 
-            Dim pack4byte As Integer = 0
-            If hByteLen Mod 4 > 0 Then
-                pack4byte = 4 - (hByteLen Mod 4)
+            Dim pack4bytes As Integer = 0
+            If rowBytesLen Mod 4 > 0 Then
+                pack4bytes = 4 - (rowBytesLen Mod 4)
             End If
 
-            Dim dataBlock As Byte() = New Byte(
-                    (hByteLen + pack4byte) * height - 1) {}
-
-            Dim idx As Integer = 0
+            Dim rowSize     As Integer = rowBytesLen + pack4bytes
+            Dim bitmapData  As Byte() = New Byte(rowSize * height - 1) {}
+            Dim offset      As Integer = 0
 
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
-                For i As Integer = 1 To moduleSize
-                    For c As Integer = 0 To UBound(moduleMatrix(r))
-                        For j As Integer = 1 To moduleSize
-                            Dim color As Color = If(
-                                moduleMatrix(r)(c) > 0, foreColor, backColor)
-                            dataBlock(idx + 0) = color.B
-                            dataBlock(idx + 1) = color.G
-                            dataBlock(idx + 2) = color.R
-                            idx += 3
-                        Next
-                    Next
+                Dim bitmapRow As Byte() = New Byte(rowSize - 1) {}
+                Dim idx As Integer = 0
 
-                    idx += pack4byte
+                For c As Integer = 0 To UBound(moduleMatrix(r))
+                    Dim color As Color = If(
+                            moduleMatrix(r)(c) > 0, foreColor, backColor)
+
+                    For j As Integer = 1 To moduleSize
+                        bitmapRow(idx + 0) = color.B
+                        bitmapRow(idx + 1) = color.G
+                        bitmapRow(idx + 2) = color.R
+                        idx += 3
+                    Next
+                Next
+
+                For i As Integer = 1 To moduleSize
+                    Buffer.BlockCopy(bitmapRow, 0, bitmapData, offset, rowSize)
+                    offset += rowSize
                 Next
             Next
 
-            Dim bfh As BITMAPFILEHEADER
-            With bfh
-                .bfType         = &H4D42
-                .bfSize         = 54 + dataBlock.Length
-                .bfReserved1    = 0
-                .bfReserved2    = 0
-                .bfOffBits      = 54
-            End With
-
-            Dim bih As BITMAPINFOHEADER
-            With bih
-                .biSize             = 40
-                .biWidth            = width
-                .biHeight           = height
-                .biPlanes           = 1
-                .biBitCount         = 24
-                .biCompression      = 0
-                .biSizeImage        = 0
-                .biXPelsPerMeter    = 3780 ' 96dpi
-                .biYPelsPerMeter    = 3780 ' 96dpi
-                .biClrUsed          = 0
-                .biClrImportant     = 0
-            End With
-
-            Dim ret     As Byte() = New Byte(54 + dataBlock.Length - 1) {}
-            Dim bytes   As Byte()
-            Dim offset  As Integer = 0
-
-            bytes = bfh.GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = bih.GetBytes()
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
-            offset += bytes.Length
-
-            bytes = dataBlock
-            Buffer.BlockCopy(bytes, 0, ret, offset, bytes.Length)
+            Dim ret As Byte() = DIB.Build24bppDIB(bitmapData, width, height)
 
             Return ret
         End Function

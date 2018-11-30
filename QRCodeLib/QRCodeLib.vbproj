@@ -63,6 +63,7 @@
     <Compile Include="BitmapStructure\BITMAPFILEHEADER.vb" />
     <Compile Include="BitmapStructure\BITMAPINFOHEADER.vb" />
     <Compile Include="BitmapStructure\RGBQUAD.vb" />
+    <Compile Include="Misc\DIB.vb" />
     <Compile Include="QRCode\AlignmentPattern.vb" />
     <Compile Include="QRCode\Constants.vb" />
     <Compile Include="QRCode\Enums.vb" />
