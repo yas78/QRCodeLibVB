@@ -22,6 +22,7 @@ Namespace Ys.QRCode
         Private ReadOnly _errorCorrectionLevel      As ErrorCorrectionLevel
         Private ReadOnly _structuredAppendAllowed   As Boolean
         Private ReadOnly _byteModeEncoding          As Encoding
+        Private ReadOnly _shiftJISEncoding          As Encoding
 
         Private _structuredAppendParity As Integer
         Private _currSymbol As Symbol
@@ -51,6 +52,7 @@ Namespace Ys.QRCode
             _errorCorrectionLevel       = ecLevel
             _structuredAppendAllowed    = allowStructuredAppend
             _byteModeEncoding           = Encoding.GetEncoding(byteModeEncoding)
+            _shiftJISEncoding           = Encoding.GetEncoding("shift_jis")
 
             _structuredAppendParity = 0
             _currSymbol = New Symbol(Me)
@@ -477,7 +479,12 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="c">パリティ計算対象の文字</param>
         Friend Sub UpdateParity(c As Char)
-            Dim charBytes As Byte() = _byteModeEncoding.GetBytes(c.ToString())
+            Dim charBytes As Byte()
+            If KanjiEncoder.InSubset(c) Then
+                charBytes = _shiftJISEncoding.GetBytes(c.ToString())
+            Else
+                charBytes = _byteModeEncoding.GetBytes(c.ToString())
+            End If
 
             For Each value As Byte In charBytes
                 _structuredAppendParity = _structuredAppendParity Xor value

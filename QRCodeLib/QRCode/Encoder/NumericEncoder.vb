@@ -105,7 +105,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function InSubset(c As Char) As Boolean
-            Return c >= "0"c And c <= "9"c
+            Return c >= "0"c AndAlso c <= "9"c
         End Function
 
         ''' <summary>
