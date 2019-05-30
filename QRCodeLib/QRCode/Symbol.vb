@@ -1,13 +1,11 @@
 ﻿Imports System
 Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports System.Drawing
 Imports System.IO
 
-Imports Ys.BitmapStructure
+Imports Ys.Misc
 Imports Ys.QRCode.Encoder
 Imports Ys.QRCode.Format
-Imports Ys.Misc
 
 Namespace Ys.QRCode
         
@@ -569,12 +567,12 @@ Namespace Ys.QRCode
 
             Dim rowBytesLen As Integer = 3 * width
 
-            Dim pack4bytes As Integer = 0
+            Dim pack4byte As Integer = 0
             If rowBytesLen Mod 4 > 0 Then
-                pack4bytes = 4 - (rowBytesLen Mod 4)
+                pack4byte = 4 - (rowBytesLen Mod 4)
             End If
 
-            Dim rowSize     As Integer = rowBytesLen + pack4bytes
+            Dim rowSize     As Integer = rowBytesLen + pack4byte
             Dim bitmapData  As Byte() = New Byte(rowSize * height - 1) {}
             Dim offset      As Integer = 0
 

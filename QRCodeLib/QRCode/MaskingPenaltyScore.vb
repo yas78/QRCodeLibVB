@@ -15,8 +15,8 @@ Namespace Ys.QRCode
         ''' </summary>
         Public Function CalcTotal(moduleMatrix As Integer()()) As Integer
             Dim total   As Integer = 0
-            Dim penalty As Integer = 0
-            
+            Dim penalty As Integer
+
             penalty = CalcAdjacentModulesInSameColor(moduleMatrix)
             total += penalty
 
@@ -54,12 +54,11 @@ Namespace Ys.QRCode
 
             Dim penalty As Integer = 0
 
-            For r As Integer = 0 To UBound(moduleMatrix)
-                Dim columns As Integer() = moduleMatrix(r)
+            For Each row As Integer() In moduleMatrix
                 Dim cnt As Integer = 1
 
-                For c As Integer = 0 To UBound(columns) - 1
-                    If (columns(c) > 0) = (columns(c + 1) > 0) Then
+                For i As Integer = 0 To UBound(row) - 1
+                    If (row(i) > 0) = (row(i + 1) > 0) Then
                         cnt += 1
                     Else
                         If cnt >= 5 Then
@@ -114,7 +113,7 @@ Namespace Ys.QRCode
 
             penalty += CalcModuleRatioInRow(moduleMatrixTemp)
             penalty += CalcModuleRatioInRow(moduleMatrixTemp.Rotate90())
-            
+
             Return penalty
         End Function
 
@@ -124,58 +123,79 @@ Namespace Ys.QRCode
         Private Function CalcModuleRatioInRow(moduleMatrix As Integer()()) As Integer
             Dim penalty As Integer = 0
 
-            For r As Integer = 0 To UBound(moduleMatrix)
-                Dim columns As Integer() = moduleMatrix(r)
-                Dim startIndexes = New List(Of Integer)()
+            For Each row As Integer() In moduleMatrix
+                Dim ratio3Ranges As List(Of Integer()) = GetRatio3Ranges(row)
 
-                startIndexes.Add(0)
+                For Each rng As Integer() In ratio3Ranges
+                    Dim ratio3 As Integer = rng(1) + 1 - rng(0)
+                    Dim ratio1 As Integer = ratio3 \ 3
+                    Dim ratio4 As Integer = ratio1 * 4
+                    Dim impose As Boolean = False
+                    Dim cnt As Integer
 
-                For c As Integer = 0 To UBound(columns) - 1
-                    If columns(c) > 0 AndAlso columns(c + 1) <= 0 Then
-                        startIndexes.Add(c + 1)
+                    Dim i As Integer = rng(0) - 1
+
+                    ' light ratio 1
+                    cnt = 0
+                    Do While i >= 0 AndAlso row(i) <= 0
+                        cnt += 1
+                        i -= 1
+                    Loop
+
+                    If cnt <> ratio1 Then Continue For
+
+                    ' dark ratio 1
+                    cnt = 0
+                    Do While i >= 0 AndAlso row(i) > 0
+                        cnt += 1
+                        i -= 1
+                    Loop
+
+                    If cnt <> ratio1 Then Continue For
+
+                    ' light ratio 4
+                    cnt = 0
+                    Do While i >= 0 AndAlso row(i) <= 0
+                        cnt += 1
+                        i -= 1
+                    Loop
+
+                    If cnt >= ratio4 Then
+                        impose = True
                     End If
-                Next
 
-                For i As Integer = 0 To startIndexes.Count - 1
-                    Dim index As Integer = startIndexes(i)
-                    Dim moduleRatio = New ModuleRatio()
+                    i = rng(1) + 1
 
-                    Do While index <= UBound(columns) AndAlso columns(index) <= 0
-                        moduleRatio.PreLightRatio4 += 1
-                        index += 1
+                    ' light ratio 1
+                    cnt = 0
+                    Do While i <= UBound(row) AndAlso row(i) <= 0
+                        cnt += 1
+                        i += 1
                     Loop
 
-                    Do While index <= UBound(columns) AndAlso columns(index) > 0
-                        moduleRatio.PreDarkRatio1 += 1
-                        index += 1
+                    If cnt <> ratio1 Then Continue For
+
+                    ' dark ratio 1
+                    cnt = 0
+                    Do While i <= UBound(row) AndAlso row(i) > 0
+                        cnt += 1
+                        i += 1
                     Loop
 
-                    Do While index <= UBound(columns) AndAlso columns(index) <= 0
-                        moduleRatio.PreLightRatio1 += 1
-                        index += 1
+                    If cnt <> ratio1 Then Continue For
+
+                    ' light ratio 4
+                    cnt = 0
+                    Do While i <= UBound(row) AndAlso row(i) <= 0
+                        cnt += 1
+                        i += 1
                     Loop
 
-                    Do While index <= UBound(columns) AndAlso columns(index) > 0
-                        moduleRatio.CenterDarkRatio3 += 1
-                        index += 1
-                    Loop
+                    If cnt >= ratio4 Then
+                        impose = True
+                    End If
 
-                    Do While index <= UBound(columns) AndAlso columns(index) <= 0
-                        moduleRatio.FolLightRatio1 += 1
-                        index += 1
-                    Loop
-
-                    Do While index <= UBound(columns) AndAlso columns(index) > 0
-                        moduleRatio.FolDarkRatio1 += 1
-                        index += 1
-                    Loop
-
-                    Do While index <= UBound(columns) AndAlso columns(index) <= 0
-                        moduleRatio.FolLightRatio4 += 1
-                        index += 1
-                    Loop
-
-                    If moduleRatio.PenaltyImposed() Then
+                    If impose Then
                         penalty += 40
                     End If
                 Next
@@ -183,7 +203,29 @@ Namespace Ys.QRCode
 
             Return penalty
         End Function
-        
+
+        Private Function GetRatio3Ranges(arg As Integer()) As List(Of Integer())
+            Dim ret As New List(Of Integer())
+            Dim s As Integer = 0
+            Dim e As Integer
+
+            For i As Integer = 4 To UBound(arg) - 4
+                If arg(i) > 0 AndAlso arg(i - 1) <= 0 Then
+                    s = i
+                End If
+
+                If arg(i) > 0 AndAlso arg(i + 1) <= 0 Then
+                    e = i
+
+                    If (e + 1 - s) Mod 3 = 0 Then
+                        ret.Add({s, e})
+                    End If
+                End If
+            Next
+
+            Return ret
+        End Function
+
         ''' <summary>
         ''' 全体に対する暗モジュールの占める割合について失点を計算します。
         ''' </summary>
@@ -192,8 +234,8 @@ Namespace Ys.QRCode
 
             Dim darkCount As Integer = 0
 
-            For Each columns As Integer() In moduleMatrix
-                For Each value As Integer In columns
+            For Each row As Integer() In moduleMatrix
+                For Each value As Integer In row
                     If value > 0 Then
                         darkCount += 1
                     End If
