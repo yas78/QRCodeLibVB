@@ -20,11 +20,7 @@ Namespace Ys.QRCode
         Public Function Apply(moduleMatrix As Integer()(),
                               version As Integer,
                               ecLevel As ErrorCorrectionLevel) As Integer
-
-            Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
-                         version <= Constants.MAX_VERSION)
-
-            Dim maskPatternReference As Integer = 
+            Dim maskPatternReference As Integer =
                     SelectMaskPattern(moduleMatrix, version, ecLevel)
             Mask(moduleMatrix, maskPatternReference)
 
@@ -41,10 +37,6 @@ Namespace Ys.QRCode
         Private Function SelectMaskPattern(moduleMatrix As Integer()(),
                                            version As Integer,
                                            ecLevel As ErrorCorrectionLevel) As Integer
-
-            Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
-                         version <= Constants.MAX_VERSION)
-
             Dim minPenalty As Integer = Int32.MaxValue
             Dim ret As Integer = 0
 
@@ -76,9 +68,6 @@ Namespace Ys.QRCode
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
         Private Sub Mask(moduleMatrix As Integer()(), maskPatternReference As Integer)
-            Debug.Assert(maskPatternReference >= 0 AndAlso 
-                         maskPatternReference <= 7)
-
             Dim condition = GetCondition(maskPatternReference)
 
             For r As Integer = 0 To UBound(moduleMatrix)

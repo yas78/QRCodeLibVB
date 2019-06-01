@@ -43,8 +43,6 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            Debug.Assert(InSubset(c))
-
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
             Dim wd As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
 
@@ -73,8 +71,6 @@ Namespace Ys.QRCode.Encoder
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-            Debug.Assert(InSubset(c))
-
             Return 13
         End Function
 
@@ -84,8 +80,8 @@ Namespace Ys.QRCode.Encoder
         Public Overrides Function GetBytes() As Byte()
             Dim bs = New BitSequence()
 
-            For i As Integer = 0 To _codeWords.Count - 1
-                bs.Append(_codeWords(i), 13)
+            For Each wd As Integer In _codeWords
+                bs.Append(wd, 13)
             Next
 
             Return bs.GetBytes()
@@ -103,12 +99,11 @@ Namespace Ys.QRCode.Encoder
 
             Dim code As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
 
-            If code >= &H8140 AndAlso code <= &H9FFC OrElse 
-               code >= &HE040 AndAlso code <= &HEBBF Then
+            If &H8140 <= code AndAlso code <= &H9FFC OrElse
+               &HE040 <= code AndAlso code <= &HEBBF Then
 
-                Return charBytes(1) >= &H40 AndAlso
-                       charBytes(1) <= &HFC AndAlso
-                       charBytes(1) <> &H7F
+                Return &H40 <= charBytes(1) AndAlso charBytes(1) <= &HFC AndAlso
+                       &H7F <> charBytes(1)
             Else
                 Return False
             End If

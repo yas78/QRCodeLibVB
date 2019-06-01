@@ -1,5 +1,4 @@
 ﻿Imports System
-Imports System.Diagnostics
 Imports System.Collections
 Imports System.Collections.Generic
 Imports System.Text
@@ -136,9 +135,6 @@ Namespace Ys.QRCode
         ''' シンボルを追加します。
         ''' </summary>
         Private Function Add() As Symbol
-            Debug.Assert(_structuredAppendAllowed)
-            Debug.Assert(_items.Count < 16)
-
             _currSymbol = New Symbol(Me)
             _items.Add(_currSymbol)
 
@@ -219,7 +215,7 @@ Namespace Ys.QRCode
 
             If AlphanumericEncoder.InExclusiveSubset(s(startIndex)) Then
                 Dim cnt As Integer = 0
-                Dim flg As Boolean = False
+                Dim flg As Boolean
 
                 For i As Integer = startIndex To s.Length - 1
                     If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
@@ -256,9 +252,9 @@ Namespace Ys.QRCode
             End If
 
             If NumericEncoder.InSubset(s(startIndex)) Then
-                Dim cnt  As Integer = 0
-                Dim flg1 As Boolean = False
-                Dim flg2 As Boolean = False
+                Dim cnt As Integer = 0
+                Dim flg1 As Boolean
+                Dim flg2 As Boolean
 
                 For i As Integer = startIndex To s.Length - 1
                     If NumericEncoder.InSubset(s(i)) Then

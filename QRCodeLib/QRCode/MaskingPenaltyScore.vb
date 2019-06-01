@@ -124,7 +124,7 @@ Namespace Ys.QRCode
             Dim penalty As Integer = 0
 
             For Each row As Integer() In moduleMatrix
-                Dim ratio3Ranges As List(Of Integer()) = GetRatio3Ranges(row)
+                Dim ratio3Ranges As Integer()() = GetRatio3Ranges(row)
 
                 For Each rng As Integer() In ratio3Ranges
                     Dim ratio3 As Integer = rng(1) + 1 - rng(0)
@@ -204,12 +204,12 @@ Namespace Ys.QRCode
             Return penalty
         End Function
 
-        Private Function GetRatio3Ranges(arg As Integer()) As List(Of Integer())
+        Private Function GetRatio3Ranges(arg As Integer()) As Integer()()
             Dim ret As New List(Of Integer())
             Dim s As Integer = 0
             Dim e As Integer
 
-            For i As Integer = 4 To UBound(arg) - 4
+            For i As Integer = QuietZone.WIDTH To UBound(arg) - QuietZone.WIDTH
                 If arg(i) > 0 AndAlso arg(i - 1) <= 0 Then
                     s = i
                 End If
@@ -223,7 +223,7 @@ Namespace Ys.QRCode
                 End If
             Next
 
-            Return ret
+            Return ret.ToArray()
         End Function
 
         ''' <summary>

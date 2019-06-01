@@ -22,9 +22,6 @@ Namespace Ys.QRCode.Format
         ''' </summary>
         ''' <param name="version">型番</param>
         Public Function GetTotalNumber(version As Integer) As Integer
-            Debug.Assert(version >= Constants.MIN_VERSION AndAlso 
-                         version <= Constants.MAX_VERSION)
-
             Return _totalNumbers(version)
         End Function
         

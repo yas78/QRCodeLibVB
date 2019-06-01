@@ -40,9 +40,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            Debug.Assert(InSubset(c))
-
-            Dim wd  As Integer = ConvertCharCode(c)
+            Dim wd As Integer = ConvertCharCode(c)
             Dim ret As Integer
 
             If _charCounter Mod 2 = 0 Then
@@ -64,8 +62,6 @@ Namespace Ys.QRCode.Encoder
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-            Debug.Assert(InSubset(c))
-
             If _charCounter Mod 2 = 0 Then
                 Return 6
             Else

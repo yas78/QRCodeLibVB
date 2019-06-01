@@ -7,6 +7,15 @@ Namespace Ys.QRCode
     ''' 型番情報
     ''' </summary>
     Friend Module VersionInfo
+        ' 型番情報
+        Private ReadOnly _versionInfoValues As Integer() = {
+            -1, -1, -1, -1, -1, -1, -1,
+            &H7C94, &H85BC, &H9A99, &HA4D3, &HBBF6, &HC762, &HD847, &HE60D,
+            &HF928, &H10B78, &H1145D, &H12A17, &H13532, &H149A6, &H15683, &H168C9,
+            &H177EC, &H18EC4, &H191E1, &H1AFAB, &H1B08E, &H1CC1A, &H1D33F, &H1ED75,
+            &H1F250, &H209D5, &H216F0, &H228BA, &H2379F, &H24B0B, &H2542E, &H26A64,
+            &H27541, &H28C69
+        }
 
         ''' <summary>
         ''' 型番情報を配置します｡
@@ -14,8 +23,6 @@ Namespace Ys.QRCode
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="version">型番</param>
         Public Sub Place(moduleMatrix As Integer()(), version As Integer)
-            Debug.Assert(version >= 7 AndAlso version <= 40)
-
             Dim numModulesPerSide As Integer = moduleMatrix.Length
 
             Dim versionInfoValue As Integer = _versionInfoValues(version)
@@ -37,7 +44,7 @@ Namespace Ys.QRCode
                 End If
             Next
         End Sub
-        
+
         ''' <summary>
         ''' 型番情報の予約領域を配置します｡
         ''' </summary>
@@ -52,16 +59,6 @@ Namespace Ys.QRCode
             Next
         End Sub
 
-        ' 型番情報
-        Private ReadOnly _versionInfoValues As Integer() = {
-            -1, -1, -1, -1, -1, -1, -1, 
-            &H07C94, &H085BC, &H09A99, &H0A4D3, &H0BBF6, &H0C762, &H0D847, &H0E60D, 
-            &H0F928, &H10B78, &H1145D, &H12A17, &H13532, &H149A6, &H15683, &H168C9, 
-            &H177EC, &H18EC4, &H191E1, &H1AFAB, &H1B08E, &H1CC1A, &H1D33F, &H1ED75, 
-            &H1F250, &H209D5, &H216F0, &H228BA, &H2379F, &H24B0B, &H2542E, &H26A64, 
-            &H27541, &H28C69
-        }
-        
     End Module
 
 End Namespace

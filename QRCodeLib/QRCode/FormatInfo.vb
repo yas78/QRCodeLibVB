@@ -30,11 +30,7 @@ Namespace Ys.QRCode
         Public Sub Place(moduleMatrix As Integer()(), 
                          ecLevel As ErrorCorrectionLevel, 
                          maskPatternReference As Integer)
-
-            Debug.Assert(maskPatternReference >= 0 AndAlso 
-                         maskPatternReference <= 7)
-
-            Dim formatInfoValue as Integer = 
+            Dim formatInfoValue As Integer =
                     GetFormatInfoValue(ecLevel, maskPatternReference)
 
             Dim r1 As Integer = 0
@@ -106,11 +102,8 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
-        Public Function GetFormatInfoValue(
-            ecLevel As ErrorCorrectionLevel, maskPatternReference As Integer) As Integer
-
-            Debug.Assert(maskPatternReference >= 0 AndAlso maskPatternReference <= 7)
-
+        Public Function GetFormatInfoValue(ecLevel As ErrorCorrectionLevel, 
+                                           maskPatternReference As Integer) As Integer
             Dim indicator As Integer
 
             Select Case ecLevel
