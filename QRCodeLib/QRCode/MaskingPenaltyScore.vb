@@ -28,7 +28,7 @@ Namespace Ys.QRCode
 
             penalty = CalcProportionOfDarkModules(moduleMatrix)
             total += penalty
-            
+
             Return total
         End Function
 
@@ -88,15 +88,13 @@ Namespace Ys.QRCode
             For r As Integer = 0 To UBound(moduleMatrix) - 1
                 For c As Integer = 0 To UBound(moduleMatrix(r)) - 1
                     Dim temp As Boolean = moduleMatrix(r)(c) > 0
-                    Dim isSameColor As Boolean = True
 
-                    isSameColor = isSameColor And (moduleMatrix(r + 0)(c + 1) > 0 = temp)
-                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 0) > 0 = temp)
-                    isSameColor = isSameColor And (moduleMatrix(r + 1)(c + 1) > 0 = temp)
-
-                    If isSameColor Then
+                    If (moduleMatrix(r + 0)(c + 1) > 0 = temp) AndAlso
+                       (moduleMatrix(r + 1)(c + 0) > 0 = temp) AndAlso
+                       (moduleMatrix(r + 1)(c + 1) > 0 = temp) Then
                         penalty += 3
                     End If
+
                 Next
             Next
 

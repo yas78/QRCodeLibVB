@@ -27,9 +27,9 @@ Namespace Ys.QRCode
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
-        Public Sub Place(moduleMatrix As Integer()(), 
-                         ecLevel As ErrorCorrectionLevel, 
-                         maskPatternReference As Integer)
+        Public Sub Place(ecLevel As ErrorCorrectionLevel,
+                         maskPatternReference As Integer,
+                         moduleMatrix As Integer()())
             Dim formatInfoValue As Integer =
                     GetFormatInfoValue(ecLevel, maskPatternReference)
 
@@ -37,7 +37,7 @@ Namespace Ys.QRCode
             Dim c1 As Integer = moduleMatrix.Length - 1
 
             For i As Integer = 0 To 7
-                Dim temp As Integer = 
+                Dim temp As Integer =
                     If((formatInfoValue And (1 << i)) > 0, 1, 0) Xor _formatInfoMaskArray(i)
 
                 Dim v As Integer = If(temp > 0, 3, -3)

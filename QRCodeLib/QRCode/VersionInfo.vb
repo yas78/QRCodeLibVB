@@ -22,7 +22,7 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="version">型番</param>
-        Public Sub Place(moduleMatrix As Integer()(), version As Integer)
+        Public Sub Place(version As Integer, moduleMatrix As Integer()())
             Dim numModulesPerSide As Integer = moduleMatrix.Length
 
             Dim versionInfoValue As Integer = _versionInfoValues(version)

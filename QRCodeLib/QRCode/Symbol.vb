@@ -402,7 +402,7 @@ Namespace Ys.QRCode
             TimingPattern.Place(moduleMatrix)
 
             If _currVersion >= 2 Then
-                AlignmentPattern.Place(moduleMatrix, _currVersion)
+                AlignmentPattern.Place(_currVersion, moduleMatrix)
             End If
 
             FormatInfo.PlaceTempBlank(moduleMatrix)
@@ -412,18 +412,9 @@ Namespace Ys.QRCode
             End If
 
             PlaceSymbolChar(moduleMatrix)
-
             RemainderBit.Place(moduleMatrix)
 
-            Dim maskPatternReference As Integer = Masking.Apply(
-                    moduleMatrix, _currVersion, _parent.ErrorCorrectionLevel)
-
-            FormatInfo.Place(
-                moduleMatrix, _parent.ErrorCorrectionLevel, maskPatternReference)
-
-            If _currVersion >= 7 Then
-                VersionInfo.Place(moduleMatrix, _currVersion)
-            End If
+            Masking.Apply(_currVersion, _parent.ErrorCorrectionLevel, moduleMatrix)
 
             Return moduleMatrix
         End Function
@@ -440,12 +431,12 @@ Namespace Ys.QRCode
             Dim toLeft As Boolean = True
             Dim rowDirection As Integer = -1
 
-            For i As Integer = 0 To UBound(data)
+            For Each value As Byte In data
                 Dim bitPos As Integer = 7
 
                 Do While bitPos >= 0
                     If moduleMatrix(r)(c) = 0 Then
-                        moduleMatrix(r)(c) = If((data(i) And (1 << bitPos)) > 0, 1, -1)
+                        moduleMatrix(r)(c) = If((value And (1 << bitPos)) > 0, 1, -1)
                         bitPos -= 1
                     End If
 

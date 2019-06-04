@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QRCodeLibDemo", "QRCodeLibDemo\QRCodeLibDemo.vbproj", "{8C730B9F-1527-44A4-8B8B-C3A30C1EDF7A}"
 EndProject
@@ -18,16 +18,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C730B9F-1527-44A4-8B8B-C3A30C1EDF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C730B9F-1527-44A4-8B8B-C3A30C1EDF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C730B9F-1527-44A4-8B8B-C3A30C1EDF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C730B9F-1527-44A4-8B8B-C3A30C1EDF7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8105DB1C-DCAA-42AA-B437-F03E42676FC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35AB2031-119B-4A45-8B6B-CE5C11890F80}
 	EndGlobalSection
 EndGlobal

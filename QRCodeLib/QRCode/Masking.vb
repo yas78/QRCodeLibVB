@@ -17,49 +17,34 @@ Namespace Ys.QRCode
         ''' <param name="version">型番</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <returns>適用されたマスクパターン参照子</returns>
-        Public Function Apply(moduleMatrix As Integer()(),
-                              version As Integer,
-                              ecLevel As ErrorCorrectionLevel) As Integer
-            Dim maskPatternReference As Integer =
-                    SelectMaskPattern(moduleMatrix, version, ecLevel)
-            Mask(moduleMatrix, maskPatternReference)
-
-            Return maskPatternReference
-        End Function
-
-        ''' <summary>
-        ''' マスクパターンを選択します。
-        ''' </summary>
-        ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
-        ''' <param name="version">型番</param>
-        ''' <param name="ecLevel">誤り訂正レベル</param>
-        ''' <returns>マスクパターン参照子</returns>
-        Private Function SelectMaskPattern(moduleMatrix As Integer()(),
-                                           version As Integer,
-                                           ecLevel As ErrorCorrectionLevel) As Integer
+        Public Function Apply(version As Integer,
+                              ecLevel As ErrorCorrectionLevel,
+                              ByRef moduleMatrix As Integer()()) As Integer
             Dim minPenalty As Integer = Int32.MaxValue
-            Dim ret As Integer = 0
+            Dim maskPatternReference As Integer = 0
+            Dim maskedMatrix As Integer()() = Nothing
 
-            For maskPatternReference As Integer = 0 To 7
+            For i As Integer = 0 To 7
                 Dim temp As Integer()() = moduleMatrix.CloneDeep()
 
-                Mask(temp, maskPatternReference) 
-
-                FormatInfo.Place(temp, ecLevel, maskPatternReference)
+                Mask(i, temp)
+                FormatInfo.Place(ecLevel, i, temp)
 
                 If version >= 7 Then
-                    VersionInfo.Place(temp, version)
+                    VersionInfo.Place(version, temp)
                 End If
 
                 Dim penalty As Integer = MaskingPenaltyScore.CalcTotal(temp)
 
                 If penalty < minPenalty Then
                     minPenalty = penalty
-                    ret = maskPatternReference
+                    maskPatternReference = i
+                    maskedMatrix = temp
                 End If
             Next
 
-            Return ret
+            moduleMatrix = maskedMatrix
+            Return maskPatternReference
         End Function
 
         ''' <summary>
@@ -67,7 +52,7 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
-        Private Sub Mask(moduleMatrix As Integer()(), maskPatternReference As Integer)
+        Private Sub Mask(maskPatternReference As Integer, moduleMatrix As Integer()())
             Dim condition = GetCondition(maskPatternReference)
 
             For r As Integer = 0 To UBound(moduleMatrix)
@@ -80,7 +65,7 @@ Namespace Ys.QRCode
                 Next
             Next
         End Sub
-        
+
         ''' <summary>
         ''' マスク条件を返します。
         ''' </summary>
@@ -109,7 +94,7 @@ Namespace Ys.QRCode
                     Throw New ArgumentOutOfRangeException(NameOf(maskPatternReference))
             End Select
         End Function
-        
+
     End Module
 
 End Namespace

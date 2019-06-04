@@ -53,8 +53,8 @@ Namespace Ys.QRCode.Encoder
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
             Dim ret       As Integer = 0
 
-            For i As Integer = 0 To UBound(charBytes)
-                _codeWords.Add(charBytes(i))
+            For Each value In charBytes
+                _codeWords.Add(value)
                 _charCounter += 1
                 _bitCounter += 8
                 ret += 8

@@ -476,6 +476,7 @@ Namespace Ys.QRCode
         ''' <param name="c">パリティ計算対象の文字</param>
         Friend Sub UpdateParity(c As Char)
             Dim charBytes As Byte()
+
             If KanjiEncoder.InSubset(c) Then
                 charBytes = _shiftJISEncoding.GetBytes(c.ToString())
             Else
