@@ -24,9 +24,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 形式情報を配置します｡
         ''' </summary>
-        ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="maskPatternReference">マスクパターン参照子</param>
+        ''' <param name="moduleMatrix">シンボルの明暗パターン</param>
         Public Sub Place(ecLevel As ErrorCorrectionLevel,
                          maskPatternReference As Integer,
                          moduleMatrix As Integer()())
