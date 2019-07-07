@@ -104,7 +104,7 @@ Public Class Form1
             [Enum].GetValues(GetType(ErrorCorrectionLevel))
         cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
 
-        For i As Integer = 1 To 40
+        For i As Integer = Constants.MIN_VERSION To Constants.MAX_VERSION
             cmbMaxVersion.Items.Add(i)
         Next
 
@@ -114,8 +114,8 @@ Public Class Form1
         cmbEncoding.ValueMember = "Name"
         cmbEncoding.DataSource =  Encoding.GetEncodings()
         cmbEncoding.Text = Encoding.Default.EncodingName
-        
-        nudModuleSize.Value = 5
+
+        nudModuleSize.Value = 4
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False
     End Sub

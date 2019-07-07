@@ -34,7 +34,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         Public Overrides ReadOnly Property ModeIndicator As Integer
             Get
-                Return Ys.QRCode.Format.ModeIndicator.KANJI_VALUE
+                Return Format.ModeIndicator.KANJI_VALUE
             End Get
         End Property
 

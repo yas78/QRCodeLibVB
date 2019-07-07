@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
 
+Imports Ys.Image
 Imports Ys.Misc
 Imports Ys.QRCode.Encoder
 Imports Ys.QRCode.Format
@@ -16,6 +17,8 @@ Namespace Ys.QRCode
 
         Const WHITE As String = "#FFFFFF"
         Const BLACK As String = "#000000"
+
+        Const DEFAULT_MODULE_SIZE As Integer = 4
 
         Private ReadOnly _parent As Symbols
 
@@ -469,26 +472,26 @@ Namespace Ys.QRCode
                 Loop
             Next
         End Sub
-        
+
         ''' <summary>
         ''' 1bppビットマップファイルのバイトデータを返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get1bppDIB(Optional moduleSize As Integer = 5, 
-                                   Optional foreRgb As String = BLACK, 
+        Public Function Get1bppDIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                   Optional foreRgb As String = BLACK,
                                    Optional backRgb As String = WHITE) As Byte()
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
-            
+
             Dim foreColor As Color = ColorTranslator.FromHtml(foreRgb)
             Dim backColor As Color = ColorTranslator.FromHtml(backRgb)
-            
+
             Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
 
-            Dim width  As Integer = moduleSize * moduleMatrix.Length
+            Dim width As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
             Dim rowBytesLen As Integer = (width + 7) \ 8
@@ -503,17 +506,15 @@ Namespace Ys.QRCode
                 pack32bit = 8 * (4 - (rowBytesLen Mod 4))
             End If
 
-            Dim rowSize     As Integer = (width + pack8bit + pack32bit) \ 8
-            Dim bitmapData  As Byte() = New Byte(rowSize * height - 1) {}
-            Dim offset      As Integer = 0
-
-            Dim bs = New BitSequence()
+            Dim rowSize As Integer = (width + pack8bit + pack32bit) \ 8
+            Dim bitmapData As Byte() = New Byte(rowSize * height - 1) {}
+            Dim offset As Integer = 0
 
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
-                bs.Clear()
-                
-                For c As Integer = 0 To UBound(moduleMatrix(r))
-                    Dim color As Integer = If(moduleMatrix(r)(c) > 0, 0, 1)
+                Dim bs = New BitSequence()
+
+                For Each value In moduleMatrix(r)
+                    Dim color As Integer = If(value > 0, 0, 1)
 
                     For j As Integer = 1 To moduleSize
                         bs.Append(color, 1)
@@ -525,7 +526,7 @@ Namespace Ys.QRCode
                 Dim bitmapRow As Byte() = bs.GetBytes()
 
                 For i As Integer = 1 To moduleSize
-                    Buffer.BlockCopy(bitmapRow, 0, bitmapData, offset, rowSize)
+                    Array.Copy(bitmapRow, 0, bitmapData, offset, rowSize)
                     offset += rowSize
                 Next
             Next
@@ -534,15 +535,15 @@ Namespace Ys.QRCode
 
             Return ret
         End Function
-        
+
         ''' <summary>
         ''' 24bppビットマップファイルのバイトデータを返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get24bppDIB(Optional moduleSize As Integer = 5, 
-                                    Optional foreRgb As String = BLACK, 
+        Public Function Get24bppDIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                    Optional foreRgb As String = BLACK,
                                     Optional backRgb As String = WHITE) As Byte()
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
@@ -553,7 +554,7 @@ Namespace Ys.QRCode
 
             Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
 
-            Dim width  As Integer = moduleSize * moduleMatrix.Length
+            Dim width As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
             Dim rowBytesLen As Integer = 3 * width
@@ -563,28 +564,27 @@ Namespace Ys.QRCode
                 pack4byte = 4 - (rowBytesLen Mod 4)
             End If
 
-            Dim rowSize     As Integer = rowBytesLen + pack4byte
-            Dim bitmapData  As Byte() = New Byte(rowSize * height - 1) {}
-            Dim offset      As Integer = 0
+            Dim rowSize As Integer = rowBytesLen + pack4byte
+            Dim bitmapData As Byte() = New Byte(rowSize * height - 1) {}
+            Dim offset As Integer = 0
 
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
                 Dim bitmapRow As Byte() = New Byte(rowSize - 1) {}
-                Dim idx As Integer = 0
+                Dim index As Integer = 0
 
-                For c As Integer = 0 To UBound(moduleMatrix(r))
-                    Dim color As Color = If(
-                            moduleMatrix(r)(c) > 0, foreColor, backColor)
+                For Each value In moduleMatrix(r)
+                    Dim color As Color = If(value > 0, foreColor, backColor)
 
                     For j As Integer = 1 To moduleSize
-                        bitmapRow(idx + 0) = color.B
-                        bitmapRow(idx + 1) = color.G
-                        bitmapRow(idx + 2) = color.R
-                        idx += 3
+                        bitmapRow(index + 0) = color.B
+                        bitmapRow(index + 1) = color.G
+                        bitmapRow(index + 2) = color.R
+                        index += 3
                     Next
                 Next
 
                 For i As Integer = 1 To moduleSize
-                    Buffer.BlockCopy(bitmapRow, 0, bitmapData, offset, rowSize)
+                    Array.Copy(bitmapRow, 0, bitmapData, offset, rowSize)
                     offset += rowSize
                 Next
             Next
@@ -593,16 +593,16 @@ Namespace Ys.QRCode
 
             Return ret
         End Function
-        
+
         ''' <summary>
         ''' 1bppのシンボル画像を返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get1bppImage(Optional moduleSize As Integer = 5, 
-                                     Optional foreRgb As String = BLACK, 
-                                     Optional backRgb As String = WHITE) As Image
+        Public Function Get1bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                     Optional foreRgb As String = BLACK,
+                                     Optional backRgb As String = WHITE) As Drawing.Image
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -610,7 +610,7 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get1bppDIB(moduleSize, foreRgb, backRgb)
 
             Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As Image = DirectCast(converter.ConvertFrom(dib), Image)
+            Dim ret As Drawing.Image = DirectCast(converter.ConvertFrom(dib), Drawing.Image)
 
             Return ret
         End Function
@@ -621,9 +621,9 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get24bppImage(Optional moduleSize As Integer = 5, 
-                                      Optional foreRgb As String = BLACK, 
-                                      Optional backRgb As String = WHITE) As Image
+        Public Function Get24bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                      Optional foreRgb As String = BLACK,
+                                      Optional backRgb As String = WHITE) As Drawing.Image
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -631,11 +631,11 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get24bppDIB(moduleSize, foreRgb, backRgb)
 
             Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As Image = DirectCast(converter.ConvertFrom(dib), Image)
+            Dim ret As Drawing.Image = DirectCast(converter.ConvertFrom(dib), Drawing.Image)
 
             Return ret
         End Function
-        
+
         ''' <summary>
         ''' 1bppシンボル画像をファイルに保存します
         ''' </summary>
@@ -643,14 +643,14 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Sub Save1bppDIB(fileName As String, 
-                               Optional moduleSize As Integer = 5, 
-                               Optional foreRgb As String = BLACK, 
+        Public Sub Save1bppDIB(fileName As String,
+                               Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                               Optional foreRgb As String = BLACK,
                                Optional backRgb As String = WHITE)
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
-            
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -658,7 +658,7 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get1bppDIB(moduleSize, foreRgb, backRgb)
             File.WriteAllBytes(fileName, dib)
         End Sub
-        
+
         ''' <summary>
         ''' 24bppシンボル画像をファイルに保存します
         ''' </summary>
@@ -666,9 +666,9 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Sub Save24bppDIB(fileName As String, 
-                                Optional moduleSize As Integer = 5, 
-                                Optional foreRgb As String = BLACK, 
+        Public Sub Save24bppDIB(fileName As String,
+                                Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                Optional foreRgb As String = BLACK,
                                 Optional backRgb As String = WHITE)
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
@@ -681,7 +681,7 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get24bppDIB(moduleSize, foreRgb, backRgb)
             File.WriteAllBytes(fileName, dib)
         End Sub
-        
+
     End Class
         
 End Namespace

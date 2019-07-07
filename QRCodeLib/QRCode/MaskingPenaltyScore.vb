@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Collections.Generic
 
-Imports Ys.TypeExtension
+Imports Ys.Misc
 
 Namespace Ys.QRCode
 
@@ -41,7 +41,7 @@ Namespace Ys.QRCode
             Dim penalty As Integer = 0
 
             penalty += CalcAdjacentModulesInRowInSameColor(moduleMatrix)
-            penalty += CalcAdjacentModulesInRowInSameColor(moduleMatrix.Rotate90())
+            penalty += CalcAdjacentModulesInRowInSameColor(ArrayUtil.Rotate90(moduleMatrix))
 
             Return penalty
         End Function
@@ -110,7 +110,7 @@ Namespace Ys.QRCode
             Dim penalty As Integer = 0
 
             penalty += CalcModuleRatioInRow(moduleMatrixTemp)
-            penalty += CalcModuleRatioInRow(moduleMatrixTemp.Rotate90())
+            penalty += CalcModuleRatioInRow(ArrayUtil.Rotate90(moduleMatrixTemp))
 
             Return penalty
         End Function

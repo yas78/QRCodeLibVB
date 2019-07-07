@@ -37,9 +37,8 @@ Namespace Ys.QRCode
                        Optional maxVersion As Integer = 40,
                        Optional allowStructuredAppend As Boolean = False,
                        Optional byteModeEncoding As String = "shift_jis")
-            
-            If maxVersion < Constants.MIN_VERSION OrElse 
-               maxVersion > Constants.MAX_VERSION Then
+
+            If Not (Constants.MIN_VERSION <= maxVersion AndAlso maxVersion <= Constants.MAX_VERSION) Then
                 Throw New ArgumentOutOfRangeException(NameOf(maxVersion))
             End If
 

@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Diagnostics
 
-Imports Ys.TypeExtension
+Imports Ys.Misc
 
 Namespace Ys.QRCode
 
@@ -25,7 +25,7 @@ Namespace Ys.QRCode
             Dim maskedMatrix As Integer()() = Nothing
 
             For i As Integer = 0 To 7
-                Dim temp As Integer()() = moduleMatrix.CloneDeep()
+                Dim temp As Integer()() = ArrayUtil.DeepCopy(moduleMatrix)
 
                 Mask(i, temp)
                 FormatInfo.Place(ecLevel, i, temp)

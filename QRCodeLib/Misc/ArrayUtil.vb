@@ -1,17 +1,10 @@
 ﻿Imports System
+Imports System.Collections.Generic
 
-Namespace Ys.TypeExtension
+Namespace Ys.Misc
+    Friend Module ArrayUtil
 
-    ''' <summary>
-    ''' Int32型の拡張メソッド
-    ''' </summary>
-    Friend Module Int32Extensions
-
-        ''' <summary>
-        ''' オブジェクトのディープコピーを返します。
-        ''' </summary>
-        <System.Runtime.CompilerServices.Extension>
-        Public Function CloneDeep(arg As Integer()()) As Integer()()
+        Public Function DeepCopy(arg As Integer()()) As Integer()()
             Dim ret As Integer()() = New Integer(UBound(arg))() {}
 
             For i As Integer = 0 To UBound(arg)
@@ -25,7 +18,6 @@ Namespace Ys.TypeExtension
         ''' <summary>
         ''' 左に90度回転した配列を返します。
         ''' </summary>
-        <System.Runtime.CompilerServices.Extension>
         Public Function Rotate90(arg As Integer()()) As Integer()()
             Dim ret As Integer()() = New Integer(UBound(arg(0)))() {}
 
@@ -45,5 +37,4 @@ Namespace Ys.TypeExtension
         End Function
 
     End Module
-
 End Namespace

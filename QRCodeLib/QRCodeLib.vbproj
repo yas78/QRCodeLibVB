@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +25,7 @@
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,10 +63,11 @@
     <Import Include="Microsoft.VisualBasic" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitmapStructure\BITMAPFILEHEADER.vb" />
-    <Compile Include="BitmapStructure\BITMAPINFOHEADER.vb" />
-    <Compile Include="BitmapStructure\RGBQUAD.vb" />
-    <Compile Include="Misc\DIB.vb" />
+    <Compile Include="Image\BITMAPFILEHEADER.vb" />
+    <Compile Include="Image\BITMAPINFOHEADER.vb" />
+    <Compile Include="Image\RGBQUAD.vb" />
+    <Compile Include="Misc\ArrayUtil.vb" />
+    <Compile Include="Image\DIB.vb" />
     <Compile Include="QRCode\AlignmentPattern.vb" />
     <Compile Include="QRCode\Constants.vb" />
     <Compile Include="QRCode\Enums.vb" />
@@ -77,7 +80,6 @@
     <Compile Include="QRCode\Encoder\AlphanumericEncoder.vb" />
     <Compile Include="QRCode\Format\SymbolSequenceIndicator.vb" />
     <Compile Include="QRCode\QuietZone.vb" />
-    <Compile Include="TypeExtension\Int32Extensions.vb" />
     <Compile Include="QRCode\FinderPattern.vb" />
     <Compile Include="QRCode\FormatInfo.vb" />
     <Compile Include="QRCode\Format\StructuredAppend.vb" />

@@ -41,7 +41,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         Public Overrides ReadOnly Property ModeIndicator As Integer
             Get
-                Return Ys.QRCode.Format.ModeIndicator.BYTE_VALUE
+                Return Format.ModeIndicator.BYTE_VALUE
             End Get
         End Property
         

@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Runtime.InteropServices
 
-Namespace Ys.BitmapStructure
+Namespace Ys.Image
 
     ''' <summary>
     ''' RGBQUAD構造体
