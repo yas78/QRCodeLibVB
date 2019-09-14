@@ -6,7 +6,7 @@ JIS X 0510に基づくモデル２コードシンボルを生成します。
 - 数字・英数字・8ビットバイト・漢字モードに対応しています
 - 分割QRコードを作成可能です
 - 1bppまたは24bpp BMPファイル(DIB)へ保存可能です
-- 1bppまたは24bpp Imageオブジェクトとして取得可能です  
+- 1bppまたは24bpp Imageオブジェクトとして取得可能です 
 - 画像の配色(前景色・背景色)を指定可能です
 - 8ビットバイトモードでの文字コードを指定可能です
 
@@ -98,4 +98,14 @@ image.Save("D:\qrcode.png", ImageFormat.Png)
 image.Save("D:\qrcode.gif", ImageFormat.Gif)
 ' JPEG
 image.Save("D:\qrcode.jpg", ImageFormat.Jpeg)
+```
+
+### 例８．base64エンコードされた画像データを取得する
+SymbolオブジェクトのGetBase64DIBメソッドを使用します。
+
+```vbnet
+Dim symbols As Symbols = New Symbols()
+symbols.AppendText("012345abcdefg")
+
+Dim base64 As String = symbols(0).GetBase64DIB()
 ```

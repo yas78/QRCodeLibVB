@@ -532,7 +532,6 @@ Namespace Ys.QRCode
             Next
 
             Dim ret As Byte() = DIB.Build1bppDIB(bitmapData, width, height, foreColor, backColor)
-
             Return ret
         End Function
 
@@ -590,7 +589,37 @@ Namespace Ys.QRCode
             Next
 
             Dim ret As Byte() = DIB.Build24bppDIB(bitmapData, width, height)
+            Return ret
+        End Function
 
+        ''' <summary>
+        ''' Base64エンコードされたビットマップデータを返します。
+        ''' </summary>
+        ''' <param name="moduleSize">モジュールサイズ(px)</param>
+        ''' <param name="colorDepth"></param>
+        ''' <param name="foreRgb">前景色</param>
+        ''' <param name="backRgb">背景色</param>
+        ''' <returns></returns>
+        Public Function GetBase64DIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                     Optional colorDepth As Integer = 24,
+                                     Optional foreRgb As String = BLACK,
+                                     Optional backRgb As String = WHITE) As String
+            If moduleSize < 1 Then
+                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            Dim dib As Byte()
+
+            Select Case colorDepth
+                Case 1
+                    dib = Get1bppDIB(moduleSize, foreRgb, backRgb)
+                Case 24
+                    dib = Get24bppDIB(moduleSize, foreRgb, backRgb)
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
+
+            Dim ret As String = Convert.ToBase64String(dib)
             Return ret
         End Function
 
@@ -602,7 +631,7 @@ Namespace Ys.QRCode
         ''' <param name="backRgb">背景色</param>
         Public Function Get1bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                      Optional foreRgb As String = BLACK,
-                                     Optional backRgb As String = WHITE) As Drawing.Image
+                                     Optional backRgb As String = WHITE) As System.Drawing.Image
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -610,7 +639,7 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get1bppDIB(moduleSize, foreRgb, backRgb)
 
             Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As Drawing.Image = DirectCast(converter.ConvertFrom(dib), Drawing.Image)
+            Dim ret As System.Drawing.Image = DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
 
             Return ret
         End Function
@@ -623,7 +652,7 @@ Namespace Ys.QRCode
         ''' <param name="backRgb">背景色</param>
         Public Function Get24bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                       Optional foreRgb As String = BLACK,
-                                      Optional backRgb As String = WHITE) As Drawing.Image
+                                      Optional backRgb As String = WHITE) As System.Drawing.Image
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
@@ -631,7 +660,7 @@ Namespace Ys.QRCode
             Dim dib As Byte() = Get24bppDIB(moduleSize, foreRgb, backRgb)
 
             Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As Drawing.Image = DirectCast(converter.ConvertFrom(dib), Drawing.Image)
+            Dim ret As System.Drawing.Image = DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
 
             Return ret
         End Function
