@@ -473,6 +473,13 @@ Namespace Ys.QRCode
             Next
         End Sub
 
+        ''' <summary>
+        ''' ビットマップファイルのバイトデータを返します。
+        ''' </summary>
+        ''' <param name="moduleSize">モジュールサイズ(px)</param>
+        ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
+        ''' <param name="foreRgb">前景色</param>
+        ''' <param name="backRgb">背景色</param>
         Public Function GetBitmap(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                   Optional monochrome As Boolean = False,
                                   Optional foreRgb As String = BLACK,
@@ -543,8 +550,7 @@ Namespace Ys.QRCode
                 Next
             Next
 
-            Dim ret As Byte() = DIB.Build1bppDIB(bitmapData, width, height, foreColor, backColor)
-            Return ret
+            Return DIB.Build1bppDIB(bitmapData, width, height, foreColor, backColor)
         End Function
 
         ''' <summary>
@@ -596,8 +602,7 @@ Namespace Ys.QRCode
                 Next
             Next
 
-            Dim ret As Byte() = DIB.Build24bppDIB(bitmapData, width, height)
-            Return ret
+            Return DIB.Build24bppDIB(bitmapData, width, height)
         End Function
 
         ''' <summary>
@@ -623,14 +628,13 @@ Namespace Ys.QRCode
                 dib = GetBitmap24bpp(moduleSize, foreRgb, backRgb)
             End If
 
-            Dim ret As String = Convert.ToBase64String(dib)
-            Return ret
+            Return Convert.ToBase64String(dib)
         End Function
 
         ''' <summary>
         ''' シンボルのImageオブジェクトを返します。
         ''' </summary>
-        ''' <param name="moduleSize">モジュールサイズ</param>
+        ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
@@ -650,16 +654,15 @@ Namespace Ys.QRCode
                 dib = GetBitmap24bpp(moduleSize, foreRgb, backRgb)
             End If
 
-            Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As System.Drawing.Image = DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
-            Return ret
+            Dim converter = New ImageConverter()
+            Return DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
         End Function
 
         ''' <summary>
         ''' シンボル画像をビットマップファイルに保存します
         ''' </summary>
         ''' <param name="fileName">ファイル名</param>
-        ''' <param name="moduleSize">モジュールサイズ</param>
+        ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
