@@ -26,7 +26,7 @@ Public Sub Example()
     Dim symbols As Symbols = New Symbols()
     symbols.AppendText("012345abcdefg")
 
-    Dim image As Image = symbols(0).Get24bppImage()
+    Dim image As Image = symbols(0).GetImage()
 
 End Sub
 ```
@@ -64,7 +64,7 @@ Dim symbols As Symbols = New Symbols(maxVersion:=1, allowStructuredAppend:=True)
 symbols.AppendText("abcdefghijklmnopqrstuvwxyz")
 
 For Each symbol As Symbol In symbols
-    Dim image As Image = symbol.Get24bppImage()
+    Dim image As Image = symbol.GetImage()
 Next
 ```
 
@@ -75,10 +75,7 @@ SymbolクラスのSave1bppDIB、またはSave24bppDIBメソッドを使用しま
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
 
-symbols(0).Save1bppDIB("D:\qrcode1bpp1.bmp")
-symbols(0).Save1bppDIB("D:\qrcode1bpp2.bmp", 10) ' 10 pixels per module
-symbols(0).Save24bppDIB("D:\qrcode24bpp1.bmp")
-symbols(0).Save24bppDIB("D:\qrcode24bpp2.bmp", 10) ' 10 pixels per module
+symbols(0).SaveBitmap("D:\qrcode1bpp1.bmp")
 ```
 
 ### 例７．様々な画像形式で保存する
@@ -91,7 +88,7 @@ Imports System.Drawing.Imaging
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345")
 
-Dim image As Image = symbols(0).Get24bppImage()
+Dim image As Image = symbols(0).GetImage()
 ' PNG
 image.Save("D:\qrcode.png", ImageFormat.Png)
 ' GIF
@@ -101,11 +98,12 @@ image.Save("D:\qrcode.jpg", ImageFormat.Jpeg)
 ```
 
 ### 例８．base64エンコードされた画像データを取得する
-SymbolオブジェクトのGetBase64DIBメソッドを使用します。
+SymbolオブジェクトのGetBitmapBase64メソッドを使用します。
 
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
 
-Dim base64 As String = symbols(0).GetBase64DIB()
+Dim data As String = symbols(0).GetBitmapBase64()
+Dim imgTag As String = "<img src=""data:image/bmp;base64," & data & """ />"
 ```

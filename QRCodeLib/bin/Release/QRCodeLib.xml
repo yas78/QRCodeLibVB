@@ -1,0 +1,831 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QRCodeLib
+</name>
+</assembly>
+<members>
+<member name="T:My.Resources.Resources">
+<summary>
+  ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
+</summary>
+</member>
+<member name="P:My.Resources.Resources.ResourceManager">
+<summary>
+  このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
+</summary>
+</member>
+<member name="P:My.Resources.Resources.Culture">
+<summary>
+  厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+  現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
+</summary>
+</member>
+<member name="T:Ys.Image.BITMAPFILEHEADER">
+ <summary>
+ BITMAPFILEHEADER構造体
+ </summary>
+</member>
+<member name="M:Ys.Image.BITMAPFILEHEADER.GetBytes">
+ <summary>
+ この構造体のバイト配列を返します。
+ </summary>
+</member>
+<member name="T:Ys.Image.BITMAPINFOHEADER">
+ <summary>
+ BITMAPINFOHEADER構造体
+ </summary>
+</member>
+<member name="M:Ys.Image.BITMAPINFOHEADER.GetBytes">
+ <summary>
+ この構造体のバイト配列を返します。
+ </summary>
+</member>
+<member name="T:Ys.Image.RGBQUAD">
+ <summary>
+ RGBQUAD構造体
+ </summary>
+</member>
+<member name="M:Ys.Image.RGBQUAD.GetBytes">
+ <summary>
+ この構造体のバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.Misc.ArrayUtil.Rotate90(System.Int32[][])">
+ <summary>
+ 左に90度回転した配列を返します。
+ </summary>
+</member>
+<member name="T:Ys.Misc.BitSequence">
+ <summary>
+ ビット列の生成機能を提供します。
+ </summary>
+</member>
+<member name="M:Ys.Misc.BitSequence.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="P:Ys.Misc.BitSequence.Length">
+ <summary>
+ ビット数を取得します。
+ </summary>
+</member>
+<member name="M:Ys.Misc.BitSequence.Append(System.Int32,System.Int32)">
+ <summary>
+ 指定のビット数でデータを追加します。
+ </summary>
+ <param name="data">追加するデータ</param>
+ <param name="length">データのビット数</param>
+</member>
+<member name="M:Ys.Misc.BitSequence.GetBytes">
+ <summary>
+ データのバイト配列を返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.AlignmentPattern">
+ <summary>
+ 位置合わせパターン
+ </summary>
+</member>
+<member name="M:Ys.QRCode.AlignmentPattern.Place(System.Int32,System.Int32[][])">
+ <summary>
+ 位置合わせパターンを配置します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Constants">
+ <summary>
+ パブリック定数
+ </summary>
+</member>
+<member name="T:Ys.QRCode.EncodingMode">
+ <summary>
+ 符号化モード
+ </summary>
+</member>
+<member name="T:Ys.QRCode.ErrorCorrectionLevel">
+ <summary>
+ 誤り訂正レベル
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Format.CharCountIndicator">
+ <summary>
+ 文字数指示子
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Format.CharCountIndicator.GetLength(System.Int32,Ys.QRCode.EncodingMode)">
+ <summary>
+ 文字数指示子のビット数を返します。
+ </summary>
+ <param name="version">型番</param>
+ <param name="encoding">符号化モード</param>
+</member>
+<member name="T:Ys.QRCode.Format.Codeword">
+ <summary>
+ コード語
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Format.Codeword.GetTotalNumber(System.Int32)">
+ <summary>
+ コード語総数を返します。
+ </summary>
+ <param name="version">型番</param>
+</member>
+<member name="T:Ys.QRCode.Format.DataCodeword">
+ <summary>
+ データコード語
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Format.DataCodeword.GetTotalNumber(Ys.QRCode.ErrorCorrectionLevel,System.Int32)">
+ <summary>
+ データコード語数を返します。
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="version">型番</param>
+</member>
+<member name="T:Ys.QRCode.Format.ModeIndicator">
+ <summary>
+ モード指示子
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Format.Module">
+ <summary>
+ モジュール
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Format.Module.GetNumModulesPerSide(System.Int32)">
+ <summary>
+ １辺のモジュール数を返します。
+ </summary>
+ <param name="version">型番</param>
+</member>
+<member name="T:Ys.QRCode.Format.RSBlock">
+ <summary>
+ RSブロック
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Format.RSBlock.GetTotalNumber(Ys.QRCode.ErrorCorrectionLevel,System.Int32,System.Boolean)">
+ <summary>
+ RSブロック数を返します。
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="version">型番</param>
+ <param name="preceding">RSブロック前半部分は True を指定します。</param>
+</member>
+<member name="M:Ys.QRCode.Format.RSBlock.GetNumberDataCodewords(Ys.QRCode.ErrorCorrectionLevel,System.Int32,System.Boolean)">
+ <summary>
+ RSブロックのデータコード語数を返します。
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="version">型番</param>
+ <param name="preceding">RSブロック前半部分は True を指定します。</param>
+</member>
+<member name="M:Ys.QRCode.Format.RSBlock.GetNumberECCodewords(Ys.QRCode.ErrorCorrectionLevel,System.Int32)">
+ <summary>
+ RSブロックの誤り訂正コード語数を返します。
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="version">型番</param>
+</member>
+<member name="T:Ys.QRCode.Format.SymbolSequenceIndicator">
+ <summary>
+ シンボル列指示子
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Format.StructuredAppend">
+ <summary>
+ 構造的連接
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Encoder.AlphanumericEncoder">
+ <summary>
+ 英数字モードエンコーダー
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.AlphanumericEncoder.EncodingMode">
+ <summary>
+ 符号化モードを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.AlphanumericEncoder.ModeIndicator">
+ <summary>
+ モード指示子を取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.Append(System.Char)">
+ <summary>
+ 文字を追加します。
+ </summary>
+ <returns>追加した文字のビット数</returns>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.GetCodewordBitLength(System.Char)">
+ <summary>
+ 指定の文字をエンコードしたコード語のビット数を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.GetBytes">
+ <summary>
+ エンコードされたデータのバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.ConvertCharCode(System.Char)">
+ <summary>
+ 指定した文字の、英数字モードにおけるコード値を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.InSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.AlphanumericEncoder.InExclusiveSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Encoder.ByteEncoder">
+ <summary>
+ バイトモードエンコーダー
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.#ctor(System.Text.Encoding)">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+ <param name="encoding">文字エンコーディング</param>
+</member>
+<member name="P:Ys.QRCode.Encoder.ByteEncoder.EncodingMode">
+ <summary>
+ 符号化モードを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.ByteEncoder.ModeIndicator">
+ <summary>
+ モード指示子を取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.Append(System.Char)">
+ <summary>
+ 文字を追加します。
+ </summary>
+ <returns>追加した文字のビット数</returns>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.GetCodewordBitLength(System.Char)">
+ <summary>
+ 指定の文字をエンコードしたコード語のビット数を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.GetBytes">
+ <summary>
+ エンコードされたデータのバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.InSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.ByteEncoder.InExclusiveSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Encoder.KanjiEncoder">
+ <summary>
+ 漢字モードエンコーダー
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.KanjiEncoder.EncodingMode">
+ <summary>
+ 符号化モードを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.KanjiEncoder.ModeIndicator">
+ <summary>
+ モード指示子を取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.Append(System.Char)">
+ <summary>
+ 文字を追加します。
+ </summary>
+ <returns>追加した文字のビット数</returns>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.GetCodewordBitLength(System.Char)">
+ <summary>
+ 指定の文字をエンコードしたコード語のビット数を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.GetBytes">
+ <summary>
+ エンコードされたデータのバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.InSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.KanjiEncoder.InExclusiveSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Encoder.NumericEncoder">
+ <summary>
+ 数字モードエンコーダー
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.NumericEncoder.EncodingMode">
+ <summary>
+ 符号化モードを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.NumericEncoder.ModeIndicator">
+ <summary>
+ モード指示子を取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.Append(System.Char)">
+ <summary>
+ 文字を追加します。
+ </summary>
+ <returns>追加した文字のビット数</returns>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.GetCodewordBitLength(System.Char)">
+ <summary>
+ 指定の文字をエンコードしたコード語のビット数を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.GetBytes">
+ <summary>
+ エンコードされたデータのバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.InSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.NumericEncoder.InExclusiveSubset(System.Char)">
+ <summary>
+ 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Encoder.QRCodeEncoder">
+ <summary>
+ エンコーダーの基本抽象クラス
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.QRCodeEncoder.#ctor">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.QRCodeEncoder.CharCount">
+ <summary>
+ 文字数を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.QRCodeEncoder.BitCount">
+ <summary>
+ データビット数を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.QRCodeEncoder.EncodingMode">
+ <summary>
+ 符号化モードを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Encoder.QRCodeEncoder.ModeIndicator">
+ <summary>
+ モード指示子を取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.QRCodeEncoder.Append(System.Char)">
+ <summary>
+ 文字を追加します。
+ </summary>
+ <returns>追加した文字のビット数</returns>
+</member>
+<member name="M:Ys.QRCode.Encoder.QRCodeEncoder.GetCodewordBitLength(System.Char)">
+ <summary>
+ 指定の文字をエンコードしたコード語のビット数を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.QRCodeEncoder.GetBytes">
+ <summary>
+ エンコードされたデータのバイト配列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Encoder.QRCodeEncoder.CreateEncoder(Ys.QRCode.EncodingMode,System.Text.Encoding)">
+ <summary>
+ 指定したエンコーディングモードのエンコーダーを返します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.QuietZone">
+ <summary>
+ クワイエットゾーン
+ </summary>
+</member>
+<member name="M:Ys.QRCode.QuietZone.Place(System.Int32[][])">
+ <summary>
+ クワイエットゾーンを追加します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.FinderPattern">
+ <summary>
+ 位置検出パターン
+ </summary>
+</member>
+<member name="M:Ys.QRCode.FinderPattern.Place(System.Int32[][])">
+ <summary>
+ 位置検出パターンを配置します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.FormatInfo">
+ <summary>
+ 形式情報
+ </summary>
+</member>
+<member name="M:Ys.QRCode.FormatInfo.Place(Ys.QRCode.ErrorCorrectionLevel,System.Int32,System.Int32[][])">
+ <summary>
+ 形式情報を配置します｡
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="maskPatternReference">マスクパターン参照子</param>
+ <param name="moduleMatrix">シンボルの明暗パターン</param>
+</member>
+<member name="M:Ys.QRCode.FormatInfo.PlaceTempBlank(System.Int32[][])">
+ <summary>
+ 形式情報の予約領域を配置します｡
+ </summary>
+</member>
+<member name="M:Ys.QRCode.FormatInfo.GetFormatInfoValue(Ys.QRCode.ErrorCorrectionLevel,System.Int32)">
+ <summary>
+ 形式情報の値を取得します。
+ </summary>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="maskPatternReference">マスクパターン参照子</param>
+</member>
+<member name="T:Ys.QRCode.Masking">
+ <summary>
+ シンボルマスク
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Masking.Apply(System.Int32,Ys.QRCode.ErrorCorrectionLevel,System.Int32[][]@)">
+ <summary>
+ マスクを適用します。
+ </summary>
+ <param name="moduleMatrix">シンボルの明暗パターン</param>
+ <param name="version">型番</param>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <returns>適用されたマスクパターン参照子</returns>
+</member>
+<member name="M:Ys.QRCode.Masking.Mask(System.Int32,System.Int32[][])">
+ <summary>
+ マスクパターンを適用したシンボルデータを返します。
+ </summary>
+ <param name="moduleMatrix">シンボルの明暗パターン</param>
+ <param name="maskPatternReference">マスクパターン参照子</param>
+</member>
+<member name="M:Ys.QRCode.Masking.GetCondition(System.Int32)">
+ <summary>
+ マスク条件を返します。
+ </summary>
+ <param name="maskPatternReference">マスクパターン参照子</param>
+</member>
+<member name="T:Ys.QRCode.MaskingPenaltyScore">
+ <summary>
+ マスクされたシンボルの失点評価
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcTotal(System.Int32[][])">
+ <summary>
+ マスクパターン失点の合計を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcAdjacentModulesInSameColor(System.Int32[][])">
+ <summary>
+ 行／列の同色隣接モジュールパターンの失点を計算します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcAdjacentModulesInRowInSameColor(System.Int32[][])">
+ <summary>
+ 行の同色隣接モジュールパターンの失点を計算します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcBlockOfModulesInSameColor(System.Int32[][])">
+ <summary>
+ 2x2の同色モジュールパターンの失点を計算します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcModuleRatio(System.Int32[][])">
+ <summary>
+ 行／列における1 : 1 : 3 : 1 : 1 比率パターンの失点を計算します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcModuleRatioInRow(System.Int32[][])">
+ <summary>
+ 行の1 : 1 : 3 : 1 : 1 比率パターンの失点を計算します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.MaskingPenaltyScore.CalcProportionOfDarkModules(System.Int32[][])">
+ <summary>
+ 全体に対する暗モジュールの占める割合について失点を計算します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.RemainderBit">
+ <summary>
+ 残余ビット
+ </summary>
+</member>
+<member name="M:Ys.QRCode.RemainderBit.Place(System.Int32[][])">
+ <summary>
+ 残余ビットを配置します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Separator">
+ <summary>
+ 分離パターン
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Separator.Place(System.Int32[][])">
+ <summary>
+ 分離パターンを配置します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.TimingPattern">
+ <summary>
+ タイミングパターン
+ </summary>
+</member>
+<member name="M:Ys.QRCode.TimingPattern.Place(System.Int32[][])">
+ <summary>
+ タイミングパターンを配置します。
+ </summary>
+</member>
+<member name="T:Ys.QRCode.GaloisField256">
+ <summary>
+ ガロア体 GF2^8
+ </summary>
+</member>
+<member name="T:Ys.QRCode.GeneratorPolynomials">
+ <summary>
+ リードソロモン誤り訂正コード語の生成多項式
+ </summary>
+</member>
+<member name="T:Ys.QRCode.Symbol">
+ <summary>
+ シンボルを表します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.#ctor(Ys.QRCode.Symbols)">
+ <summary>
+ インスタンスを初期化します
+ </summary>
+ <param name="parent">親オブジェクト</param>
+</member>
+<member name="P:Ys.QRCode.Symbol.Parent">
+ <summary>
+ 親オブジェクトを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbol.Version">
+ <summary>
+ 型番を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbol.CurrentEncodingMode">
+ <summary>
+ 現在の符号化モードを取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.TryAppend(System.Char)">
+ <summary>
+ シンボルに文字を追加します。
+ </summary>
+ <param name="c">対象文字</param>
+ <returns>シンボル容量が不足している場合は False を返します。</returns>
+</member>
+<member name="M:Ys.QRCode.Symbol.TrySetEncodingMode(Ys.QRCode.EncodingMode,System.Char)">
+ <summary>
+ 符号化モードを設定します。
+ </summary>
+ <param name="encMode">符号化モード</param>
+ <param name="c">符号化する最初の文字。この文字はシンボルに追加されません。</param>
+ <returns>シンボル容量が不足している場合は False を返します。</returns>
+</member>
+<member name="M:Ys.QRCode.Symbol.SelectVersion">
+ <summary>
+ 型番を決定します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.BuildDataBlock">
+ <summary>
+ データブロックを返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.BuildErrorCorrectionBlock(System.Byte[][])">
+ <summary>
+ 誤り訂正データ領域のブロックを生成します。
+ </summary>
+ <param name="dataBlock">データ領域のブロック</param>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetEncodingRegionBytes">
+ <summary>
+ 符号化領域のバイトデータを返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetMessageBytes">
+ <summary>
+ コード語に変換するメッセージビット列を返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetModuleMatrix">
+ <summary>
+ シンボルの明暗パターンを返します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.PlaceSymbolChar(System.Int32[][])">
+ <summary>
+ シンボルキャラクタを配置します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetBitmap1bpp(System.Int32,System.String,System.String)">
+ <summary>
+ 1bppビットマップファイルのバイトデータを返します。
+ </summary>
+ <param name="moduleSize">モジュールサイズ(px)</param>
+ <param name="foreRgb">前景色</param>
+ <param name="backRgb">背景色</param>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetBitmap24bpp(System.Int32,System.String,System.String)">
+ <summary>
+ 24bppビットマップファイルのバイトデータを返します。
+ </summary>
+ <param name="moduleSize">モジュールサイズ(px)</param>
+ <param name="foreRgb">前景色</param>
+ <param name="backRgb">背景色</param>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetBitmapBase64(System.Int32,System.Boolean,System.String,System.String)">
+ <summary>
+ Base64エンコードされたビットマップデータを返します。
+ </summary>
+ <param name="moduleSize">モジュールサイズ(px)</param>
+ <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
+ <param name="foreRgb">前景色</param>
+ <param name="backRgb">背景色</param>
+</member>
+<member name="M:Ys.QRCode.Symbol.GetImage(System.Int32,System.Boolean,System.String,System.String)">
+ <summary>
+ シンボルのImageオブジェクトを返します。
+ </summary>
+ <param name="moduleSize">モジュールサイズ</param>
+ <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
+ <param name="foreRgb">前景色</param>
+ <param name="backRgb">背景色</param>
+</member>
+<member name="M:Ys.QRCode.Symbol.SaveBitmap(System.String,System.Int32,System.Boolean,System.String,System.String)">
+ <summary>
+ シンボル画像をビットマップファイルに保存します
+ </summary>
+ <param name="fileName">ファイル名</param>
+ <param name="moduleSize">モジュールサイズ</param>
+ <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
+ <param name="foreRgb">前景色</param>
+ <param name="backRgb">背景色</param>
+</member>
+<member name="T:Ys.QRCode.Symbols">
+ <summary>
+ シンボルのコレクションを表します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbols.#ctor(Ys.QRCode.ErrorCorrectionLevel,System.Int32,System.Boolean,System.String)">
+ <summary>
+ インスタンスを初期化します。
+ </summary>
+ <param name="maxVersion">型番の上限</param>
+ <param name="ecLevel">誤り訂正レベル</param>
+ <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
+ <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
+</member>
+<member name="P:Ys.QRCode.Symbols.Item(System.Int32)">
+ <summary>
+ インデックス番号を指定してSymbolオブジェクトを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.Count">
+ <summary>
+ シンボル数を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.MinVersion">
+ <summary>
+ 型番の下限を取得または設定します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.MaxVersion">
+ <summary>
+ 型番の上限を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.ErrorCorrectionLevel">
+ <summary>
+ 誤り訂正レベルを取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.StructuredAppendAllowed">
+ <summary>
+ 構造的連接モードの使用可否を取得します。
+ </summary>
+</member>
+<member name="P:Ys.QRCode.Symbols.StructuredAppendParity">
+ <summary>
+ 構造的連接のパリティを取得します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbols.Add">
+ <summary>
+ シンボルを追加します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbols.AppendText(System.String)">
+ <summary>
+ 文字列を追加します。
+ </summary>
+</member>
+<member name="M:Ys.QRCode.Symbols.SelectInitialMode(System.String,System.Int32)">
+ <summary>
+ 初期モードを決定します。
+ </summary>
+ <param name="s">対象文字列</param>
+ <param name="startIndex">評価を開始する位置</param>
+</member>
+<member name="M:Ys.QRCode.Symbols.SelectModeWhileInNumericMode(System.String,System.Int32)">
+ <summary>
+ 数字モードから切り替えるモードを決定します。
+ </summary>
+ <param name="s">対象文字列</param>
+ <param name="startIndex">評価を開始する位置</param>
+</member>
+<member name="M:Ys.QRCode.Symbols.SelectModeWhileInAlphanumericMode(System.String,System.Int32)">
+ <summary>
+ 英数字モードから切り替えるモードを決定します。
+ </summary>
+ <param name="s">対象文字列</param>
+ <param name="startIndex">評価を開始する位置</param>
+</member>
+<member name="M:Ys.QRCode.Symbols.SelectModeWhileInByteMode(System.String,System.Int32)">
+ <summary>
+ バイトモードから切り替えるモードを決定します。
+ </summary>
+ <param name="s">対象文字列</param>
+ <param name="startIndex">評価を開始する位置</param>
+</member>
+<member name="M:Ys.QRCode.Symbols.UpdateParity(System.Char)">
+ <summary>
+ 構造的連接のパリティを更新します。
+ </summary>
+ <param name="c">パリティ計算対象の文字</param>
+</member>
+<member name="T:Ys.QRCode.VersionInfo">
+ <summary>
+ 型番情報
+ </summary>
+</member>
+<member name="M:Ys.QRCode.VersionInfo.Place(System.Int32,System.Int32[][])">
+ <summary>
+ 型番情報を配置します｡
+ </summary>
+ <param name="moduleMatrix">シンボルの明暗パターン</param>
+ <param name="version">型番</param>
+</member>
+<member name="M:Ys.QRCode.VersionInfo.PlaceTempBlank(System.Int32[][])">
+ <summary>
+ 型番情報の予約領域を配置します｡
+ </summary>
+</member>
+</members>
+</doc>

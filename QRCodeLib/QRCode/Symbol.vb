@@ -473,19 +473,31 @@ Namespace Ys.QRCode
             Next
         End Sub
 
+        Public Function GetBitmap(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                  Optional monochrome As Boolean = False,
+                                  Optional foreRgb As String = BLACK,
+                                  Optional backRgb As String = WHITE) As Byte()
+            If moduleSize < 1 Then
+                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If monochrome Then
+                Return GetBitmap1bpp(moduleSize, foreRgb, backRgb)
+            Else
+                Return GetBitmap24bpp(moduleSize, foreRgb, backRgb)
+            End If
+
+        End Function
+
         ''' <summary>
         ''' 1bppビットマップファイルのバイトデータを返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get1bppDIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                   Optional foreRgb As String = BLACK,
-                                   Optional backRgb As String = WHITE) As Byte()
-            If moduleSize < 1 Then
-                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
-            End If
-
+        Private Function GetBitmap1bpp(moduleSize As Integer,
+                                       foreRgb As String,
+                                       backRgb As String) As Byte()
             Dim foreColor As Color = ColorTranslator.FromHtml(foreRgb)
             Dim backColor As Color = ColorTranslator.FromHtml(backRgb)
 
@@ -541,13 +553,9 @@ Namespace Ys.QRCode
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get24bppDIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                    Optional foreRgb As String = BLACK,
-                                    Optional backRgb As String = WHITE) As Byte()
-            If moduleSize < 1 Then
-                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
-            End If
-
+        Private Function GetBitmap24bpp(moduleSize As Integer,
+                                        foreRgb As String,
+                                        backRgb As String) As Byte()
             Dim foreColor As Color = ColorTranslator.FromHtml(foreRgb)
             Dim backColor As Color = ColorTranslator.FromHtml(backRgb)
 
@@ -596,86 +604,70 @@ Namespace Ys.QRCode
         ''' Base64エンコードされたビットマップデータを返します。
         ''' </summary>
         ''' <param name="moduleSize">モジュールサイズ(px)</param>
-        ''' <param name="colorDepth"></param>
+        ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        ''' <returns></returns>
-        Public Function GetBase64DIB(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                     Optional colorDepth As Integer = 24,
-                                     Optional foreRgb As String = BLACK,
-                                     Optional backRgb As String = WHITE) As String
+        Public Function GetBitmapBase64(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                        Optional monochrome As Boolean = False,
+                                        Optional foreRgb As String = BLACK,
+                                        Optional backRgb As String = WHITE) As String
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
             Dim dib As Byte()
 
-            Select Case colorDepth
-                Case 1
-                    dib = Get1bppDIB(moduleSize, foreRgb, backRgb)
-                Case 24
-                    dib = Get24bppDIB(moduleSize, foreRgb, backRgb)
-                Case Else
-                    Throw New InvalidOperationException()
-            End Select
+            If monochrome Then
+                dib = GetBitmap1bpp(moduleSize, foreRgb, backRgb)
+            Else
+                dib = GetBitmap24bpp(moduleSize, foreRgb, backRgb)
+            End If
 
             Dim ret As String = Convert.ToBase64String(dib)
             Return ret
         End Function
 
         ''' <summary>
-        ''' 1bppのシンボル画像を返します。
+        ''' シンボルのImageオブジェクトを返します。
         ''' </summary>
-        ''' <param name="moduleSize">モジュールサイズ(px)</param>
+        ''' <param name="moduleSize">モジュールサイズ</param>
+        ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Function Get1bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                     Optional foreRgb As String = BLACK,
-                                     Optional backRgb As String = WHITE) As System.Drawing.Image
+        Public Function GetImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                                 Optional monochrome As Boolean = False,
+                                 Optional foreRgb As String = BLACK,
+                                 Optional backRgb As String = WHITE) As System.Drawing.Image
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
-            Dim dib As Byte() = Get1bppDIB(moduleSize, foreRgb, backRgb)
+            Dim dib As Byte()
 
-            Dim converter As ImageConverter = New ImageConverter()
-            Dim ret As System.Drawing.Image = DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
-
-            Return ret
-        End Function
-
-        ''' <summary>
-        ''' 24bppのシンボル画像を返します。
-        ''' </summary>
-        ''' <param name="moduleSize">モジュールサイズ(px)</param>
-        ''' <param name="foreRgb">前景色</param>
-        ''' <param name="backRgb">背景色</param>
-        Public Function Get24bppImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                      Optional foreRgb As String = BLACK,
-                                      Optional backRgb As String = WHITE) As System.Drawing.Image
-            If moduleSize < 1 Then
-                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            If monochrome Then
+                dib = GetBitmap1bpp(moduleSize, foreRgb, backRgb)
+            Else
+                dib = GetBitmap24bpp(moduleSize, foreRgb, backRgb)
             End If
 
-            Dim dib As Byte() = Get24bppDIB(moduleSize, foreRgb, backRgb)
-
             Dim converter As ImageConverter = New ImageConverter()
             Dim ret As System.Drawing.Image = DirectCast(converter.ConvertFrom(dib), System.Drawing.Image)
-
             Return ret
         End Function
 
         ''' <summary>
-        ''' 1bppシンボル画像をファイルに保存します
+        ''' シンボル画像をビットマップファイルに保存します
         ''' </summary>
         ''' <param name="fileName">ファイル名</param>
-        ''' <param name="moduleSize">モジュールサイズ(px)</param>
+        ''' <param name="moduleSize">モジュールサイズ</param>
+        ''' <param name="monochrome">1bpp colorはTrue、24bpp colorはFalseを設定します。</param>
         ''' <param name="foreRgb">前景色</param>
         ''' <param name="backRgb">背景色</param>
-        Public Sub Save1bppDIB(fileName As String,
-                               Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                               Optional foreRgb As String = BLACK,
-                               Optional backRgb As String = WHITE)
+        Public Sub SaveBitmap(fileName As String,
+                              Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                              Optional monochrome As Boolean = False,
+                              Optional foreRgb As String = BLACK,
+                              Optional backRgb As String = WHITE)
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
@@ -684,30 +676,14 @@ Namespace Ys.QRCode
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
-            Dim dib As Byte() = Get1bppDIB(moduleSize, foreRgb, backRgb)
-            File.WriteAllBytes(fileName, dib)
-        End Sub
+            Dim dib As Byte()
 
-        ''' <summary>
-        ''' 24bppシンボル画像をファイルに保存します
-        ''' </summary>
-        ''' <param name="fileName">ファイル名</param>
-        ''' <param name="moduleSize">モジュールサイズ(px)</param>
-        ''' <param name="foreRgb">前景色</param>
-        ''' <param name="backRgb">背景色</param>
-        Public Sub Save24bppDIB(fileName As String,
-                                Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
-                                Optional foreRgb As String = BLACK,
-                                Optional backRgb As String = WHITE)
-            If String.IsNullOrEmpty(fileName) Then
-                Throw New ArgumentNullException(NameOf(fileName))
+            If monochrome Then
+                dib = GetBitmap1bpp(moduleSize, foreRgb, backRgb)
+            Else
+                dib = GetBitmap24bpp(moduleSize, foreRgb, backRgb)
             End If
 
-            If moduleSize < 1 Then
-                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
-            End If
-
-            Dim dib As Byte() = Get24bppDIB(moduleSize, foreRgb, backRgb)
             File.WriteAllBytes(fileName, dib)
         End Sub
 

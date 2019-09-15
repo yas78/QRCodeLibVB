@@ -40,12 +40,11 @@ Public Class Form1
         End Try
 
         For Each symbol As Symbol In symbols
-            Dim image As Image = symbol.Get24bppImage(CInt(nudModuleSize.Value))
-
-            Dim pictureBox As PictureBox = New PictureBox()
-            pictureBox.Size = image.Size
-            pictureBox.Image = image
-
+            Dim image As Image = symbol.GetImage(CInt(nudModuleSize.Value), False)
+            Dim pictureBox = New PictureBox() With {
+                .Size = image.Size,
+                .Image = image
+            }
             qrcodePanel.Controls.Add(pictureBox)
         Next
 
@@ -91,11 +90,7 @@ Public Class Form1
                 filename = baseName & "_" & CStr(i + 1) & ".bmp"
             End If
 
-            If isMonochrome Then
-                symbols(i).Save1bppDIB(filename, CInt(nudModuleSize.Value))
-            Else
-                symbols(i).Save24bppDIB(filename, CInt(nudModuleSize.Value))
-            End If
+            symbols(i).SaveBitmap(filename, CInt(nudModuleSize.Value), isMonochrome)
         Next
     End Sub
 
