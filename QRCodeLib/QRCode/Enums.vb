@@ -5,7 +5,7 @@ Namespace Ys.QRCode
     ''' <summary>
     ''' 符号化モード
     ''' </summary>
-    Public Enum EncodingMode
+    Friend Enum EncodingMode
         UNKNOWN
         NUMERIC
         ALPHA_NUMERIC
@@ -21,6 +21,11 @@ Namespace Ys.QRCode
         M
         Q
         H
+    End Enum
+
+    Friend Enum Constants
+        MIN_VERSION = 1
+        MAX_VERSION = 40
     End Enum
 
 End Namespace

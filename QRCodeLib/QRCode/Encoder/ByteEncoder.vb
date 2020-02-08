@@ -1,5 +1,4 @@
 ﻿Imports System
-Imports System.Diagnostics
 Imports System.Text
 
 Namespace Ys.QRCode.Encoder
@@ -9,6 +8,8 @@ Namespace Ys.QRCode.Encoder
     ''' </summary>
     Friend Class ByteEncoder
         Inherits QRCodeEncoder
+
+        Private ReadOnly _textEncoding As Encoding
         
         ''' <summary>
         ''' インスタンスを初期化します。
@@ -24,8 +25,6 @@ Namespace Ys.QRCode.Encoder
         Public Sub New(encoding As Encoding)
             _textEncoding = encoding
         End Sub
-        
-        Private ReadOnly _textEncoding As Encoding
         
         ''' <summary>
         ''' 符号化モードを取得します。

@@ -361,12 +361,8 @@ Namespace Ys.QRCode
         End Sub
 
         Private Sub WriteTerminator(bs As BitSequence)
-            Dim terminatorLength As Integer = _dataBitCapacity - _dataBitCounter
-
-            If terminatorLength > ModeIndicator.LENGTH Then
-                terminatorLength = ModeIndicator.LENGTH
-            End If
-
+            Dim terminatorLength As Integer = Math.Min(
+                    ModeIndicator.LENGTH, _dataBitCapacity - _dataBitCounter)
             bs.Append(ModeIndicator.TERMINATOR_VALUE, terminatorLength)
         End Sub
 
@@ -493,7 +489,6 @@ Namespace Ys.QRCode
             Else
                 Return GetBitmap24bpp(moduleSize, foreRgb, backRgb)
             End If
-
         End Function
 
         ''' <summary>

@@ -205,7 +205,6 @@ Namespace Ys.QRCode
         Private Function GetRatio3Ranges(arg As Integer()) As Integer()()
             Dim ret As New List(Of Integer())
             Dim s As Integer = 0
-            Dim e As Integer
 
             For i As Integer = QuietZone.WIDTH To UBound(arg) - QuietZone.WIDTH
                 If arg(i) > 0 AndAlso arg(i - 1) <= 0 Then
@@ -213,10 +212,8 @@ Namespace Ys.QRCode
                 End If
 
                 If arg(i) > 0 AndAlso arg(i + 1) <= 0 Then
-                    e = i
-
-                    If (e + 1 - s) Mod 3 = 0 Then
-                        ret.Add({s, e})
+                    If (i + 1 - s) Mod 3 = 0 Then
+                        ret.Add({s, i})
                     End If
                 End If
             Next

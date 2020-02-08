@@ -29,12 +29,12 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        ''' <param name="maxVersion">型番の上限</param>
         ''' <param name="ecLevel">誤り訂正レベル</param>
+        ''' <param name="maxVersion">型番の上限</param>
         ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
         ''' <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
         Public Sub New(Optional ecLevel As ErrorCorrectionLevel = ErrorCorrectionLevel.M,
-                       Optional maxVersion As Integer = 40,
+                       Optional maxVersion As Integer = Constants.MAX_VERSION,
                        Optional allowStructuredAppend As Boolean = False,
                        Optional byteModeEncoding As String = "shift_jis")
 
@@ -52,7 +52,7 @@ Namespace Ys.QRCode
             _byteModeEncoding           = Encoding.GetEncoding(byteModeEncoding)
             _shiftJISEncoding           = Encoding.GetEncoding("shift_jis")
 
-            _structuredAppendParity = 0
+            _structuredAppendParity     = 0
             _currSymbol = New Symbol(Me)
 
             _items.Add(_currSymbol)
@@ -171,7 +171,7 @@ Namespace Ys.QRCode
 
                 If newMode <> oldMode Then
                     If Not _currSymbol.TrySetEncodingMode(newMode, c) Then
-                        If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
+                        If _structuredAppendAllowed = False OrElse _items.Count = 16 Then
                             Throw New ArgumentException("String too long", NameOf(s))
                         End If
 
@@ -182,7 +182,7 @@ Namespace Ys.QRCode
                 End If
 
                 If Not _currSymbol.TryAppend(c) Then
-                    If Not _structuredAppendAllowed OrElse _items.Count = 16 Then
+                    If _structuredAppendAllowed = False OrElse _items.Count = 16 Then
                         Throw New ArgumentException("String too long", NameOf(s))
                     End If
 
@@ -198,25 +198,25 @@ Namespace Ys.QRCode
         ''' 初期モードを決定します。
         ''' </summary>
         ''' <param name="s">対象文字列</param>
-        ''' <param name="startIndex">評価を開始する位置</param>
+        ''' <param name="start">評価を開始する位置</param>
         Private Function SelectInitialMode(
-            s As String, startIndex As Integer) As EncodingMode
+            s As String, start As Integer) As EncodingMode
 
             Dim version As Integer = _currSymbol.Version
 
-            If KanjiEncoder.InSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
-            If AlphanumericEncoder.InExclusiveSubset(s(startIndex)) Then
+            If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
                 Dim cnt As Integer = 0
                 Dim flg As Boolean
 
-                For i As Integer = startIndex To s.Length - 1
+                For i As Integer = start To s.Length - 1
                     If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
                         cnt += 1
                     Else
@@ -236,8 +236,8 @@ Namespace Ys.QRCode
                 End Select
 
                 If flg Then
-                    If (startIndex + cnt) < s.Length Then
-                        If ByteEncoder.InExclusiveSubset(s(startIndex + cnt)) Then
+                    If (start + cnt) < s.Length Then
+                        If ByteEncoder.InExclusiveSubset(s(start + cnt)) Then
                             Return EncodingMode.EIGHT_BIT_BYTE
                         Else
                             Return EncodingMode.ALPHA_NUMERIC
@@ -250,12 +250,12 @@ Namespace Ys.QRCode
                 End If
             End If
 
-            If NumericEncoder.InSubset(s(startIndex)) Then
+            If NumericEncoder.InSubset(s(start)) Then
                 Dim cnt As Integer = 0
                 Dim flg1 As Boolean
                 Dim flg2 As Boolean
 
-                For i As Integer = startIndex To s.Length - 1
+                For i As Integer = start To s.Length - 1
                     If NumericEncoder.InSubset(s(i)) Then
                         cnt += 1
                     Else
@@ -278,16 +278,16 @@ Namespace Ys.QRCode
                 End Select
 
                 If flg1 Then
-                    If (startIndex + cnt) < s.Length Then
-                        flg1 = ByteEncoder.InExclusiveSubset(s(startIndex + cnt))
+                    If (start + cnt) < s.Length Then
+                        flg1 = ByteEncoder.InExclusiveSubset(s(start + cnt))
                     Else
                         flg1 = False
                     End If
                 End If
 
                 If flg2 Then
-                    If (startIndex + cnt) < s.Length Then
-                        flg2 = AlphanumericEncoder.InExclusiveSubset(s(startIndex + cnt))
+                    If (start + cnt) < s.Length Then
+                        flg2 = AlphanumericEncoder.InExclusiveSubset(s(start + cnt))
                     Else
                         flg2 = False
                     End If
@@ -309,19 +309,19 @@ Namespace Ys.QRCode
         ''' 数字モードから切り替えるモードを決定します。
         ''' </summary>
         ''' <param name="s">対象文字列</param>
-        ''' <param name="startIndex">評価を開始する位置</param>
+        ''' <param name="start">評価を開始する位置</param>
         Private Function SelectModeWhileInNumericMode(
-            s As String, startIndex As Integer) As EncodingMode
+            s As String, start As Integer) As EncodingMode
 
-            If KanjiEncoder.InSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
         
-            If AlphanumericEncoder.InExclusiveSubset(s(startIndex)) Then
+            If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.ALPHA_NUMERIC
             End If
             
@@ -332,24 +332,24 @@ Namespace Ys.QRCode
         ''' 英数字モードから切り替えるモードを決定します。
         ''' </summary>
         ''' <param name="s">対象文字列</param>
-        ''' <param name="startIndex">評価を開始する位置</param>
+        ''' <param name="start">評価を開始する位置</param>
         Private Function SelectModeWhileInAlphanumericMode(
-            s As String, startIndex As Integer) As EncodingMode
+            s As String, start As Integer) As EncodingMode
 
             Dim version As Integer = _currSymbol.Version
 
-            If KanjiEncoder.InSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(startIndex)) Then
+            If ByteEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
             Dim cnt As Integer = 0
             Dim flg As Boolean = False
 
-            For i As Integer = startIndex To s.Length - 1
+            For i As Integer = start To s.Length - 1
                 If Not AlphanumericEncoder.InSubset(s(i)) Then
                     Exit For
                 End if
@@ -386,20 +386,20 @@ Namespace Ys.QRCode
         ''' バイトモードから切り替えるモードを決定します。
         ''' </summary>
         ''' <param name="s">対象文字列</param>
-        ''' <param name="startIndex">評価を開始する位置</param>
+        ''' <param name="start">評価を開始する位置</param>
         Private Function SelectModeWhileInByteMode(
-            s As String, startIndex As Integer) As EncodingMode
+            s As String, start As Integer) As EncodingMode
 
             Dim version As Integer = _currSymbol.Version
 
             Dim cnt As Integer
             Dim flg As Boolean
             
-            If KanjiEncoder.InSubset(s(startIndex)) Then
+            If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
 
-            For i As Integer = startIndex To s.Length - 1
+            For i As Integer = start To s.Length - 1
                 If Not ByteEncoder.InSubset(s(i)) Then
                     Exit For
                 End If
@@ -434,7 +434,7 @@ Namespace Ys.QRCode
             cnt = 0
             flg = False
 
-            For i As Integer = startIndex To s.Length - 1
+            For i As Integer = start To s.Length - 1
                 If Not ByteEncoder.InSubset(s(i)) Then
                     Exit For
                 End If
