@@ -16,9 +16,6 @@ Namespace Ys.QRCode
     ''' </summary>
     Public Class Symbol
 
-        Const WHITE As String = "#FFFFFF"
-        Const BLACK As String = "#000000"
-
         Const DEFAULT_MODULE_SIZE As Integer = 4
 
         Private ReadOnly _parent As Symbols
@@ -479,8 +476,8 @@ Namespace Ys.QRCode
         ''' <param name="backRgb">背景色</param>
         Public Function GetBitmap(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                   Optional monochrome As Boolean = False,
-                                  Optional foreRgb As String = BLACK,
-                                  Optional backRgb As String = WHITE) As Byte()
+                                  Optional foreRgb As String = ColorCode.BLACK,
+                                  Optional backRgb As String = ColorCode.WHITE) As Byte()
             If _dataBitCounter = 0 Then
                 Throw New InvalidOperationException()
             End If
@@ -622,8 +619,8 @@ Namespace Ys.QRCode
         ''' <param name="backRgb">背景色</param>
         Public Function GetBitmapBase64(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                         Optional monochrome As Boolean = False,
-                                        Optional foreRgb As String = BLACK,
-                                        Optional backRgb As String = WHITE) As String
+                                        Optional foreRgb As String = ColorCode.BLACK,
+                                        Optional backRgb As String = ColorCode.WHITE) As String
             If _dataBitCounter = 0 Then
                 Throw New InvalidOperationException()
             End If
@@ -660,8 +657,8 @@ Namespace Ys.QRCode
         ''' <param name="backRgb">背景色</param>
         Public Function GetImage(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                  Optional monochrome As Boolean = False,
-                                 Optional foreRgb As String = BLACK,
-                                 Optional backRgb As String = WHITE) As System.Drawing.Image
+                                 Optional foreRgb As String = ColorCode.BLACK,
+                                 Optional backRgb As String = ColorCode.WHITE) As System.Drawing.Image
             If _dataBitCounter = 0 Then
                 Throw New InvalidOperationException()
             End If
@@ -701,8 +698,8 @@ Namespace Ys.QRCode
         Public Sub SaveBitmap(fileName As String,
                               Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                               Optional monochrome As Boolean = False,
-                              Optional foreRgb As String = BLACK,
-                              Optional backRgb As String = WHITE)
+                              Optional foreRgb As String = ColorCode.BLACK,
+                              Optional backRgb As String = ColorCode.WHITE)
             If _dataBitCounter = 0 Then
                 Throw New InvalidOperationException()
             End If
