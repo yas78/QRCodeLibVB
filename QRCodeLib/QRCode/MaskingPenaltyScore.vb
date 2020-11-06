@@ -206,14 +206,16 @@ Namespace Ys.QRCode
             Dim ret As New List(Of Integer())
             Dim s As Integer = 0
 
-            For i As Integer = QuietZone.WIDTH To UBound(arg) - QuietZone.WIDTH
-                If arg(i) > 0 AndAlso arg(i - 1) <= 0 Then
-                    s = i
-                End If
+            For i As Integer = 1 To UBound(arg) - 1
+                If arg(i) > 0 Then
+                    If arg(i - 1) <= 0 Then
+                        s = i
+                    End If
 
-                If arg(i) > 0 AndAlso arg(i + 1) <= 0 Then
-                    If (i + 1 - s) Mod 3 = 0 Then
-                        ret.Add({s, i})
+                    If arg(i + 1) <= 0 Then
+                        If (i + 1 - s) Mod 3 = 0 Then
+                            ret.Add({s, i})
+                        End If
                     End If
                 End If
             Next

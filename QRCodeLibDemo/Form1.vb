@@ -29,6 +29,7 @@ Public Class Form1
         Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
         Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+        Dim moduleSize As Integer = CInt(nudModuleSize.Value)
 
         Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
@@ -40,7 +41,7 @@ Public Class Form1
         End Try
 
         For Each symbol As Symbol In symbols
-            Dim image As Image = symbol.GetImage(CInt(nudModuleSize.Value), False)
+            Dim image As Image = symbol.GetImage(moduleSize, False)
             Dim pictureBox = New PictureBox() With {
                 .Size = image.Size,
                 .Image = image
@@ -54,9 +55,16 @@ Public Class Form1
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim baseName As String
         Dim isMonochrome As Boolean
+        Dim ext As String
 
-        Using fd As SaveFileDialog = New SaveFileDialog()
-            fd.Filter = "Monochrome Bitmap(*.bmp)|*.bmp|24-bit Bitmap(*.bmp)|*.bmp"
+        Dim filters As String() = {
+            "Monochrome Bitmap(*.bmp)|*.bmp", 
+            "24-bit Bitmap(*.bmp)|*.bmp",
+            "SVG(*.svg)|*.svg"
+        }
+
+        Using fd = New SaveFileDialog()
+            fd.Filter = String.Join("|", filters)
 
             If fd.ShowDialog() <> DialogResult.OK Then
                 Return
@@ -64,13 +72,24 @@ Public Class Form1
 
             isMonochrome = fd.FilterIndex = 1
             baseName = Path.Combine(
-                Path.GetDirectoryName(fd.FileName), Path.GetFileNameWithoutExtension(fd.FileName))
+                Path.GetDirectoryName(fd.FileName),
+                Path.GetFileNameWithoutExtension(fd.FileName))
+
+            Select Case fd.FilterIndex
+                Case 1, 2
+                    ext = FileExtension.BITMAP
+                Case 3
+                    ext = FileExtension.SVG
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
         End Using
         
         Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
         Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
         Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+        Dim moduleSize As Integer = CInt(nudModuleSize.Value)
 
         Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
 
@@ -85,12 +104,19 @@ Public Class Form1
             Dim filename As String
 
             If symbols.Count = 1 Then
-                filename = baseName & ".bmp"
+                filename = baseName & ext
             Else
-                filename = baseName & "_" & CStr(i + 1) & ".bmp"
+                filename = baseName & "_" & CStr(i + 1) & ext
             End If
 
-            symbols(i).SaveBitmap(filename, CInt(nudModuleSize.Value), isMonochrome)
+            Select Case ext
+                Case FileExtension.BITMAP
+                    symbols(i).SaveBitmap(filename, moduleSize, isMonochrome)
+                Case FileExtension.SVG
+                    symbols(i).SaveSvg(filename, moduleSize)
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
         Next
     End Sub
 
@@ -116,3 +142,8 @@ Public Class Form1
     End Sub
 
 End Class
+
+Friend Module FileExtension
+    Public Const BITMAP As String = ".bmp"
+    Public Const SVG As String = ".svg"
+End Module

@@ -16,7 +16,7 @@ Namespace Ys.QRCode
         }
 
         ' 形式情報のマスクパターン
-        Private _formatInfoMaskArray As Integer() = {
+        Private ReadOnly _formatInfoMaskArray As Integer() = {
             0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1
         }
 

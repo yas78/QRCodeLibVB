@@ -6,6 +6,7 @@ JIS X 0510に基づくモデル２コードシンボルを生成します。
 - 数字・英数字・8ビットバイト・漢字モードに対応しています
 - 分割QRコードを作成可能です
 - 1bppまたは24bpp BMPファイル(DIB)へ保存可能です
+- SVG形式で保存可能です
 - 1bppまたは24bpp Imageオブジェクトとして取得可能です 
 - 画像の配色(前景色・背景色)を指定可能です
 - 8ビットバイトモードでの文字コードを指定可能です
@@ -69,16 +70,36 @@ Next
 ```
 
 ### 例６．BMPファイルへ保存する
-SymbolクラスのSave1bppDIB、またはSave24bppDIBメソッドを使用します。
+SymbolクラスのSaveBitmapメソッドを使用します。
 
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
 
-symbols(0).SaveBitmap("D:\qrcode1bpp1.bmp")
+' 24bpp DIB
+sbls(0).SaveBitmap("D:\QRcode.bmp")
+    
+' 10 pixels per module
+sbls(0).SaveBitmap("D:\QRcode.bmp", moduleSize:=10)
+    
+' Specify foreground and background colors.
+sbls(0).SaveBitmap("D:\QRcode.bmp", foreRGB:="#0000FF", backRGB:="#FFFF00")
+    
+' 1bpp DIB
+sbls(0).SaveBitmap("D:\QRcode.bmp", monochrome:=True)
 ```
 
-### 例７．様々な画像形式で保存する
+### 例７．SVGファイルへ保存する
+SymbolクラスのSaveSvgメソッドを使用します。
+
+```vbnet
+Dim symbols As Symbols = New Symbols()
+symbols.AppendText("012345abcdefg")
+
+symbols(0).SaveSvg("D:\qrcode.svg")
+```
+
+### 例８．様々な画像形式で保存する
 ImageオブジェクトのSaveメソッドを使用します。
 
 ```vbnet
@@ -97,7 +118,7 @@ image.Save("D:\qrcode.gif", ImageFormat.Gif)
 image.Save("D:\qrcode.jpg", ImageFormat.Jpeg)
 ```
 
-### 例８．base64エンコードされた画像データを取得する
+### 例９．base64エンコードされた画像データを取得する
 SymbolオブジェクトのGetBitmapBase64メソッドを使用します。
 
 ```vbnet
@@ -106,4 +127,14 @@ symbols.AppendText("012345abcdefg")
 
 Dim data As String = symbols(0).GetBitmapBase64()
 Dim imgTag As String = "<img src=""data:image/bmp;base64," & data & """ />"
+```
+
+### 例１０．SVGデータを取得する
+SymbolオブジェクトのGetSvgメソッドを使用します。
+
+```vbnet
+Dim symbols As Symbols = New Symbols()
+symbols.AppendText("012345abcdefg")
+
+Dim svg As String = symbols(0).GetSvg()
 ```

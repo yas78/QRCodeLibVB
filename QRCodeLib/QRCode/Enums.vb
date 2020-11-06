@@ -23,9 +23,11 @@ Namespace Ys.QRCode
         H
     End Enum
 
-    Friend Enum Constants
-        MIN_VERSION = 1
-        MAX_VERSION = 40
+    Friend Enum Direction
+        UP = 0
+        DOWN
+        LEFT
+        RIGHT
     End Enum
 
 End Namespace

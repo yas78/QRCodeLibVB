@@ -2,6 +2,8 @@
 Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
+Imports System.Text
+Imports System.Text.RegularExpressions
 
 Imports Ys.Image
 Imports Ys.Misc
@@ -685,6 +687,198 @@ Namespace Ys.QRCode
             File.WriteAllBytes(fileName, dib)
         End Sub
 
+        ''' <summary>
+        ''' シンボルをSVG形式でファイルに保存します。
+        ''' </summary>
+        ''' <param name="fileName">ファイル名</param>
+        ''' <param name="moduleSize">モジュールサイズ(px)</param>
+        ''' <param name="foreRgb">前景色</param>
+        Public Sub SaveSvg(fileName As String,
+                           Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                           Optional foreRgb As String = BLACK)
+            If moduleSize < 2 Then
+                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            Dim svg As String = GetSvg(moduleSize, foreRgb)
+            Dim svgFile As String =
+                $"<?xml version='1.0' encoding='UTF-8' standalone='no'?>{vbNewLine}" &
+                $"<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20010904//EN'{vbNewLine}" &
+                $"    'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>{vbNewLine}" &
+                svg & vbNewLine
+
+            File.WriteAllText(fileName, svgFile)
+        End Sub
+
+        Public Function GetSvg(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
+                               Optional foreRgb As String = BLACK) As String
+            If moduleSize < 2 Then
+                Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If Not (Regex.IsMatch(foreRgb, "^#[0-9A-Fa-f]{6}$")) Then
+                Throw New ArgumentOutOfRangeException(NameOf(foreRgb))
+            End If
+
+            Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
+
+            Dim width As Integer = moduleSize * moduleMatrix.Length
+            Dim height As Integer = width
+
+            Dim image = New Integer(height - 1)() {}
+            For i = 0 To image.Length - 1
+                image(i) = New Integer(width - 1) {}
+            Next
+
+            Dim r As Integer = 0
+            For Each row In moduleMatrix
+                For i = 1 To moduleSize
+                    Dim c As Integer = 0
+                    For Each value In row
+                        For j = 1 To moduleSize
+                            image(r)(c) = value
+                            c += 1
+                        Next
+                    Next
+                    r += 1
+                Next
+            Next
+
+            Dim paths As Point()() = FindContours(image)
+            Dim buf = New StringBuilder()
+            Dim indent As String = New String(" "c, 11)
+
+            For Each path In paths
+                buf.Append($"{indent}M ")
+
+                For Each p In path
+                    buf.Append($"{p.X},{p.Y} ")
+                Next
+                buf.AppendLine("Z")
+            Next
+
+            Dim data As String = buf.ToString().Trim()
+            Dim svg As String =
+                $"<svg xmlns='http://www.w3.org/2000/svg'{vbNewLine}" &
+                $"    width='{width}' height='{height}' viewBox='0 0 {width} {height}'>{vbNewLine}" &
+                $"    <path fill='{foreRgb}' stroke='{foreRgb}' stroke-width='1'{vbNewLine}" &
+                $"        d='{data}'{vbNewLine}" &
+                $"    />{vbNewLine}" +
+                $"</svg>"
+
+            Return svg
+        End Function
+
+        Private Function FindContours(image As Integer()()) As Point()()
+            Dim paths = New List(Of Point())()
+            Dim path As List(Of Point)
+            Dim start As Point
+            Dim dr As Direction
+
+            For  y = 0 To UBound(image) - 1
+                For x = 0 To UBound(image(y)) - 1
+                    If image(y)(x) = Integer.MaxValue Then
+                        Continue For
+                    End If
+
+                    If Not (image(y)(x) > 0 AndAlso image(y)(x + 1) <= 0) Then
+                        Continue For
+                    End If
+
+                    image(y)(x) = Integer.MaxValue
+                    start = New Point(x, y)
+                    path = New List(Of Point) From {start}
+
+                    dr = Direction.UP
+                    Dim p As Point = New Point(start.X, start.Y - 1)
+
+                    Do
+                        Select Case dr
+                            Case Direction.UP
+                                If image(p.Y)(p.X) > 0 Then
+                                    image(p.Y)(p.X) = Integer.MaxValue
+
+                                    If image(p.Y)(p.X + 1) <= 0 Then
+                                        p = New Point(p.X, p.Y - 1)
+                                    Else
+                                        path.Add(p)
+                                        dr = Direction.RIGHT
+                                        p = New Point(p.X + 1, p.Y)
+                                    End If
+                                Else
+                                    p = New Point(p.X, p.Y + 1)
+                                    path.Add(p)
+                                    dr = Direction.LEFT
+                                    p = New Point(p.X - 1, p.Y)
+                                End If
+
+                            Case Direction.DOWN
+                                If image(p.Y)(p.X) > 0 Then
+                                    image(p.Y)(p.X) = Integer.MaxValue
+
+                                    If image(p.Y)(p.X - 1) <= 0 Then
+                                        p = New Point(p.X, p.Y + 1)
+                                    Else
+                                        path.Add(p)
+                                        dr = Direction.LEFT
+                                        p = New Point(p.X - 1, p.Y)
+                                    End If
+                                Else
+                                    p = New Point(p.X, p.Y - 1)
+                                    path.Add(p)
+                                    dr = Direction.RIGHT
+                                    p = New Point(p.X + 1, p.Y)
+                                End If
+
+                            Case Direction.LEFT
+                                If image(p.Y)(p.X) > 0 Then
+                                    image(p.Y)(p.X) = Integer.MaxValue
+
+                                    If image(p.Y - 1)(p.X) <= 0 Then
+                                        p = New Point(p.X - 1, p.Y)
+                                    Else
+                                        path.Add(p)
+                                        dr = Direction.UP
+                                        p = New Point(p.X, p.Y - 1)
+                                    End If
+                                Else
+                                    p = New Point(p.X + 1, p.Y)
+                                    path.Add(p)
+                                    dr = Direction.DOWN
+                                    p = New Point(p.X, p.Y + 1)
+                                End If
+
+                            Case Direction.RIGHT
+                                If image(p.Y)(p.X) > 0 Then
+                                    image(p.Y)(p.X) = Integer.MaxValue
+
+                                    If (image(p.Y + 1)(p.X) <= 0) Then
+                                        p = New Point(p.X + 1, p.Y)
+                                    Else
+                                        path.Add(p)
+                                        dr = Direction.DOWN
+                                        p = New Point(p.X, p.Y + 1)
+                                    End If
+                                Else
+                                    p = New Point(p.X - 1, p.Y)
+                                    path.Add(p)
+                                    dr = Direction.UP
+                                    p = New Point(p.X, p.Y - 1)
+                                End If
+
+                            Case Else
+                                Throw New InvalidOperationException()
+                        End Select
+
+                    Loop While (p <> start)
+
+                    paths.Add(path.ToArray())
+                Next
+            Next
+
+            Return paths.ToArray()
+        End Function
+
     End Class
-        
+
 End Namespace
