@@ -8,7 +8,7 @@ Namespace Ys.QRCode
     Friend Module FinderPattern
 
         ' 位置検出パターン
-        Private _finderPattern as Integer()() = {
+        Private ReadOnly _finderPattern as Integer()() = {
             ({2,  2,  2,  2,  2,  2, 2}),
             ({2, -2, -2, -2, -2, -2, 2}),
             ({2, -2,  2,  2,  2, -2, 2}),

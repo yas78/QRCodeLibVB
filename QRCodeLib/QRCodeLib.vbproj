@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Image\BITMAPFILEHEADER.vb" />
     <Compile Include="Image\BITMAPINFOHEADER.vb" />
+    <Compile Include="Image\ColorCode.vb" />
     <Compile Include="Image\RGBQUAD.vb" />
     <Compile Include="Misc\ArrayUtil.vb" />
     <Compile Include="Image\DIB.vb" />

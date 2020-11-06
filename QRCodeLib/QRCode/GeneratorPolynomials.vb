@@ -7,7 +7,7 @@ Namespace Ys.QRCode
     ''' </summary>
     Friend Module GeneratorPolynomials
 
-        Private _gp As Integer()() = New Integer(68)() {}
+        Private ReadOnly _gp As Integer()() = New Integer(68)() {}
 
         Sub New()
             _gp(7)  = {  21, 102, 238, 149, 146, 229,  87,   0 }

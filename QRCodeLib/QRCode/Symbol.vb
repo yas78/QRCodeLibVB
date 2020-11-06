@@ -3,7 +3,6 @@ Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
 Imports System.Text
-Imports System.Text.RegularExpressions
 
 Imports Ys.Image
 Imports Ys.Misc
@@ -482,8 +481,20 @@ Namespace Ys.QRCode
                                   Optional monochrome As Boolean = False,
                                   Optional foreRgb As String = BLACK,
                                   Optional backRgb As String = WHITE) As Byte()
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
+            End If
+
+            If ColorCode.IsWebColor(backRgb) = False Then
+                Throw New FormatException(NameOf(backRgb))
             End If
 
             If monochrome Then
@@ -613,8 +624,20 @@ Namespace Ys.QRCode
                                         Optional monochrome As Boolean = False,
                                         Optional foreRgb As String = BLACK,
                                         Optional backRgb As String = WHITE) As String
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
+            End If
+
+            If ColorCode.IsWebColor(backRgb) = False Then
+                Throw New FormatException(NameOf(backRgb))
             End If
 
             Dim dib As Byte()
@@ -639,8 +662,20 @@ Namespace Ys.QRCode
                                  Optional monochrome As Boolean = False,
                                  Optional foreRgb As String = BLACK,
                                  Optional backRgb As String = WHITE) As System.Drawing.Image
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
+            End If
+
+            If ColorCode.IsWebColor(backRgb) = False Then
+                Throw New FormatException(NameOf(backRgb))
             End If
 
             Dim dib As Byte()
@@ -668,12 +703,24 @@ Namespace Ys.QRCode
                               Optional monochrome As Boolean = False,
                               Optional foreRgb As String = BLACK,
                               Optional backRgb As String = WHITE)
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
             If String.IsNullOrEmpty(fileName) Then
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
 
             If moduleSize < 1 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
+            End If
+
+            If ColorCode.IsWebColor(backRgb) = False Then
+                Throw New FormatException(NameOf(backRgb))
             End If
 
             Dim dib As Byte()
@@ -696,8 +743,20 @@ Namespace Ys.QRCode
         Public Sub SaveSvg(fileName As String,
                            Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                            Optional foreRgb As String = BLACK)
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
+            If String.IsNullOrEmpty(fileName) Then
+                Throw New ArgumentNullException(NameOf(fileName))
+            End If
+
             If moduleSize < 2 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
+            End If
+
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
             End If
 
             Dim svg As String = GetSvg(moduleSize, foreRgb)
@@ -712,12 +771,16 @@ Namespace Ys.QRCode
 
         Public Function GetSvg(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
                                Optional foreRgb As String = BLACK) As String
+            If _dataBitCounter = 0 Then
+                Throw New InvalidOperationException()
+            End If
+
             If moduleSize < 2 Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
-            If Not (Regex.IsMatch(foreRgb, "^#[0-9A-Fa-f]{6}$")) Then
-                Throw New ArgumentOutOfRangeException(NameOf(foreRgb))
+            If ColorCode.IsWebColor(foreRgb) = False Then
+                Throw New FormatException(NameOf(foreRgb))
             End If
 
             Dim moduleMatrix As Integer()() = QuietZone.Place(GetModuleMatrix())
