@@ -831,9 +831,6 @@ Namespace Ys.QRCode
 
         Private Function FindContours(image As Integer()()) As Point()()
             Dim paths = New List(Of Point())()
-            Dim path As List(Of Point)
-            Dim start As Point
-            Dim dr As Direction
 
             For  y = 0 To UBound(image) - 1
                 For x = 0 To UBound(image(y)) - 1
@@ -846,10 +843,10 @@ Namespace Ys.QRCode
                     End If
 
                     image(y)(x) = Integer.MaxValue
-                    start = New Point(x, y)
-                    path = New List(Of Point) From {start}
+                    Dim start = New Point(x, y)
+                    Dim path = New List(Of Point) From {start}
 
-                    dr = Direction.UP
+                    Dim dr As Direction = Direction.UP
                     Dim p As Point = New Point(start.X, start.Y - 1)
 
                     Do
