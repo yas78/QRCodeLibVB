@@ -786,20 +786,21 @@ Namespace Ys.QRCode
             Dim height As Integer = width
 
             Dim image = New Integer(height - 1)() {}
-            For i = 0 To image.Length - 1
-                image(i) = New Integer(width - 1) {}
-            Next
-
+            
             Dim r As Integer = 0
             For Each row In moduleMatrix
-                For i = 1 To moduleSize
-                    Dim c As Integer = 0
-                    For Each value In row
-                        For j = 1 To moduleSize
-                            image(r)(c) = value
-                            c += 1
-                        Next
+                Dim imageRow = New Integer(width - 1) {}
+                Dim c As Integer = 0
+
+                For Each value In row
+                    For j = 1 To moduleSize
+                        imageRow(c) = value
+                        c += 1
                     Next
+                Next
+
+                For i = 1 To moduleSize
+                    image(r) = imageRow
                     r += 1
                 Next
             Next
