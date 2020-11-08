@@ -11,14 +11,11 @@ JIS X 0510に基づくモデル２コードシンボルを生成します。
 - 画像の配色(前景色・背景色)を指定可能です
 - 8ビットバイトモードでの文字コードを指定可能です
 
-
 ## クイックスタート
 QRCodeLibプロジェクト、またはビルドした QRCodeLib.dll を参照設定してください。
 
-
 ## 使用方法
 ### 例１．単一シンボルで構成される(分割QRコードではない)QRコードの、最小限のコードを示します。
-
 ```vbnet
 Imports Ys.QRCode
 Imports System.Drawing
@@ -34,7 +31,6 @@ End Sub
 
 ### 例２．誤り訂正レベルを指定する
 Symbolsクラスのコンストラクタ引数に、ErrorCorrectionLevel列挙型の値を設定します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols(ErrorCorrectionLevel.H)
 ```
@@ -57,9 +53,7 @@ Symbolsクラスのコンストラクタで設定します。型番の上限を�
 ```vbnet
 Dim symbols As Symbols = New Symbols(allowStructuredAppend:=True)
 ```
-
 型番1を超える場合に分割し、各QRコードのImageオブジェクトを取得する例を示します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols(maxVersion:=1, allowStructuredAppend:=True)
 symbols.AppendText("abcdefghijklmnopqrstuvwxyz")
@@ -71,7 +65,6 @@ Next
 
 ### 例６．BMPファイルへ保存する
 SymbolクラスのSaveBitmapメソッドを使用します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
@@ -91,7 +84,6 @@ sbls(0).SaveBitmap("D:\QRcode.bmp", monochrome:=True)
 
 ### 例７．SVGファイルへ保存する
 SymbolクラスのSaveSvgメソッドを使用します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
@@ -120,7 +112,6 @@ image.Save("D:\qrcode.jpg", ImageFormat.Jpeg)
 
 ### 例９．base64エンコードされた画像データを取得する
 SymbolオブジェクトのGetBitmapBase64メソッドを使用します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
@@ -131,7 +122,6 @@ Dim imgTag As String = "<img src=""data:image/bmp;base64," & data & """ />"
 
 ### 例１０．SVGデータを取得する
 SymbolオブジェクトのGetSvgメソッドを使用します。
-
 ```vbnet
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
