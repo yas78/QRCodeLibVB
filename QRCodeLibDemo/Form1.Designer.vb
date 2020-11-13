@@ -133,11 +133,11 @@ Partial Class Form1
         Me.nudModuleSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.nudModuleSize.Font = New System.Drawing.Font("MS UI Gothic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128,Byte))
         Me.nudModuleSize.Location = New System.Drawing.Point(472, 478)
-        Me.nudModuleSize.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudModuleSize.Minimum = New Decimal(New Integer() {2, 0, 0, 0})
         Me.nudModuleSize.Name = "nudModuleSize"
         Me.nudModuleSize.Size = New System.Drawing.Size(46, 20)
         Me.nudModuleSize.TabIndex = 9
-        Me.nudModuleSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudModuleSize.Value = New Decimal(New Integer() {2, 0, 0, 0})
         '
         'chkStructuredAppend
         '

@@ -23,12 +23,5 @@ Namespace Ys.QRCode
         H
     End Enum
 
-    Friend Enum Direction
-        UP = 0
-        DOWN
-        LEFT
-        RIGHT
-    End Enum
-
 End Namespace
 

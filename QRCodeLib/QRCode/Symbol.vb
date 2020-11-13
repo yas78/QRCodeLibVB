@@ -16,7 +16,8 @@ Namespace Ys.QRCode
     ''' </summary>
     Public Class Symbol
 
-        Const DEFAULT_MODULE_SIZE As Integer = 4
+        Const DEFAULT_MODULE_SIZE As Integer = 5
+        Const MIN_MODULE_SIZE As Integer = 2
 
         Private ReadOnly _parent As Symbols
 
@@ -482,7 +483,7 @@ Namespace Ys.QRCode
                 Throw New InvalidOperationException()
             End If
 
-            If moduleSize < 1 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
@@ -625,7 +626,7 @@ Namespace Ys.QRCode
                 Throw New InvalidOperationException()
             End If
 
-            If moduleSize < 1 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
@@ -663,7 +664,7 @@ Namespace Ys.QRCode
                 Throw New InvalidOperationException()
             End If
 
-            If moduleSize < 1 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
@@ -708,7 +709,7 @@ Namespace Ys.QRCode
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
 
-            If moduleSize < 1 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
@@ -748,7 +749,7 @@ Namespace Ys.QRCode
                 Throw New ArgumentNullException(NameOf(fileName))
             End If
 
-            If moduleSize < 2 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 
@@ -772,7 +773,7 @@ Namespace Ys.QRCode
                 Throw New InvalidOperationException()
             End If
 
-            If moduleSize < 2 Then
+            If moduleSize < MIN_MODULE_SIZE Then
                 Throw New ArgumentOutOfRangeException(NameOf(moduleSize))
             End If
 

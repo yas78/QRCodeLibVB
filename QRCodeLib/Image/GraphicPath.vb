@@ -5,6 +5,12 @@ Imports System.Drawing
 Imports Ys.QRCode
 
 Friend Class GraphicPath
+    Private Enum Direction
+        UP = 0
+        DOWN
+        LEFT
+        RIGHT
+    End Enum
 
     Public Shared Function FindContours(image As Integer()()) As Point()()
         Dim gps = New List(Of Point())()
