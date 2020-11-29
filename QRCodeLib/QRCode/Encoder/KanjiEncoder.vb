@@ -48,22 +48,20 @@ Namespace Ys.QRCode.Encoder
             Select Case wd
                 Case &H8140 To &H9FFC
                     wd -= &H8140
-
                 Case &HE040 To &HEBBF
                     wd -= &HC140
-
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(c))
-
             End Select
 
             wd = ((wd >> 8) * &HC0) + (wd And &HFF)
-
             _codeWords.Add(wd)
-            _charCounter += 1
-            _bitCounter += 13
 
-            Return 13
+            Dim ret As Integer = GetCodewordBitLength(c)
+            _bitCounter += ret
+            _charCounter += 1
+            
+            Return ret
         End Function
 
         ''' <summary>
@@ -100,18 +98,21 @@ Namespace Ys.QRCode.Encoder
 
             If &H8140 <= code AndAlso code <= &H9FFC OrElse
                &HE040 <= code AndAlso code <= &HEBBF Then
-
                 Return &H40 <= charBytes(1) AndAlso charBytes(1) <= &HFC AndAlso
                        &H7F <> charBytes(1)
-            Else
-                Return False
             End If
+
+            Return False
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function InExclusiveSubset(c As Char) As Boolean
+            If AlphanumericEncoder.InSubset(c) Then
+                Return False
+            End If
+
             Return InSubset(c)
         End Function
         

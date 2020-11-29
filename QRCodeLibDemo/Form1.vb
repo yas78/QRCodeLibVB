@@ -6,6 +6,8 @@ Imports Ys.QRCode
 
 Public Class Form1
 
+    Const DEFAULT_MODULE_SIZE As Integer = 5
+
     Public Sub New()
         InitializeComponent()
     End Sub
@@ -125,7 +127,7 @@ Public Class Form1
             [Enum].GetValues(GetType(ErrorCorrectionLevel))
         cmbErrorCorrectionLevel.SelectedItem = ErrorCorrectionLevel.M
 
-        For i As Integer = 1 To 40
+        For i As Integer = Constants.MIN_VERSION To Constants.MAX_VERSION
             cmbMaxVersion.Items.Add(i)
         Next
 
@@ -136,7 +138,7 @@ Public Class Form1
         cmbEncoding.DataSource =  Encoding.GetEncodings()
         cmbEncoding.Text = Encoding.Default.EncodingName
 
-        nudModuleSize.Value = 4
+        nudModuleSize.Value = DEFAULT_MODULE_SIZE
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False
     End Sub

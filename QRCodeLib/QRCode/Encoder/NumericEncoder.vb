@@ -40,20 +40,18 @@ Namespace Ys.QRCode.Encoder
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
             Dim wd As Integer = Int32.Parse(c.ToString())
-            Dim ret As Integer
-
+            
             If _charCounter Mod 3 = 0 Then
                 _codeWords.Add(wd)
-                ret = 4
             Else
                 _codeWords(_codeWords.Count - 1) *= 10
                 _codeWords(_codeWords.Count - 1) += wd
-                ret = 3
             End If
 
-            _charCounter += 1
+            Dim ret As Integer = GetCodewordBitLength(c)
             _bitCounter += ret
-
+            _charCounter += 1
+            
             Return ret
         End Function
 
