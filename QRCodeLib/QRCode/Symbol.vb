@@ -331,7 +331,7 @@ Namespace Ys.QRCode
             bs.Append(ModeIndicator.STRUCTURED_APPEND_VALUE, ModeIndicator.LENGTH)
             bs.Append(_position, SymbolSequenceIndicator.POSITION_LENGTH)
             bs.Append(_parent.Count - 1, SymbolSequenceIndicator.TOTAL_NUMBER_LENGTH)
-            bs.Append(_parent.StructuredAppendParity, StructuredAppend.PARITY_DATA_LENGTH)
+            bs.Append(_parent.Parity, StructuredAppend.PARITY_DATA_LENGTH)
         End Sub
 
         Private Sub WriteSegments(bs As BitSequence)

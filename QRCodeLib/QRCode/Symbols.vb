@@ -23,7 +23,7 @@ Namespace Ys.QRCode
         Private ReadOnly _byteModeEncoding          As Encoding
         Private ReadOnly _shiftJISEncoding          As Encoding
 
-        Private _structuredAppendParity As Integer
+        Private _parity As Integer
         Private _currSymbol As Symbol
 
         ''' <summary>
@@ -52,7 +52,7 @@ Namespace Ys.QRCode
             _byteModeEncoding           = Encoding.GetEncoding(byteModeEncoding)
             _shiftJISEncoding           = Encoding.GetEncoding("shift_jis")
 
-            _structuredAppendParity     = 0
+            _parity     = 0
             _currSymbol = New Symbol(Me)
 
             _items.Add(_currSymbol)
@@ -118,9 +118,9 @@ Namespace Ys.QRCode
         ''' <summary>
         ''' 構造的連接のパリティを取得します。
         ''' </summary>
-        Friend ReadOnly Property StructuredAppendParity() As Integer
+        Friend ReadOnly Property Parity() As Integer
             Get
-                Return _structuredAppendParity
+                Return _parity
             End Get
         End Property
         
@@ -483,7 +483,7 @@ Namespace Ys.QRCode
             End If
 
             For Each value As Byte In charBytes
-                _structuredAppendParity = _structuredAppendParity Xor value
+                _parity = _parity Xor value
             Next
         End Sub
 

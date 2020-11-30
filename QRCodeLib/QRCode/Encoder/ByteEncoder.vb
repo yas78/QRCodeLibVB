@@ -50,15 +50,15 @@ Namespace Ys.QRCode.Encoder
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
             Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+            Dim ret       As Integer = 0
 
             For Each value In charBytes
                 _codeWords.Add(value)
+                _charCounter += 1
+                _bitCounter += 8
+                ret += 8
             Next
 
-            Dim ret As Integer = 8 * charBytes.Length
-            _bitCounter += ret
-            _charCounter += charBytes.Length
-            
             Return ret
         End Function
 
