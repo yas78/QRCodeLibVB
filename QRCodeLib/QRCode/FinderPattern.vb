@@ -28,10 +28,9 @@ Namespace Ys.QRCode
                 For j As Integer = 0 To UBound(_finderPattern(i))
                     Dim v As Integer = _finderPattern(i)(j)
 
-                    moduleMatrix(i         )(j         ) = v
-                    moduleMatrix(i         )(j + offset) = v
-                    moduleMatrix(i + offset)(j         ) = v
-
+                    moduleMatrix(i)(j) = v
+                    moduleMatrix(i)(j + offset) = v
+                    moduleMatrix(i + offset)(j) = v
                 Next
             Next
         End Sub

@@ -53,6 +53,7 @@ Symbolsクラスのコンストラクタで設定します。型番の上限を�
 ```vbnet
 Dim symbols As Symbols = New Symbols(allowStructuredAppend:=True)
 ```
+
 型番1を超える場合に分割し、各QRコードのImageオブジェクトを取得する例を示します。
 ```vbnet
 Dim symbols As Symbols = New Symbols(maxVersion:=1, allowStructuredAppend:=True)
@@ -70,16 +71,16 @@ Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
 
 ' 24bpp DIB
-sbls(0).SaveBitmap("D:\QRcode.bmp")
-    
-' 10 pixels per module
-sbls(0).SaveBitmap("D:\QRcode.bmp", moduleSize:=10)
-    
-' Specify foreground and background colors.
-sbls(0).SaveBitmap("D:\QRcode.bmp", foreRGB:="#0000FF", backRGB:="#FFFF00")
-    
+symbols(0).SaveBitmap("qrcode.bmp")
+
 ' 1bpp DIB
-sbls(0).SaveBitmap("D:\QRcode.bmp", monochrome:=True)
+symbols(0).SaveBitmap("qrcode.bmp", monochrome:=True)
+
+' 10 pixels per module
+symbols(0).SaveBitmap("qrcode.bmp", moduleSize:=10)
+
+' Specify foreground and background colors.
+symbols(0).SaveBitmap("qrcode.bmp", foreRgb:="#0000FF", backRgb:="#FFFF00")    
 ```
 
 ### 例７．SVGファイルへ保存する
@@ -88,7 +89,7 @@ SymbolクラスのSaveSvgメソッドを使用します。
 Dim symbols As Symbols = New Symbols()
 symbols.AppendText("012345abcdefg")
 
-symbols(0).SaveSvg("D:\qrcode.svg")
+symbols(0).SaveSvg("qrcode.svg")
 ```
 
 ### 例８．様々な画像形式で保存する
@@ -103,11 +104,11 @@ symbols.AppendText("012345")
 
 Dim image As Image = symbols(0).GetImage()
 ' PNG
-image.Save("D:\qrcode.png", ImageFormat.Png)
+image.Save("qrcode.png", ImageFormat.Png)
 ' GIF
-image.Save("D:\qrcode.gif", ImageFormat.Gif)
+image.Save("qrcode.gif", ImageFormat.Gif)
 ' JPEG
-image.Save("D:\qrcode.jpg", ImageFormat.Jpeg)
+image.Save("qrcode.jpg", ImageFormat.Jpeg)
 ```
 
 ### 例９．base64エンコードされた画像データを取得する
