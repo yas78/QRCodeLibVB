@@ -9,7 +9,7 @@ Namespace Ys.QRCode
     ''' マスクされたシンボルの失点評価
     ''' </summary>
     Friend Module MaskingPenaltyScore
-       
+
         ''' <summary>
         ''' マスクパターン失点の合計を返します。
         ''' </summary>
@@ -58,7 +58,7 @@ Namespace Ys.QRCode
                 Dim cnt As Integer = 1
 
                 For i As Integer = 0 To UBound(row) - 1
-                    If (row(i) > 0) = (row(i + 1) > 0) Then
+                    If Values.IsDark(row(i)) = Values.IsDark(row(i + 1)) Then
                         cnt += 1
                     Else
                         If cnt >= 5 Then
@@ -87,11 +87,11 @@ Namespace Ys.QRCode
 
             For r As Integer = 0 To UBound(moduleMatrix) - 1
                 For c As Integer = 0 To UBound(moduleMatrix(r)) - 1
-                    Dim temp As Boolean = moduleMatrix(r)(c) > 0
+                    Dim temp As Boolean = Values.IsDark(moduleMatrix(r)(c))
 
-                    If (moduleMatrix(r + 0)(c + 1) > 0 = temp) AndAlso
-                       (moduleMatrix(r + 1)(c + 0) > 0 = temp) AndAlso
-                       (moduleMatrix(r + 1)(c + 1) > 0 = temp) Then
+                    If (Values.IsDark(moduleMatrix(r + 0)(c + 1)) = temp) AndAlso
+                       (Values.IsDark(moduleMatrix(r + 1)(c + 0)) = temp) AndAlso
+                       (Values.IsDark(moduleMatrix(r + 1)(c + 1)) = temp) Then
                         penalty += 3
                     End If
 
@@ -100,7 +100,7 @@ Namespace Ys.QRCode
 
             Return penalty
         End Function
-        
+
         ''' <summary>
         ''' 行／列における1 : 1 : 3 : 1 : 1 比率パターンの失点を計算します。
         ''' </summary>
@@ -135,7 +135,7 @@ Namespace Ys.QRCode
 
                     ' light ratio 1
                     cnt = 0
-                    Do While i >= 0 AndAlso row(i) <= 0
+                    Do While i >= 0 AndAlso (Not Values.IsDark(row(i)))
                         cnt += 1
                         i -= 1
                     Loop
@@ -144,7 +144,7 @@ Namespace Ys.QRCode
 
                     ' dark ratio 1
                     cnt = 0
-                    Do While i >= 0 AndAlso row(i) > 0
+                    Do While i >= 0 AndAlso Values.IsDark(row(i))
                         cnt += 1
                         i -= 1
                     Loop
@@ -153,7 +153,7 @@ Namespace Ys.QRCode
 
                     ' light ratio 4
                     cnt = 0
-                    Do While i >= 0 AndAlso row(i) <= 0
+                    Do While i >= 0 AndAlso (Not Values.IsDark(row(i)))
                         cnt += 1
                         i -= 1
                     Loop
@@ -166,7 +166,7 @@ Namespace Ys.QRCode
 
                     ' light ratio 1
                     cnt = 0
-                    Do While i <= UBound(row) AndAlso row(i) <= 0
+                    Do While i <= UBound(row) AndAlso (Not Values.IsDark(row(i)))
                         cnt += 1
                         i += 1
                     Loop
@@ -175,7 +175,7 @@ Namespace Ys.QRCode
 
                     ' dark ratio 1
                     cnt = 0
-                    Do While i <= UBound(row) AndAlso row(i) > 0
+                    Do While i <= UBound(row) AndAlso Values.IsDark(row(i))
                         cnt += 1
                         i += 1
                     Loop
@@ -184,7 +184,7 @@ Namespace Ys.QRCode
 
                     ' light ratio 4
                     cnt = 0
-                    Do While i <= UBound(row) AndAlso row(i) <= 0
+                    Do While i <= UBound(row) AndAlso (Not Values.IsDark(row(i)))
                         cnt += 1
                         i += 1
                     Loop
@@ -207,12 +207,12 @@ Namespace Ys.QRCode
             Dim s As Integer = 0
 
             For i As Integer = 1 To UBound(arg) - 1
-                If arg(i) > 0 Then
-                    If arg(i - 1) <= 0 Then
+                If Values.IsDark(arg(i)) Then
+                    If Not Values.IsDark(arg(i - 1)) Then
                         s = i
                     End If
 
-                    If arg(i + 1) <= 0 Then
+                    If Not Values.IsDark(arg(i + 1)) Then
                         If (i + 1 - s) Mod 3 = 0 Then
                             ret.Add({s, i})
                         End If
@@ -233,21 +233,22 @@ Namespace Ys.QRCode
 
             For Each row As Integer() In moduleMatrix
                 For Each value As Integer In row
-                    If value > 0 Then
+                    If Values.IsDark(value) Then
                         darkCount += 1
                     End If
                 Next
             Next
-            
-            Dim numModules As Double = moduleMatrix.Length ^ 2
-            Dim temp As Integer
-            temp = CInt(Math.Ceiling(darkCount / numModules * 100))
-            temp = Math.Abs(temp - 50)
-            temp = (temp + 4) \ 5
 
-            Return temp * 10
+            Dim numModules As Double = moduleMatrix.Length ^ 2
+            Dim k As Double
+            k = darkCount / numModules * 100
+            k = Math.Abs(k - 50)
+            k = Math.Floor(k / 5)
+            Dim penalty  as Integer = CInt(k) * 10
+
+            Return penalty
         End Function
-        
+
     End Module
 
 End Namespace

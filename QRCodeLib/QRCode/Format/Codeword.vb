@@ -23,7 +23,7 @@ Namespace Ys.QRCode.Format
         Public Function GetTotalNumber(version As Integer) As Integer
             Return _totalNumbers(version)
         End Function
-        
+
     End Module
 
 End Namespace

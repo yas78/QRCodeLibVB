@@ -6,7 +6,9 @@ Namespace Ys.QRCode
     ''' 形式情報
     ''' </summary>
     Friend Module FormatInfo
-        
+
+        Const VAL As Integer = Values.FORMAT
+
         ' 形式情報
         Private ReadOnly _formatInfoValues As Integer() = {
             &H0000, &H0537, &H0A6E, &H0F59, &H11EB, &H14DC, &H1B85, &H1EB2, &H23D6, &H26E1,
@@ -39,7 +41,7 @@ Namespace Ys.QRCode
                 Dim temp As Integer =
                     If((formatInfoValue And (1 << i)) > 0, 1, 0) Xor _formatInfoMaskArray(i)
 
-                Dim v As Integer = If(temp > 0, 3, -3)
+                Dim v As Integer = If(temp > 0, VAL, -VAL)
 
                 moduleMatrix(r1)(8) = v
                 moduleMatrix(8)(c1) = v
@@ -59,7 +61,7 @@ Namespace Ys.QRCode
                 Dim temp As Integer =
                     If((formatInfoValue And (1 << i)) > 0, 1, 0) Xor _formatInfoMaskArray(i)
 
-                Dim v As Integer = If(temp > 0, 3, -3)
+                Dim v As Integer = If(temp > 0, VAL, -VAL)
 
                 moduleMatrix(r2)(8) = v
                 moduleMatrix(8)(c2) = v
@@ -71,29 +73,32 @@ Namespace Ys.QRCode
                     c2 -= 1
                 End If
             Next
+
+            ' 固定暗モジュール
+            moduleMatrix(UBound(moduleMatrix) - 7)(8) = VAL
         End Sub
 
         ''' <summary>
         ''' 形式情報の予約領域を配置します｡
         ''' </summary>
         Public Sub PlaceTempBlank(moduleMatrix As Integer()())
-            Dim numModulesOneSide As Integer = moduleMatrix.Length
-
             For i As Integer = 0 To 8
-                ' タイミグパターンの領域ではない場合
-                If i <> 6 Then
-                    moduleMatrix(8)(i) = -3
-                    moduleMatrix(i)(8) = -3
+                ' タイミグパターンの領域
+                If i = 6 Then
+                    Continue For
                 End If
+
+                moduleMatrix(8)(i) = -VAL
+                moduleMatrix(i)(8) = -VAL
             Next
 
-            For i As Integer = numModulesOneSide - 8 To numModulesOneSide - 1
-                moduleMatrix(8)(i) = -3
-                moduleMatrix(i)(8) = -3
+            For i As Integer = UBound(moduleMatrix) - 7 To UBound(moduleMatrix)
+                moduleMatrix(8)(i) = -VAL
+                moduleMatrix(i)(8) = -VAL
             Next
 
-            ' 固定暗モジュールを配置(マスクの適用前に配置する)
-            moduleMatrix(numModulesOneSide - 8)(8) = 2
+            ' 固定暗モジュール
+            moduleMatrix(UBound(moduleMatrix) - 7)(8) = -VAL
         End Sub
 
         ''' <summary>
@@ -117,7 +122,7 @@ Namespace Ys.QRCode
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(ecLevel))
             End Select
-        
+
             Return _formatInfoValues((indicator << 3) Or maskPatternReference)
         End Function
 

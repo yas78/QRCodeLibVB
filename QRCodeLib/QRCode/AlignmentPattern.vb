@@ -6,36 +6,8 @@ Namespace Ys.QRCode
     ''' 位置合わせパターン
     ''' </summary>
     Friend Module AlignmentPattern
-
-        ''' <summary>
-        ''' 位置合わせパターンを配置します。
-        ''' </summary>
-        Public Sub Place(version As Integer, moduleMatrix As Integer()())
-            Dim centerPosArray As Integer() = _centerPosArrays(version)
-
-            Dim maxIndex As Integer = UBound(centerPosArray)
-
-            For i As Integer = 0 To maxIndex
-                Dim r As Integer = centerPosArray(i)
-
-                For j As Integer = 0 To maxIndex
-                    Dim c As Integer = centerPosArray(j)
-
-                    ' 位置検出パターンと重なる場合
-                    If i = 0        AndAlso j = 0        OrElse
-                       i = 0        AndAlso j = maxIndex OrElse
-                       i = maxIndex AndAlso j = 0        Then
-                        Continue For
-                    End If
-
-                    Array.Copy(New Integer() {2,  2,  2,  2,  2}, 0, moduleMatrix(r - 2), c - 2, 5)
-                    Array.Copy(New Integer() {2, -2, -2, -2,  2}, 0, moduleMatrix(r - 1), c - 2, 5)
-                    Array.Copy(New Integer() {2, -2,  2, -2,  2}, 0, moduleMatrix(r + 0), c - 2, 5)
-                    Array.Copy(New Integer() {2, -2, -2, -2,  2}, 0, moduleMatrix(r + 1), c - 2, 5)
-                    Array.Copy(New Integer() {2,  2,  2,  2,  2}, 0, moduleMatrix(r + 2), c - 2, 5)
-                Next
-            Next
-        End Sub
+        
+        Const VAL As Integer = Values.ALIGNMENT
 
         Private ReadOnly _centerPosArrays As Integer()() = {
             Nothing,
@@ -80,6 +52,36 @@ Namespace Ys.QRCode
             ({6, 26, 54, 82, 110, 138, 166}),
             ({6, 30, 58, 86, 114, 142, 170})
         }
+
+        ''' <summary>
+        ''' 位置合わせパターンを配置します。
+        ''' </summary>
+        Public Sub Place(version As Integer, moduleMatrix As Integer()())
+            Dim centerPosArray As Integer() = _centerPosArrays(version)
+
+            Dim maxIndex As Integer = UBound(centerPosArray)
+
+            For i As Integer = 0 To maxIndex
+                Dim r As Integer = centerPosArray(i)
+
+                For j As Integer = 0 To maxIndex
+                    Dim c As Integer = centerPosArray(j)
+
+                    ' 位置検出パターンと重なる場合
+                    If i = 0        AndAlso j = 0        OrElse
+                       i = 0        AndAlso j = maxIndex OrElse
+                       i = maxIndex AndAlso j = 0        Then
+                        Continue For
+                    End If
+
+                    Array.Copy(New Integer() {VAL,  VAL,  VAL,  VAL,  VAL}, 0, moduleMatrix(r - 2), c - 2, 5)
+                    Array.Copy(New Integer() {VAL, -VAL, -VAL, -VAL,  VAL}, 0, moduleMatrix(r - 1), c - 2, 5)
+                    Array.Copy(New Integer() {VAL, -VAL,  VAL, -VAL,  VAL}, 0, moduleMatrix(r + 0), c - 2, 5)
+                    Array.Copy(New Integer() {VAL, -VAL, -VAL, -VAL,  VAL}, 0, moduleMatrix(r + 1), c - 2, 5)
+                    Array.Copy(New Integer() {VAL,  VAL,  VAL,  VAL,  VAL}, 0, moduleMatrix(r + 2), c - 2, 5)
+                Next
+            Next
+        End Sub
 
     End Module
 

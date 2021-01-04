@@ -10,7 +10,7 @@ Imports Ys.QRCode.Encoder
 Imports Ys.QRCode.Format
 
 Namespace Ys.QRCode
-        
+
     ''' <summary>
     ''' シンボルを表します。
     ''' </summary>
@@ -62,7 +62,7 @@ Namespace Ys.QRCode
                 _dataBitCapacity -= StructuredAppend.HEADER_LENGTH 
             End If
         End Sub
-            
+
         ''' <summary>
         ''' 親オブジェクトを取得します。
         ''' </summary>
@@ -142,7 +142,7 @@ Namespace Ys.QRCode
             _segments.Add(_currEncoder)
             _segmentCounter(encMode) += 1
             _currEncodingMode = encMode
-                
+
             Return True
         End Function
 
@@ -167,7 +167,7 @@ Namespace Ys.QRCode
                 _dataBitCapacity -= StructuredAppend.HEADER_LENGTH
             End If
         End Sub
-            
+
         ''' <summary>
         ''' データブロックを返します。
         ''' </summary>
@@ -180,7 +180,7 @@ Namespace Ys.QRCode
                     _parent.ErrorCorrectionLevel, _currVersion, False)
 
             Dim ret As Byte()() = New Byte(numPreBlocks + numFolBlocks - 1)() {}
-            
+
             Dim numPreBlockDataCodewords As Integer = RSBlock.GetNumberDataCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion, True)
             Dim index As Integer = 0
@@ -193,7 +193,7 @@ Namespace Ys.QRCode
 
                 ret(i) = data
             Next
-                
+
             Dim numFolBlockDataCodewords As Integer = RSBlock.GetNumberDataCodewords(
                     _parent.ErrorCorrectionLevel, _currVersion, False)
 
@@ -205,7 +205,7 @@ Namespace Ys.QRCode
 
                 ret(i) = data
             Next
-                
+
             Return ret
         End Function
 
@@ -269,12 +269,12 @@ Namespace Ys.QRCode
         Private Function GetEncodingRegionBytes() As Byte()
             Dim dataBlock   As Byte()() = BuildDataBlock()
             Dim ecBlock     As Byte()() = BuildErrorCorrectionBlock(dataBlock)
-                
+
             Dim numCodewords As Integer = Codeword.GetTotalNumber(_currVersion)
 
             Dim numDataCodewords As Integer = DataCodeword.GetTotalNumber(
                     _parent.ErrorCorrectionLevel, _currVersion)
-                
+
             Dim ret As Byte() = New Byte(numCodewords - 1) {}
 
             Dim index   As Integer = 0
@@ -305,7 +305,7 @@ Namespace Ys.QRCode
 
                 n += 1
             Loop
-                
+
             Return ret
         End Function
 
@@ -323,7 +323,7 @@ Namespace Ys.QRCode
             WriteTerminator(bs)
             WritePaddingBits(bs)
             WritePadCodewords(bs)
-                
+
             Return bs.GetBytes()
         End Function
 
@@ -421,6 +421,8 @@ Namespace Ys.QRCode
         ''' シンボルキャラクタを配置します。
         ''' </summary>
         Private Sub PlaceSymbolChar(moduleMatrix As Integer()())
+            Const VAL As Integer = Values.WORD
+
             Dim data As Byte() = GetEncodingRegionBytes()
 
             Dim r As Integer = UBound(moduleMatrix)
@@ -429,12 +431,12 @@ Namespace Ys.QRCode
             Dim toLeft As Boolean = True
             Dim rowDirection As Integer = -1
 
-            For Each value As Byte In data
+            For Each v As Byte In data
                 Dim bitPos As Integer = 7
 
                 Do While bitPos >= 0
-                    If moduleMatrix(r)(c) = 0 Then
-                        moduleMatrix(r)(c) = If((value And (1 << bitPos)) > 0, 1, -1)
+                    If moduleMatrix(r)(c) = Values.BLANK Then
+                        moduleMatrix(r)(c) = If((v And (1 << bitPos)) > 0, VAL, -VAL)
                         bitPos -= 1
                     End If
 
@@ -538,8 +540,8 @@ Namespace Ys.QRCode
             For r As Integer = UBound(moduleMatrix) To 0 Step -1
                 Dim bs = New BitSequence()
 
-                For Each value In moduleMatrix(r)
-                    Dim color As Integer = If(value > 0, 0, 1)
+                For Each v In moduleMatrix(r)
+                    Dim color As Integer = If(Values.IsDark(v), 0, 1)
 
                     For j As Integer = 1 To moduleSize
                         bs.Append(color, 1)
@@ -591,8 +593,8 @@ Namespace Ys.QRCode
                 Dim bitmapRow As Byte() = New Byte(rowSize - 1) {}
                 Dim index As Integer = 0
 
-                For Each value In moduleMatrix(r)
-                    Dim color As Color = If(value > 0, foreColor, backColor)
+                For Each v In moduleMatrix(r)
+                    Dim color As Color = If(Values.IsDark(v), foreColor, backColor)
 
                     For j As Integer = 1 To moduleSize
                         bitmapRow(index + 0) = color.B
@@ -787,15 +789,15 @@ Namespace Ys.QRCode
             Dim height As Integer = width
 
             Dim image = New Integer(height - 1)() {}
-            
+
             Dim r As Integer = 0
             For Each row In moduleMatrix
                 Dim imageRow = New Integer(width - 1) {}
                 Dim c As Integer = 0
 
-                For Each value In row
+                For Each v In row
                     For j = 1 To moduleSize
-                        imageRow(c) = value
+                        imageRow(c) = If(v > Values.BLANK, 1, 0)
                         c += 1
                     Next
                 Next
@@ -806,14 +808,14 @@ Namespace Ys.QRCode
                 Next
             Next
 
-            Dim gps As Point()() = GraphicPath.FindContours(image)
+            Dim gpPaths As Point()() = GraphicPath.FindContours(image)
             Dim buf = New StringBuilder()
             Dim indent As String = New String(" "c, 11)
 
-            For Each gp In gps
+            For Each gpPath In gpPaths
                 buf.Append($"{indent}M ")
 
-                For Each p In gp
+                For Each p In gpPath
                     buf.Append($"{p.X},{p.Y} ")
                 Next
                 buf.AppendLine("Z")

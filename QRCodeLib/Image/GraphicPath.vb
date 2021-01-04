@@ -13,7 +13,7 @@ Friend Class GraphicPath
     End Enum
 
     Public Shared Function FindContours(image As Integer()()) As Point()()
-        Dim gps = New List(Of Point())()
+        Dim gpPaths = New List(Of Point())()
 
         For y = 0 To UBound(image) - 1
             For x = 0 To UBound(image(y)) - 1
@@ -27,7 +27,7 @@ Friend Class GraphicPath
 
                 image(y)(x) = Integer.MaxValue
                 Dim start = New Point(x, y)
-                Dim gp = New List(Of Point) From {start}
+                Dim gpPath = New List(Of Point) From {start}
 
                 Dim dr As Direction = Direction.UP
                 Dim p As Point = New Point(start.X, start.Y - 1)
@@ -41,13 +41,13 @@ Friend Class GraphicPath
                                 If image(p.Y)(p.X + 1) <= 0 Then
                                     p = New Point(p.X, p.Y - 1)
                                 Else
-                                    gp.Add(p)
+                                    gpPath.Add(p)
                                     dr = Direction.RIGHT
                                     p = New Point(p.X + 1, p.Y)
                                 End If
                             Else
                                 p = New Point(p.X, p.Y + 1)
-                                gp.Add(p)
+                                gpPath.Add(p)
                                 dr = Direction.LEFT
                                 p = New Point(p.X - 1, p.Y)
                             End If
@@ -59,13 +59,13 @@ Friend Class GraphicPath
                                 If image(p.Y)(p.X - 1) <= 0 Then
                                     p = New Point(p.X, p.Y + 1)
                                 Else
-                                    gp.Add(p)
+                                    gpPath.Add(p)
                                     dr = Direction.LEFT
                                     p = New Point(p.X - 1, p.Y)
                                 End If
                             Else
                                 p = New Point(p.X, p.Y - 1)
-                                gp.Add(p)
+                                gpPath.Add(p)
                                 dr = Direction.RIGHT
                                 p = New Point(p.X + 1, p.Y)
                             End If
@@ -77,13 +77,13 @@ Friend Class GraphicPath
                                 If image(p.Y - 1)(p.X) <= 0 Then
                                     p = New Point(p.X - 1, p.Y)
                                 Else
-                                    gp.Add(p)
+                                    gpPath.Add(p)
                                     dr = Direction.UP
                                     p = New Point(p.X, p.Y - 1)
                                 End If
                             Else
                                 p = New Point(p.X + 1, p.Y)
-                                gp.Add(p)
+                                gpPath.Add(p)
                                 dr = Direction.DOWN
                                 p = New Point(p.X, p.Y + 1)
                             End If
@@ -95,13 +95,13 @@ Friend Class GraphicPath
                                 If (image(p.Y + 1)(p.X) <= 0) Then
                                     p = New Point(p.X + 1, p.Y)
                                 Else
-                                    gp.Add(p)
+                                    gpPath.Add(p)
                                     dr = Direction.DOWN
                                     p = New Point(p.X, p.Y + 1)
                                 End If
                             Else
                                 p = New Point(p.X - 1, p.Y)
-                                gp.Add(p)
+                                gpPath.Add(p)
                                 dr = Direction.UP
                                 p = New Point(p.X, p.Y - 1)
                             End If
@@ -112,11 +112,11 @@ Friend Class GraphicPath
 
                 Loop While (p <> start)
 
-                gps.Add(gp.ToArray())
+                gpPaths.Add(gpPath.ToArray())
             Next
         Next
 
-        Return gps.ToArray()
+        Return gpPaths.ToArray()
     End Function
 
 End Class

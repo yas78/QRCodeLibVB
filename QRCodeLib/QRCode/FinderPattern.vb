@@ -7,17 +7,19 @@ Namespace Ys.QRCode
     ''' </summary>
     Friend Module FinderPattern
 
+        Const VAL As Integer = Values.FINDER
+
         ' 位置検出パターン
         Private ReadOnly _finderPattern as Integer()() = {
-            ({2,  2,  2,  2,  2,  2, 2}),
-            ({2, -2, -2, -2, -2, -2, 2}),
-            ({2, -2,  2,  2,  2, -2, 2}),
-            ({2, -2,  2,  2,  2, -2, 2}),
-            ({2, -2,  2,  2,  2, -2, 2}),
-            ({2, -2, -2, -2, -2, -2, 2}),
-            ({2,  2,  2,  2,  2,  2, 2})
+            ({VAL,  VAL,  VAL,  VAL,  VAL,  VAL, VAL}),
+            ({VAL, -VAL, -VAL, -VAL, -VAL, -VAL, VAL}),
+            ({VAL, -VAL,  VAL,  VAL,  VAL, -VAL, VAL}),
+            ({VAL, -VAL,  VAL,  VAL,  VAL, -VAL, VAL}),
+            ({VAL, -VAL,  VAL,  VAL,  VAL, -VAL, VAL}),
+            ({VAL, -VAL, -VAL, -VAL, -VAL, -VAL, VAL}),
+            ({VAL,  VAL,  VAL,  VAL,  VAL,  VAL, VAL})
         }
-        
+
         ''' <summary>
         ''' 位置検出パターンを配置します。
         ''' </summary>

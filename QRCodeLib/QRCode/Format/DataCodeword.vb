@@ -46,7 +46,7 @@ Namespace Ys.QRCode.Format
             _ecLevelQ,
             _ecLevelH
         }
-       
+
         ''' <summary>
         ''' データコード語数を返します。
         ''' </summary>
@@ -58,5 +58,5 @@ Namespace Ys.QRCode.Format
         End Function
 
     End Module
-        
+
 End Namespace

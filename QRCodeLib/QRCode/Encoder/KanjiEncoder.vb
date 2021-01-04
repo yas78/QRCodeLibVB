@@ -10,7 +10,7 @@ Namespace Ys.QRCode.Encoder
     ''' </summary>
     Friend Class KanjiEncoder
         Inherits QRCodeEncoder
-        
+
         Private Shared ReadOnly _textEncoding As Encoding = Encoding.GetEncoding("shift_jis")
 
         ''' <summary>
@@ -48,13 +48,10 @@ Namespace Ys.QRCode.Encoder
             Select Case wd
                 Case &H8140 To &H9FFC
                     wd -= &H8140
-
                 Case &HE040 To &HEBBF
                     wd -= &HC140
-
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(c))
-
             End Select
 
             wd = ((wd >> 8) * &HC0) + (wd And &HFF)
@@ -100,7 +97,6 @@ Namespace Ys.QRCode.Encoder
 
             If &H8140 <= code AndAlso code <= &H9FFC OrElse
                &HE040 <= code AndAlso code <= &HEBBF Then
-
                 Return &H40 <= charBytes(1) AndAlso charBytes(1) <= &HFC AndAlso
                        &H7F <> charBytes(1)
             Else
@@ -114,7 +110,7 @@ Namespace Ys.QRCode.Encoder
         Public Shared Function InExclusiveSubset(c As Char) As Boolean
             Return InSubset(c)
         End Function
-        
+
     End Class
 
 End Namespace

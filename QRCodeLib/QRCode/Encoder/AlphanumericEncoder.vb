@@ -3,7 +3,7 @@
 Imports Ys.Misc
 
 Namespace Ys.QRCode.Encoder
-    
+
     ''' <summary>
     ''' 英数字モードエンコーダー
     ''' </summary>
@@ -79,7 +79,7 @@ Namespace Ys.QRCode.Encoder
                 bs.Append(_codeWords(i), bitLength)
             Next
 
-            If (_charCounter Mod 2) = 0 Then
+            If _charCounter Mod 2 = 0 Then
                 bitLength = 11
             Else
                 bitLength = 6
@@ -94,27 +94,27 @@ Namespace Ys.QRCode.Encoder
         ''' 指定した文字の、英数字モードにおけるコード値を返します。
         ''' </summary>
         Private Shared Function ConvertCharCode(c As Char) As Integer
-            Dim ret = Asc(c)
+            Dim code = Asc(c)
 
             Select Case c
-                Case "A"c To "Z"c
-                    Return ret - 55
-                Case "0"c To "9"c
-                    Return ret - 48
                 Case " "c
                     Return 36
                 Case "$"c, "%"c
-                    Return ret + 1
+                    Return code + 1
                 Case "*"c, "+"c
-                    Return ret - 3
+                    Return code - 3
                 Case "-"c, "."c
-                    Return ret - 4
+                    Return code - 4
                 Case "/"c
                     Return 43
+                Case "0"c To "9"c
+                    Return code - 48
                 Case ":"c
                     Return 44
+                Case "A"c To "Z"c
+                    Return code - 55
                 Case Else
-                    Throw New ArgumentOutOfRangeException(NameOf(c))
+                    Return -1
             End Select
         End Function
 
@@ -122,17 +122,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function InSubset(c As Char) As Boolean
-            Return c >= "A"c AndAlso c <= "Z"c OrElse
-                   c >= "0"c AndAlso c <= "9"c OrElse
-                   c = " "c                    OrElse
-                   c = "."c                    OrElse
-                   c = "-"c                    OrElse
-                   c = "$"c                    OrElse
-                   c = "%"c                    OrElse
-                   c = "*"c                    OrElse
-                   c = "+"c                    OrElse
-                   c = "/"c                    OrElse
-                   c = ":"c
+            Return ConvertCharCode(c) > -1
         End Function
 
         ''' <summary>
@@ -142,10 +132,10 @@ Namespace Ys.QRCode.Encoder
             If NumericEncoder.InSubset(c) Then
                 Return False
             End If
-            
+
             Return InSubset(c)
         End Function
-        
+
     End Class
 
 End Namespace

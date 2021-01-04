@@ -15,7 +15,7 @@ Namespace Ys.QRCode
             Get
                 Return _width
             End Get
-            Set
+            Set(value As Integer)
                 If _width < MIN_WIDTH Then
                     Throw New ArgumentOutOfRangeException(NameOf(value))
                 End If

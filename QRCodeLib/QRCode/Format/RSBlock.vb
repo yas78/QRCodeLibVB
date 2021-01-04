@@ -68,7 +68,7 @@ Namespace Ys.QRCode.Format
                 Return numFolBlocks
             End If
         End Function
-    
+
         ''' <summary>
         ''' RSブロックのデータコード語数を返します。
         ''' </summary>

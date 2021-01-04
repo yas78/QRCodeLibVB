@@ -44,7 +44,7 @@ Namespace Ys.QRCode
 
             _items = New List(Of Symbol)()
 
-            _minVersion = 1
+            _minVersion = Constants.MIN_VERSION
 
             _maxVersion                 = maxVersion
             _errorCorrectionLevel       = ecLevel
@@ -57,7 +57,7 @@ Namespace Ys.QRCode
 
             _items.Add(_currSymbol)
         End Sub
-        
+
         ''' <summary>
         ''' インデックス番号を指定してSymbolオブジェクトを取得します。
         ''' </summary>
@@ -66,7 +66,7 @@ Namespace Ys.QRCode
                 Return _items(index)
             End Get
         End Property
-    
+
         ''' <summary>
         ''' シンボル数を取得します。
         ''' </summary>
@@ -123,7 +123,7 @@ Namespace Ys.QRCode
                 Return _parity
             End Get
         End Property
-        
+
         Public ReadOnly Property ByteModeEncoding() As Encoding
             Get
                 Return _byteModeEncoding
@@ -156,11 +156,11 @@ Namespace Ys.QRCode
                     Case EncodingMode.UNKNOWN
                         newMode = SelectInitialMode(s, i)
                     Case EncodingMode.NUMERIC
-                        newMode = SelectModeWhileInNumericMode(s, i)
+                        newMode = SelectModeWhileInNumeric(s, i)
                     Case EncodingMode.ALPHA_NUMERIC
-                        newMode = SelectModeWhileInAlphanumericMode(s, i)
+                        newMode = SelectModeWhileInAlphanumeric(s, i)
                     Case EncodingMode.EIGHT_BIT_BYTE
-                        newMode = SelectModeWhileInByteMode(s, i)
+                        newMode = SelectModeWhileInByte(s, i)
                     Case EncodingMode.KANJI
                         newMode = SelectInitialMode(s, i)
                     Case Else
@@ -202,8 +202,6 @@ Namespace Ys.QRCode
         Private Function SelectInitialMode(
             s As String, start As Integer) As EncodingMode
 
-            Dim version As Integer = _currSymbol.Version
-
             If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
@@ -213,96 +211,107 @@ Namespace Ys.QRCode
             End If
 
             If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
-                Dim cnt As Integer = 0
-                Dim flg As Boolean
-
-                For i As Integer = start To s.Length - 1
-                    If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
-                        cnt += 1
-                    Else
-                        Exit For
-                    End If
-                Next
-
-                Select Case version
-                    Case 1 To 9
-                        flg = cnt < 6
-                    Case 10 To 26
-                        flg = cnt < 7
-                    Case 27 To 40
-                        flg = cnt < 8
-                    Case Else
-                        Throw New InvalidOperationException()
-                End Select
-
-                If flg Then
-                    If (start + cnt) < s.Length Then
-                        If ByteEncoder.InExclusiveSubset(s(start + cnt)) Then
-                            Return EncodingMode.EIGHT_BIT_BYTE
-                        Else
-                            Return EncodingMode.ALPHA_NUMERIC
-                        End If
-                    Else
-                        Return EncodingMode.ALPHA_NUMERIC
-                    End If
-                Else
-                    Return EncodingMode.ALPHA_NUMERIC
-                End If
+                Return SelectModeWhenInitialDataAlphaNumeric(s, start)
             End If
 
             If NumericEncoder.InSubset(s(start)) Then
-                Dim cnt As Integer = 0
-                Dim flg1 As Boolean
-                Dim flg2 As Boolean
-
-                For i As Integer = start To s.Length - 1
-                    If NumericEncoder.InSubset(s(i)) Then
-                        cnt += 1
-                    Else
-                        Exit For
-                    End If
-                Next
-
-                Select Case version
-                    Case 1 To 9
-                        flg1 = cnt < 4
-                        flg2 = cnt < 7
-                    Case 10 To 26
-                        flg1 = cnt < 4
-                        flg2 = cnt < 8
-                    Case 27 To 40
-                        flg1 = cnt < 5
-                        flg2 = cnt < 9
-                    Case Else
-                        Throw New InvalidOperationException()
-                End Select
-
-                If flg1 Then
-                    If (start + cnt) < s.Length Then
-                        flg1 = ByteEncoder.InExclusiveSubset(s(start + cnt))
-                    Else
-                        flg1 = False
-                    End If
-                End If
-
-                If flg2 Then
-                    If (start + cnt) < s.Length Then
-                        flg2 = AlphanumericEncoder.InExclusiveSubset(s(start + cnt))
-                    Else
-                        flg2 = False
-                    End If
-                End If
-
-                If flg1 Then
-                    Return EncodingMode.EIGHT_BIT_BYTE
-                ElseIf flg2 Then
-                    Return EncodingMode.ALPHA_NUMERIC
-                Else
-                    Return EncodingMode.NUMERIC
-                End If
+                Return SelectModeWhenInitialDataNumeric(s, start)
             End If
 
             Throw New InvalidOperationException()
+        End Function
+
+        Private Function SelectModeWhenInitialDataAlphaNumeric(
+            s As String, start As Integer) As EncodingMode
+
+            Dim cnt As Integer = 0
+
+            For i As Integer = start To s.Length - 1
+                If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
+                    cnt += 1
+                Else
+                    Exit For
+                End If
+            Next
+
+            Dim flg As Boolean
+
+            Select Case _currSymbol.Version
+                Case 1 To 9
+                    flg = cnt < 6
+                Case 10 To 26
+                    flg = cnt < 7
+                Case 27 To 40
+                    flg = cnt < 8
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
+
+            If flg Then
+                If (start + cnt) < s.Length Then
+                    If ByteEncoder.InSubset(s(start + cnt)) Then
+                        Return EncodingMode.EIGHT_BIT_BYTE
+                    End If
+                End If
+            End If
+
+            Return EncodingMode.ALPHA_NUMERIC
+        End Function
+
+        Private Function SelectModeWhenInitialDataNumeric(
+            s As String, start As Integer) As EncodingMode
+
+            Dim cnt As Integer = 0
+
+            For i As Integer = start To s.Length - 1
+                If NumericEncoder.InSubset(s(i)) Then
+                    cnt += 1
+                Else
+                    Exit For
+                End If
+            Next
+
+            Dim flg As Boolean
+
+            Select Case _currSymbol.Version
+                Case 1 To 9
+                    flg = cnt < 4
+                Case 10 To 26
+                    flg = cnt < 4
+                Case 27 To 40
+                    flg = cnt < 5
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
+
+            If flg Then
+                If (start + cnt) < s.Length Then
+                    If ByteEncoder.InExclusiveSubset(s(start + cnt)) Then
+                        Return EncodingMode.EIGHT_BIT_BYTE
+                    End If
+                End If
+            End If
+
+            Select Case _currSymbol.Version
+                Case 1 To 9
+                    flg = cnt < 7
+                Case 10 To 26
+                    flg = cnt < 8
+                Case 27 To 40
+                    flg = cnt < 9
+                Case Else
+                    Throw New InvalidOperationException()
+            End Select
+
+            If flg Then
+                If (start + cnt) < s.Length Then
+                    If AlphanumericEncoder.InExclusiveSubset(s(start + cnt)) Then
+                        Return EncodingMode.ALPHA_NUMERIC
+                    End If
+                End If
+            End If
+
+            Return EncodingMode.NUMERIC
         End Function
 
         ''' <summary>
@@ -310,7 +319,7 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="start">評価を開始する位置</param>
-        Private Function SelectModeWhileInNumericMode(
+        Private Function SelectModeWhileInNumeric(
             s As String, start As Integer) As EncodingMode
 
             If KanjiEncoder.InSubset(s(start)) Then
@@ -320,11 +329,11 @@ Namespace Ys.QRCode
             If ByteEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
-        
+
             If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.ALPHA_NUMERIC
             End If
-            
+
             Return EncodingMode.NUMERIC
         End Function
 
@@ -333,10 +342,8 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="start">評価を開始する位置</param>
-        Private Function SelectModeWhileInAlphanumericMode(
+        Private Function SelectModeWhileInAlphanumeric(
             s As String, start As Integer) As EncodingMode
-
-            Dim version As Integer = _currSymbol.Version
 
             If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
@@ -346,58 +353,76 @@ Namespace Ys.QRCode
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
+            If MustChangeModeAlphanumericToNumeric(s, start) Then
+                Return EncodingMode.NUMERIC
+            End if
+
+            Return EncodingMode.ALPHA_NUMERIC
+        End Function
+
+        Private Function MustChangeModeAlphanumericToNumeric(
+            s As String, start As Integer) As Boolean
+
+            Dim ret As Boolean = False
             Dim cnt As Integer = 0
-            Dim flg As Boolean = False
 
             For i As Integer = start To s.Length - 1
                 If Not AlphanumericEncoder.InSubset(s(i)) Then
                     Exit For
-                End if
+                End If
 
                 If NumericEncoder.InSubset(s(i)) Then
                     cnt += 1
                 Else
-                    flg = True
+                    ret = True
                     Exit For
                 End If
             Next
 
-            If flg Then
-                Select Case version
+            If ret Then
+                Select Case _currSymbol.Version
                     Case 1 To 9
-                        flg = cnt >= 13
+                        ret = cnt >= 13
                     Case 10 To 26
-                        flg = cnt >= 15
+                        ret = cnt >= 15
                     Case 27 To 40
-                        flg = cnt >= 17
+                        ret = cnt >= 17
                     Case Else
                         Throw New InvalidOperationException
                 End Select
-
-                If flg Then
-                    Return EncodingMode.NUMERIC
-                End If
             End If
 
-            Return EncodingMode.ALPHA_NUMERIC
+            Return ret
         End Function
-    
+
         ''' <summary>
         ''' バイトモードから切り替えるモードを決定します。
         ''' </summary>
         ''' <param name="s">対象文字列</param>
         ''' <param name="start">評価を開始する位置</param>
-        Private Function SelectModeWhileInByteMode(
+        Private Function SelectModeWhileInByte(
             s As String, start As Integer) As EncodingMode
 
-            Dim version As Integer = _currSymbol.Version
-
-            Dim cnt As Integer
-            Dim flg As Boolean
-            
             If KanjiEncoder.InSubset(s(start)) Then
                 Return EncodingMode.KANJI
             End If
+
+            If MustChangeByteToNumeric(s, start) Then
+                Return EncodingMode.NUMERIC
+            End If
+
+            If MustChangeByteToAlphanumeric(s, start) Then
+                Return EncodingMode.ALPHA_NUMERIC
+            End If
+
+            Return EncodingMode.EIGHT_BIT_BYTE
+        End Function
+
+        Private Function MustChangeByteToNumeric(
+            s As String, start As Integer) As Boolean
+
+            Dim ret As Boolean = False
+            Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
                 If Not ByteEncoder.InSubset(s(i)) Then
@@ -407,32 +432,34 @@ Namespace Ys.QRCode
                 If NumericEncoder.InSubset(s(i)) Then
                     cnt += 1
                 ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
-                    flg = True
+                    ret = True
                     Exit For
                 Else
                     Exit For
                 End If
             Next
 
-            If flg Then
-                Select Case version
+            If ret Then
+                Select Case _currSymbol.Version
                     Case 1 To 9
-                        flg = cnt >= 6
+                        ret = cnt >= 6
                     Case 10 To 26
-                        flg = cnt >= 8
+                        ret = cnt >= 8
                     Case 27 To 40
-                        flg = cnt >= 9
+                        ret = cnt >= 9
                     Case Else
                         Throw New InvalidOperationException()
                 End Select
-
-                If flg Then
-                    Return EncodingMode.NUMERIC
-                End If
             End If
 
-            cnt = 0
-            flg = False
+            Return ret
+        End Function
+
+        Private Function MustChangeByteToAlphanumeric(
+            s As String, start As Integer) As Boolean
+
+            Dim ret As Boolean = False
+            Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
                 If Not ByteEncoder.InSubset(s(i)) Then
@@ -442,33 +469,29 @@ Namespace Ys.QRCode
                 If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
                     cnt += 1
                 ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
-                    flg = True
+                    ret = True
                     Exit For
                 Else
                     Exit For
                 End If
             Next
 
-            If flg Then
-                Select Case version
+            If ret Then
+                Select Case _currSymbol.Version
                     Case 1 To 9
-                        flg = cnt >= 11
+                        ret = cnt >= 11
                     Case 10 To 26
-                        flg = cnt >= 15
+                        ret = cnt >= 15
                     Case 27 To 40
-                        flg = cnt >= 16
+                        ret = cnt >= 16
                     Case Else
                         Throw New InvalidOperationException()
                 End Select
-
-                If flg Then
-                    Return EncodingMode.ALPHA_NUMERIC
-                End If
             End If
 
-            Return EncodingMode.EIGHT_BIT_BYTE
-        End Function
-    
+            Return ret
+        End function
+
         ''' <summary>
         ''' 構造的連接のパリティを更新します。
         ''' </summary>
@@ -493,7 +516,7 @@ Namespace Ys.QRCode
 
             Return _items.GetEnumerator()
         End Function
-        
+
         Private Function IEnumerable_GetEnumerator() As IEnumerator _
             Implements IEnumerable.GetEnumerator
 

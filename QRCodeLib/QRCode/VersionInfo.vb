@@ -6,6 +6,9 @@ Namespace Ys.QRCode
     ''' 型番情報
     ''' </summary>
     Friend Module VersionInfo
+
+        Const VAL As Integer = Values.VERSION
+
         ' 型番情報
         Private ReadOnly _versionInfoValues As Integer() = {
             -1, -1, -1, -1, -1, -1, -1,
@@ -23,14 +26,13 @@ Namespace Ys.QRCode
         ''' <param name="version">型番</param>
         Public Sub Place(version As Integer, moduleMatrix As Integer()())
             Dim numModulesPerSide As Integer = moduleMatrix.Length
-
             Dim versionInfoValue As Integer = _versionInfoValues(version)
 
             Dim p1 As Integer = 0
             Dim p2 As Integer = numModulesPerSide - 11
 
             For i As Integer = 0 To 17
-                Dim v As Integer = If((versionInfoValue And (1 << i)) > 0, 3, -3)
+                Dim v As Integer = If((versionInfoValue And (1 << i)) > 0, VAL, -VAL)
 
                 moduleMatrix(p1)(p2) = v
                 moduleMatrix(p2)(p1) = v
@@ -52,8 +54,8 @@ Namespace Ys.QRCode
 
             For i As Integer = 0 To 5
                 For j As Integer = numModulesPerSide - 11 To numModulesPerSide - 9
-                    moduleMatrix(i)(j) = -3
-                    moduleMatrix(j)(i) = -3
+                    moduleMatrix(i)(j) = -VAL
+                    moduleMatrix(j)(i) = -VAL
                 Next
             Next
         End Sub

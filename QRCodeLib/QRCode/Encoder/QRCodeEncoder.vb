@@ -8,7 +8,7 @@ Namespace Ys.QRCode.Encoder
     ''' エンコーダーの基本抽象クラス
     ''' </summary>
     Friend MustInherit Class QRCodeEncoder
-        
+
         Protected _codeWords    As New List(Of Integer)()
         Protected _charCounter  As Integer
         Protected _bitCounter   As Integer
@@ -46,7 +46,7 @@ Namespace Ys.QRCode.Encoder
         ''' モード指示子を取得します。
         ''' </summary>
         Public MustOverride ReadOnly Property ModeIndicator() As Integer
-        
+
         ''' <summary>
         ''' 文字を追加します。
         ''' </summary>
@@ -57,7 +57,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public MustOverride Function GetCodewordBitLength(c As Char) As Integer
-    
+
         ''' <summary>
         ''' エンコードされたデータのバイト配列を返します。
         ''' </summary>

@@ -6,7 +6,7 @@ Namespace Ys.QRCode.Format
     ''' 文字数指示子
     ''' </summary>
     Friend Module CharCountIndicator
-        
+
         ''' <summary>
         ''' 文字数指示子のビット数を返します。
         ''' </summary>
@@ -64,5 +64,5 @@ Namespace Ys.QRCode.Format
         End Function
 
     End Module
-    
+
 End Namespace

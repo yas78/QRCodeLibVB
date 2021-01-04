@@ -9,13 +9,13 @@ Namespace Ys.QRCode.Encoder
     ''' </summary>
     Friend Class NumericEncoder
         Inherits QRCodeEncoder
-        
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
         Public Sub New()
         End Sub
-        
+
         ''' <summary>
         ''' 符号化モードを取得します。
         ''' </summary>
@@ -74,7 +74,7 @@ Namespace Ys.QRCode.Encoder
         Public Overrides Function GetBytes() As Byte()
             Dim bs = New BitSequence()
             Dim bitLength As Integer = 10
-            
+
             For i As Integer = 0 To (_codeWords.Count - 1) - 1
                 bs.Append(_codeWords(i), bitLength)
             Next
@@ -82,13 +82,10 @@ Namespace Ys.QRCode.Encoder
             Select Case _charCounter Mod 3
                 Case 1
                     bitLength = 4
-
                 Case 2
                     bitLength = 7
-
                 Case Else
                     bitLength = 10
-
             End Select
 
             bs.Append(_codeWords(_codeWords.Count - 1), bitLength)
@@ -100,7 +97,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
         Public Shared Function InSubset(c As Char) As Boolean
-            Return c >= "0"c AndAlso c <= "9"c
+            Return "0"c <= c AndAlso c <= "9"c
         End Function
 
         ''' <summary>
@@ -109,7 +106,7 @@ Namespace Ys.QRCode.Encoder
         Public Shared Function InExclusiveSubset(c As Char) As Boolean
             Return InSubset(c)
         End Function
-        
+
     End Class
 
 End Namespace

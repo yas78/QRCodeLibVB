@@ -56,7 +56,7 @@ Namespace Ys.QRCode
 
             For r As Integer = 0 To UBound(moduleMatrix)
                 For c As Integer = 0 To UBound(moduleMatrix(r))
-                    If Math.Abs(moduleMatrix(r)(c)) = 1 Then
+                    If Math.Abs(moduleMatrix(r)(c)) = Values.WORD Then
                         If condition(r, c) Then
                             moduleMatrix(r)(c) *= -1
                         End If

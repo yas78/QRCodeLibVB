@@ -10,7 +10,7 @@ Namespace Ys.QRCode.Encoder
         Inherits QRCodeEncoder
 
         Private ReadOnly _textEncoding As Encoding
-        
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
@@ -25,7 +25,7 @@ Namespace Ys.QRCode.Encoder
         Public Sub New(encoding As Encoding)
             _textEncoding = encoding
         End Sub
-        
+
         ''' <summary>
         ''' 符号化モードを取得します。
         ''' </summary>
@@ -43,7 +43,7 @@ Namespace Ys.QRCode.Encoder
                 Return Format.ModeIndicator.BYTE_VALUE
             End Get
         End Property
-        
+
         ''' <summary>
         ''' 文字を追加します。
         ''' </summary>
@@ -105,7 +105,7 @@ Namespace Ys.QRCode.Encoder
 
             Return InSubset(c)
         End Function
-        
+
     End Class
 
 End Namespace

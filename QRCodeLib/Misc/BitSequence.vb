@@ -18,7 +18,7 @@ Namespace Ys.Misc
         Public Sub New()
             Clear()
         End Sub
-                
+
         ''' <summary>
         ''' ビット数を取得します。
         ''' </summary>
@@ -27,7 +27,7 @@ Namespace Ys.Misc
                 Return _bitCounter
             End Get
         End Property
-        
+
         Public sub Clear()
             _buffer = New List(Of Byte)()
             _bitCounter = 0
@@ -74,7 +74,7 @@ Namespace Ys.Misc
         Public Function GetBytes() As Byte()
             Return _buffer.ToArray()
         End Function
-        
+
     End Class
 
 End Namespace

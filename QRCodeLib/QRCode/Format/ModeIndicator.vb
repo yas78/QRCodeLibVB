@@ -15,7 +15,7 @@ Namespace Ys.QRCode.Format
         Public Const STRUCTURED_APPEND_VALUE    As Integer = &H3
         Public Const BYTE_VALUE                 As Integer = &H4
         Public Const KANJI_VALUE                As Integer = &H8
-        
+
     End Module
 
 End Namespace
