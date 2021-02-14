@@ -9,21 +9,21 @@ Namespace Ys.QRCode.Encoder
     Friend Class ByteEncoder
         Inherits QRCodeEncoder
 
-        Private ReadOnly _textEncoding As Encoding
-
-        ''' <summary>
-        ''' インスタンスを初期化します。
-        ''' </summary>
-        Public Sub New()
-            MyClass.New(Encoding.GetEncoding("shift_jis"))
-        End Sub
+        Private ReadOnly _encAlpha As AlphanumericEncoder
+        Private ReadOnly _encKanji As KanjiEncoder
 
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
         ''' <param name="encoding">文字エンコーディング</param>
         Public Sub New(encoding As Encoding)
-            _textEncoding = encoding
+            MyBase.New(encoding)
+
+            _encAlpha = New AlphanumericEncoder(encoding)
+
+            If Charset.IsJP(encoding.WebName) Then
+                _encKanji = New KanjiEncoder(encoding)
+            End If
         End Sub
 
         ''' <summary>
@@ -49,7 +49,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+            Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
             Dim ret       As Integer = 0
 
             For Each value In charBytes
@@ -66,7 +66,7 @@ Namespace Ys.QRCode.Encoder
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
         ''' </summary>
         Public Overrides Function GetCodewordBitLength(c As Char) As Integer
-            Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+            Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
 
             Return 8 * charBytes.Length
         End Function
@@ -87,20 +87,22 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InSubset(c As Char) As Boolean
+        Public Overrides Function InSubset(c As Char) As Boolean
             Return True
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InExclusiveSubset(c As Char) As Boolean
-            If AlphanumericEncoder.InSubset(c) Then
+        Public Overrides Function InExclusiveSubset(c As Char) As Boolean
+            If _encAlpha.InSubset(c) Then
                 Return False
             End If
 
-            If KanjiEncoder.InSubset(c) Then
-                Return False
+            If _encKanji IsNot Nothing Then
+                If _encKanji.InSubset(c) Then
+                    Return False
+                End If
             End If
 
             Return InSubset(c)

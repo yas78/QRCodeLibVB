@@ -20,11 +20,15 @@ Namespace Ys.QRCode
         Private ReadOnly _maxVersion                As Integer
         Private ReadOnly _errorCorrectionLevel      As ErrorCorrectionLevel
         Private ReadOnly _structuredAppendAllowed   As Boolean
-        Private ReadOnly _byteModeEncoding          As Encoding
-        Private ReadOnly _shiftJISEncoding          As Encoding
+        Private ReadOnly _encoding                  As Encoding
 
-        Private _parity As Integer
+        Private _parity     As Integer
         Private _currSymbol As Symbol
+
+        Private ReadOnly _encNumeric As NumericEncoder
+        Private ReadOnly _encAlpha   As AlphanumericEncoder
+        Private ReadOnly _encKanji   As KanjiEncoder
+        Private ReadOnly _encByte    As ByteEncoder
 
         ''' <summary>
         ''' インスタンスを初期化します。
@@ -32,11 +36,11 @@ Namespace Ys.QRCode
         ''' <param name="ecLevel">誤り訂正レベル</param>
         ''' <param name="maxVersion">型番の上限</param>
         ''' <param name="allowStructuredAppend">複数シンボルへの分割を許可するには True を指定します。</param>
-        ''' <param name="byteModeEncoding">バイトモードの文字エンコーディング</param>
+        ''' <param name="charsetName">文字セット名</param>
         Public Sub New(Optional ecLevel As ErrorCorrectionLevel = ErrorCorrectionLevel.M,
                        Optional maxVersion As Integer = Constants.MAX_VERSION,
                        Optional allowStructuredAppend As Boolean = False,
-                       Optional byteModeEncoding As String = "shift_jis")
+                       Optional charsetName As String = Charset.SHIFT_JIS)
 
             If Not (Constants.MIN_VERSION <= maxVersion AndAlso maxVersion <= Constants.MAX_VERSION) Then
                 Throw New ArgumentOutOfRangeException(NameOf(maxVersion))
@@ -49,13 +53,21 @@ Namespace Ys.QRCode
             _maxVersion                 = maxVersion
             _errorCorrectionLevel       = ecLevel
             _structuredAppendAllowed    = allowStructuredAppend
-            _byteModeEncoding           = Encoding.GetEncoding(byteModeEncoding)
-            _shiftJISEncoding           = Encoding.GetEncoding("shift_jis")
+            _encoding                   = Encoding.GetEncoding(charsetName)
 
-            _parity     = 0
+            _parity = 0
+
             _currSymbol = New Symbol(Me)
-
             _items.Add(_currSymbol)
+
+            _encNumeric = New NumericEncoder(_encoding)
+            _encAlpha = New AlphanumericEncoder(_encoding)
+
+            If Charset.IsJP(charsetName) Then
+                _encKanji = New KanjiEncoder(_encoding)
+            End If
+
+            _encByte = new ByteEncoder(_encoding)
         End Sub
 
         ''' <summary>
@@ -126,7 +138,7 @@ Namespace Ys.QRCode
 
         Public ReadOnly Property ByteModeEncoding() As Encoding
             Get
-                Return _byteModeEncoding
+                Return _encoding
             End Get
         End Property
 
@@ -202,19 +214,21 @@ Namespace Ys.QRCode
         Private Function SelectInitialMode(
             s As String, start As Integer) As EncodingMode
 
-            If KanjiEncoder.InSubset(s(start)) Then
-                Return EncodingMode.KANJI
+            If _encKanji IsNot Nothing Then
+                If _encKanji.InSubset(s(start)) Then
+                    Return EncodingMode.KANJI
+                End If
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(start)) Then
+            If _encByte.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
-            If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
+            If _encAlpha.InExclusiveSubset(s(start)) Then
                 Return SelectModeWhenInitialDataAlphaNumeric(s, start)
             End If
 
-            If NumericEncoder.InSubset(s(start)) Then
+            If _encNumeric.InSubset(s(start)) Then
                 Return SelectModeWhenInitialDataNumeric(s, start)
             End If
 
@@ -227,7 +241,7 @@ Namespace Ys.QRCode
             Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
-                If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
+                If _encAlpha.InExclusiveSubset(s(i)) Then
                     cnt += 1
                 Else
                     Exit For
@@ -249,7 +263,7 @@ Namespace Ys.QRCode
 
             If flg Then
                 If (start + cnt) < s.Length Then
-                    If ByteEncoder.InSubset(s(start + cnt)) Then
+                    If _encByte.InSubset(s(start + cnt)) Then
                         Return EncodingMode.EIGHT_BIT_BYTE
                     End If
                 End If
@@ -264,7 +278,7 @@ Namespace Ys.QRCode
             Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
-                If NumericEncoder.InSubset(s(i)) Then
+                If _encNumeric.InSubset(s(i)) Then
                     cnt += 1
                 Else
                     Exit For
@@ -286,7 +300,7 @@ Namespace Ys.QRCode
 
             If flg Then
                 If (start + cnt) < s.Length Then
-                    If ByteEncoder.InExclusiveSubset(s(start + cnt)) Then
+                    If _encByte.InExclusiveSubset(s(start + cnt)) Then
                         Return EncodingMode.EIGHT_BIT_BYTE
                     End If
                 End If
@@ -305,7 +319,7 @@ Namespace Ys.QRCode
 
             If flg Then
                 If (start + cnt) < s.Length Then
-                    If AlphanumericEncoder.InExclusiveSubset(s(start + cnt)) Then
+                    If _encAlpha.InExclusiveSubset(s(start + cnt)) Then
                         Return EncodingMode.ALPHA_NUMERIC
                     End If
                 End If
@@ -322,15 +336,17 @@ Namespace Ys.QRCode
         Private Function SelectModeWhileInNumeric(
             s As String, start As Integer) As EncodingMode
 
-            If KanjiEncoder.InSubset(s(start)) Then
-                Return EncodingMode.KANJI
+            If _encKanji IsNot Nothing Then
+                If _encKanji.InSubset(s(start)) Then
+                    Return EncodingMode.KANJI
+                End If
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(start)) Then
+            If _encByte.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
-            If AlphanumericEncoder.InExclusiveSubset(s(start)) Then
+            If _encAlpha.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.ALPHA_NUMERIC
             End If
 
@@ -345,11 +361,13 @@ Namespace Ys.QRCode
         Private Function SelectModeWhileInAlphanumeric(
             s As String, start As Integer) As EncodingMode
 
-            If KanjiEncoder.InSubset(s(start)) Then
-                Return EncodingMode.KANJI
+            If _encKanji IsNot Nothing Then
+                If _encKanji.InSubset(s(start)) Then
+                    Return EncodingMode.KANJI
+                End If
             End If
 
-            If ByteEncoder.InExclusiveSubset(s(start)) Then
+            If _encByte.InExclusiveSubset(s(start)) Then
                 Return EncodingMode.EIGHT_BIT_BYTE
             End If
 
@@ -367,11 +385,11 @@ Namespace Ys.QRCode
             Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
-                If Not AlphanumericEncoder.InSubset(s(i)) Then
+                If Not _encAlpha.InSubset(s(i)) Then
                     Exit For
                 End If
 
-                If NumericEncoder.InSubset(s(i)) Then
+                If _encNumeric.InSubset(s(i)) Then
                     cnt += 1
                 Else
                     ret = True
@@ -403,8 +421,10 @@ Namespace Ys.QRCode
         Private Function SelectModeWhileInByte(
             s As String, start As Integer) As EncodingMode
 
-            If KanjiEncoder.InSubset(s(start)) Then
-                Return EncodingMode.KANJI
+            If _encKanji IsNot Nothing Then
+                If _encKanji.InSubset(s(start)) Then
+                    Return EncodingMode.KANJI
+                End If
             End If
 
             If MustChangeByteToNumeric(s, start) Then
@@ -425,13 +445,13 @@ Namespace Ys.QRCode
             Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
-                If Not ByteEncoder.InSubset(s(i)) Then
+                If Not _encByte.InSubset(s(i)) Then
                     Exit For
                 End If
 
-                If NumericEncoder.InSubset(s(i)) Then
+                If _encNumeric.InSubset(s(i)) Then
                     cnt += 1
-                ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
+                ElseIf _encByte.InExclusiveSubset(s(i)) Then
                     ret = True
                     Exit For
                 Else
@@ -462,13 +482,13 @@ Namespace Ys.QRCode
             Dim cnt As Integer = 0
 
             For i As Integer = start To s.Length - 1
-                If Not ByteEncoder.InSubset(s(i)) Then
+                If Not _encByte.InSubset(s(i)) Then
                     Exit For
                 End If
 
-                If AlphanumericEncoder.InExclusiveSubset(s(i)) Then
+                If _encAlpha.InExclusiveSubset(s(i)) Then
                     cnt += 1
-                ElseIf ByteEncoder.InExclusiveSubset(s(i)) Then
+                ElseIf _encByte.InExclusiveSubset(s(i)) Then
                     ret = True
                     Exit For
                 Else
@@ -497,13 +517,7 @@ Namespace Ys.QRCode
         ''' </summary>
         ''' <param name="c">パリティ計算対象の文字</param>
         Friend Sub UpdateParity(c As Char)
-            Dim charBytes As Byte()
-
-            If KanjiEncoder.InSubset(c) Then
-                charBytes = _shiftJISEncoding.GetBytes(c.ToString())
-            Else
-                charBytes = _byteModeEncoding.GetBytes(c.ToString())
-            End If
+            Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
 
             For Each value As Byte In charBytes
                 _parity = _parity Xor value

@@ -1,4 +1,5 @@
 ﻿Imports System
+Imports System.Text
 
 Imports Ys.Misc
 
@@ -10,10 +11,15 @@ Namespace Ys.QRCode.Encoder
     Friend Class AlphanumericEncoder
         Inherits QRCodeEncoder
 
+        Private ReadOnly _encNumeric As NumericEncoder
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        Public Sub New()
+        Public Sub New(encoding As Encoding)
+            MyBase.New(encoding)
+
+            _encNumeric = New NumericEncoder(encoding)
         End Sub
 
         ''' <summary>
@@ -121,15 +127,15 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InSubset(c As Char) As Boolean
+        Public Overrides Function InSubset(c As Char) As Boolean
             Return ConvertCharCode(c) > -1
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InExclusiveSubset(c As Char) As Boolean
-            If NumericEncoder.InSubset(c) Then
+        Public Overrides Function InExclusiveSubset(c As Char) As Boolean
+            If _encNumeric.InSubset(c) Then
                 Return False
             End If
 
@@ -139,4 +145,3 @@ Namespace Ys.QRCode.Encoder
     End Class
 
 End Namespace
-

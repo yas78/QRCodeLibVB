@@ -18,7 +18,7 @@ Public Class Form1
                 cmbMaxVersion.SelectedIndexChanged, 
                 cmbErrorCorrectionLevel.SelectedIndexChanged, 
                 chkStructuredAppend.CheckedChanged, 
-                cmbEncoding.SelectedIndexChanged
+                cmbCharset.SelectedIndexChanged
 
         btnSave.Enabled = False
         qrcodePanel.Controls.Clear()
@@ -30,10 +30,10 @@ Public Class Form1
         Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
         Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
-        Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+        Dim charsetName As String = CType(cmbCharset.SelectedItem, String)
         Dim moduleSize As Integer = CInt(nudModuleSize.Value)
 
-        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
+        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, charsetName)
 
         Try
             symbols.AppendText(txtData.Text)
@@ -90,10 +90,10 @@ Public Class Form1
         Dim ecLevel As ErrorCorrectionLevel = CType(cmbErrorCorrectionLevel.SelectedItem, ErrorCorrectionLevel)
         Dim version As Integer = CInt(cmbMaxVersion.SelectedItem)
         Dim allowStructuredAppend As Boolean = chkStructuredAppend.Checked
-        Dim encoding As Encoding = CType(cmbEncoding.SelectedItem, EncodingInfo).GetEncoding()
+        Dim charsetName As String = CType(cmbCharset.SelectedItem, String)
         Dim moduleSize As Integer = CInt(nudModuleSize.Value)
 
-        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, encoding.WebName)
+        Dim symbols As Symbols = New Symbols(ecLevel, version, allowStructuredAppend, charsetName)
 
         Try
             symbols.AppendText(txtData.Text)
@@ -132,12 +132,7 @@ Public Class Form1
         Next
 
         cmbMaxVersion.SelectedIndex = cmbMaxVersion.Items.Count - 1
-
-        cmbEncoding.DisplayMember = "Name"
-        cmbEncoding.ValueMember = "Name"
-        cmbEncoding.DataSource =  Encoding.GetEncodings()
-        cmbEncoding.Text = Encoding.Default.WebName
-
+        cmbCharset.DataSource = {"Shift_JIS", "UTF-8"}
         nudModuleSize.Value = DEFAULT_MODULE_SIZE
         chkStructuredAppend.Checked = False
         btnSave.Enabled = False

@@ -32,8 +32,8 @@ Partial Class Form1
         Me.btnSave = New System.Windows.Forms.Button()
         Me.chkStructuredAppend = New System.Windows.Forms.CheckBox()
         Me.lblData = New System.Windows.Forms.Label()
-        Me.cmbEncoding = New System.Windows.Forms.ComboBox()
-        Me.lblEncoding = New System.Windows.Forms.Label()
+        Me.cmbCharset = New System.Windows.Forms.ComboBox()
+        Me.lblCharset = New System.Windows.Forms.Label()
         Me.nudModuleSize = New System.Windows.Forms.NumericUpDown()
         CType(Me.nudModuleSize,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
@@ -149,26 +149,26 @@ Partial Class Form1
         Me.lblData.TabIndex = 12
         Me.lblData.Text = "&Data :"
         '
-        'cmbEncoding
+        'cmbCharset
         '
-        Me.cmbEncoding.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.cmbEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbEncoding.FormattingEnabled = true
-        Me.cmbEncoding.Location = New System.Drawing.Point(378, 589)
-        Me.cmbEncoding.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.cmbEncoding.Name = "cmbEncoding"
-        Me.cmbEncoding.Size = New System.Drawing.Size(292, 25)
-        Me.cmbEncoding.TabIndex = 4
+        Me.cmbCharset.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.cmbCharset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbCharset.FormattingEnabled = true
+        Me.cmbCharset.Location = New System.Drawing.Point(302, 589)
+        Me.cmbCharset.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
+        Me.cmbCharset.Name = "cmbCharset"
+        Me.cmbCharset.Size = New System.Drawing.Size(224, 25)
+        Me.cmbCharset.TabIndex = 4
         '
-        'lblEncoding
+        'lblCharset
         '
-        Me.lblEncoding.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.lblEncoding.AutoSize = true
-        Me.lblEncoding.Location = New System.Drawing.Point(237, 593)
-        Me.lblEncoding.Name = "lblEncoding"
-        Me.lblEncoding.Size = New System.Drawing.Size(135, 17)
-        Me.lblEncoding.TabIndex = 3
-        Me.lblEncoding.Text = "Byte mode &Encoding :"
+        Me.lblCharset.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.lblCharset.AutoSize = true
+        Me.lblCharset.Location = New System.Drawing.Point(237, 593)
+        Me.lblCharset.Name = "lblCharset"
+        Me.lblCharset.Size = New System.Drawing.Size(59, 17)
+        Me.lblCharset.TabIndex = 3
+        Me.lblCharset.Text = "&Charset :"
         '
         'nudModuleSize
         '
@@ -187,8 +187,8 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 17!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(684, 661)
-        Me.Controls.Add(Me.cmbEncoding)
-        Me.Controls.Add(Me.lblEncoding)
+        Me.Controls.Add(Me.cmbCharset)
+        Me.Controls.Add(Me.lblCharset)
         Me.Controls.Add(Me.lblData)
         Me.Controls.Add(Me.chkStructuredAppend)
         Me.Controls.Add(Me.nudModuleSize)
@@ -221,7 +221,7 @@ End Sub
     Friend WithEvents chkStructuredAppend As CheckBox
     Private WithEvents lblData As Label
     Private WithEvents txtData As TextBox
-    Private WithEvents cmbEncoding As ComboBox
-    Private WithEvents lblEncoding As Label
+    Private WithEvents cmbCharset As ComboBox
+    Private WithEvents lblCharset As Label
     Friend WithEvents nudModuleSize As NumericUpDown
 End Class

@@ -120,8 +120,26 @@ Namespace Ys.QRCode
         ''' <param name="c">符号化する最初の文字。この文字はシンボルに追加されません。</param>
         ''' <returns>シンボル容量が不足している場合は False を返します。</returns>
         Friend Function TrySetEncodingMode(encMode As EncodingMode, c As Char) As Boolean
-            Dim encoder As QRCodeEncoder = 
-                QRCodeEncoder.CreateEncoder(encMode, _parent.ByteModeEncoding)
+            Dim encoder As QRCodeEncoder
+            Dim encoding = _parent.ByteModeEncoding
+
+            Select Case encMode
+                Case EncodingMode.NUMERIC
+                    encoder = New NumericEncoder(encoding)
+                Case EncodingMode.ALPHA_NUMERIC
+                    encoder = New AlphanumericEncoder(encoding)
+                Case EncodingMode.EIGHT_BIT_BYTE
+                    encoder = New ByteEncoder(encoding)
+                Case EncodingMode.KANJI
+                    If Charset.IsJP(encoding.WebName) Then
+                        encoder = New KanjiEncoder(encoding)
+                    Else
+                        Throw New InvalidOperationException()
+                    End If
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(encMode))
+            End Select
+
             Dim bitLength As Integer = encoder.GetCodewordBitLength(c)
 
             Do While _dataBitCapacity < _dataBitCounter +

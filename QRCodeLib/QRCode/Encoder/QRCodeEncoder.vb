@@ -13,10 +13,13 @@ Namespace Ys.QRCode.Encoder
         Protected _charCounter  As Integer
         Protected _bitCounter   As Integer
 
+        Protected ReadOnly _encoding As Encoding
+
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        Public Sub New()
+        Public Sub New(encoding As Encoding)
+            _encoding = encoding
         End Sub
 
         ''' <summary>
@@ -63,26 +66,15 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         Public MustOverride Function GetBytes() As Byte()
 
-        ''' <summary>
-        ''' 指定したエンコーディングモードのエンコーダーを返します。
+                ''' <summary>
+        ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function CreateEncoder(
-            encMode As EncodingMode, byteModeEncoding As Encoding) As QRCodeEncoder
+        Public MustOverride Function InSubset(c As Char) As Boolean
 
-            Select Case encMode
-                Case EncodingMode.NUMERIC
-                    Return New NumericEncoder()
-                Case EncodingMode.ALPHA_NUMERIC
-                    Return New AlphanumericEncoder()
-                Case EncodingMode.EIGHT_BIT_BYTE
-                    Return New ByteEncoder(byteModeEncoding)
-                Case EncodingMode.KANJI
-                    Return New KanjiEncoder()
-                Case Else
-                    Throw New ArgumentOutOfRangeException(NameOf(encMode))
-            End Select
-        End Function
-
+        ''' <summary>
+        ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
+        ''' </summary>
+        Public MustOverride Function InExclusiveSubset(c As Char) As Boolean
     End Class
 
 End Namespace

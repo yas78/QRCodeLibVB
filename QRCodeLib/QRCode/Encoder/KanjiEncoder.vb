@@ -11,12 +11,11 @@ Namespace Ys.QRCode.Encoder
     Friend Class KanjiEncoder
         Inherits QRCodeEncoder
 
-        Private Shared ReadOnly _textEncoding As Encoding = Encoding.GetEncoding("shift_jis")
-
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        Public Sub New()
+        Public Sub New(encoding As Encoding)
+            MyBase.New(encoding)
         End Sub
 
         ''' <summary>
@@ -42,7 +41,7 @@ Namespace Ys.QRCode.Encoder
         ''' </summary>
         ''' <returns>追加した文字のビット数</returns>
         Public Overrides Function Append(c As Char) As Integer
-            Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+            Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
             Dim wd As Integer = (CInt(charBytes(0)) << 8) Or CInt(charBytes(1))
 
             Select Case wd
@@ -86,8 +85,8 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InSubset(c As Char) As Boolean
-            Dim charBytes As Byte() = _textEncoding.GetBytes(c.ToString())
+        Public Overrides Function InSubset(c As Char) As Boolean
+            Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
 
             If charBytes.Length <> 2 Then
                 Return False
@@ -107,7 +106,7 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InExclusiveSubset(c As Char) As Boolean
+        Public Overrides Function InExclusiveSubset(c As Char) As Boolean
             Return InSubset(c)
         End Function
 

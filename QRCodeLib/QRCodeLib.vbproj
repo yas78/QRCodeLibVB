@@ -75,6 +75,7 @@
     <Compile Include="Image\RGBQUAD.vb" />
     <Compile Include="Misc\ArrayUtil.vb" />
     <Compile Include="Image\DIB.vb" />
+    <Compile Include="Misc\Charset.vb" />
     <Compile Include="QRCode\AlignmentPattern.vb" />
     <Compile Include="QRCode\Constants.vb" />
     <Compile Include="QRCode\Enums.vb" />

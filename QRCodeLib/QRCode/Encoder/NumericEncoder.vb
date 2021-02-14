@@ -1,4 +1,5 @@
 ﻿Imports System
+Imports System.Text
 
 Imports Ys.Misc
 
@@ -13,7 +14,8 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' インスタンスを初期化します。
         ''' </summary>
-        Public Sub New()
+        Public Sub New(encoding As Encoding)
+            MyBase.New(encoding)
         End Sub
 
         ''' <summary>
@@ -96,14 +98,14 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 指定した文字が、このモードの文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InSubset(c As Char) As Boolean
+        Public Overrides Function InSubset(c As Char) As Boolean
             Return "0"c <= c AndAlso c <= "9"c
         End Function
 
         ''' <summary>
         ''' 指定した文字が、このモードの排他的部分文字集合に含まれる場合は True を返します。
         ''' </summary>
-        Public Shared Function InExclusiveSubset(c As Char) As Boolean
+        Public Overrides Function InExclusiveSubset(c As Char) As Boolean
             Return InSubset(c)
         End Function
 
