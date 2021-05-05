@@ -44,7 +44,7 @@ Dim symbols As Symbols = New Symbols(maxVersion:=10)
 ### 例４．8ビットバイトモードで使用する文字コードを指定する
 Symbolsクラスのコンストラクタで設定します。
 ```vbnet
-Dim symbols As Symbols = New Symbols(byteModeEncoding:="utf-8")
+Dim symbols As Symbols = New Symbols(charsetName:="UTF-8")
 ```
 
 ### 例５．分割QRコードを作成する

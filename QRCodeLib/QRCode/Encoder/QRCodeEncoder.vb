@@ -53,8 +53,7 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 文字を追加します。
         ''' </summary>
-        ''' <returns>追加した文字のビット数</returns>
-        Public MustOverride Function Append(c As Char) As Integer
+        Public MustOverride Sub Append(c As Char)
 
         ''' <summary>
         ''' 指定の文字をエンコードしたコード語のビット数を返します。

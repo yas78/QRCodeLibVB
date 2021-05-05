@@ -47,20 +47,16 @@ Namespace Ys.QRCode.Encoder
         ''' <summary>
         ''' 文字を追加します。
         ''' </summary>
-        ''' <returns>追加した文字のビット数</returns>
-        Public Overrides Function Append(c As Char) As Integer
+        Public Overrides Sub Append(c As Char)
             Dim charBytes As Byte() = _encoding.GetBytes(c.ToString())
-            Dim ret       As Integer = 0
 
             For Each value In charBytes
                 _codeWords.Add(value)
-                _charCounter += 1
-                _bitCounter += 8
-                ret += 8
             Next
 
-            Return ret
-        End Function
+            _bitCounter += GetCodewordBitLength(c)
+            _charCounter += charBytes.Length            
+        End Sub
 
         ''' <summary>
         ''' 指定の文字をエンコードしたコード語のビット数を返します。
