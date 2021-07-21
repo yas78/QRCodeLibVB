@@ -43,7 +43,7 @@ Public Class Form1
         End Try
 
         For Each symbol As Symbol In symbols
-            Dim image As Image = symbol.GetImage(moduleSize, False)
+            Dim image As Image = symbol.GetImage(moduleSize)
             Dim pictureBox = New PictureBox() With {
                 .Size = image.Size,
                 .Image = image

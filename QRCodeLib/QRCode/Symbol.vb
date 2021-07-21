@@ -596,14 +596,7 @@ Namespace Ys.QRCode
             Dim width As Integer = moduleSize * moduleMatrix.Length
             Dim height As Integer = width
 
-            Dim rowBytesLen As Integer = 3 * width
-
-            Dim pack4byte As Integer = 0
-            If rowBytesLen Mod 4 > 0 Then
-                pack4byte = 4 - (rowBytesLen Mod 4)
-            End If
-
-            Dim rowSize As Integer = rowBytesLen + pack4byte
+            Dim rowSize As Integer = ((3 * width + 3) \ 4) * 4
             Dim bitmapData As Byte() = New Byte(rowSize * height - 1) {}
             Dim offset As Integer = 0
 
@@ -777,14 +770,8 @@ Namespace Ys.QRCode
                 Throw New FormatException(NameOf(foreRgb))
             End If
 
-            Dim svg As String = GetSvg(moduleSize, foreRgb)
-            Dim svgFile As String =
-                $"<?xml version='1.0' encoding='UTF-8' standalone='no'?>{vbNewLine}" &
-                $"<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20010904//EN'{vbNewLine}" &
-                $"    'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>{vbNewLine}" &
-                svg & vbNewLine
-
-            File.WriteAllText(fileName, svgFile)
+            Dim svg As String = GetSvg(moduleSize, foreRgb) & vbNewLine
+            File.WriteAllText(fileName, svg)
         End Sub
 
         Public Function GetSvg(Optional moduleSize As Integer = DEFAULT_MODULE_SIZE,
@@ -828,7 +815,7 @@ Namespace Ys.QRCode
 
             Dim gpPaths As Point()() = GraphicPath.FindContours(image)
             Dim buf = New StringBuilder()
-            Dim indent As String = New String(" "c, 11)
+            Dim indent As String = New String(" "c, 5)
 
             For Each gpPath In gpPaths
                 buf.Append($"{indent}M ")
@@ -841,11 +828,10 @@ Namespace Ys.QRCode
 
             Dim data As String = buf.ToString().Trim()
             Dim svg As String =
-                $"<svg xmlns='http://www.w3.org/2000/svg'{vbNewLine}" &
-                $"    width='{width}' height='{height}' viewBox='0 0 {width} {height}'>{vbNewLine}" &
-                $"    <path fill='{foreRgb}' stroke='{foreRgb}' stroke-width='1'{vbNewLine}" &
-                $"        d='{data}'{vbNewLine}" &
-                $"    />{vbNewLine}" +
+                $"<svg version=""1.1"" xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink""" & vbNewLine &
+                $"  width=""{width}px"" height=""{height}px"" viewBox=""0 0 {width} {height}"">" & vbNewLine &
+                $"<path fill=""{foreRgb}"" stroke=""{foreRgb}"" stroke-width=""1""" & vbNewLine &
+                $"  d=""{data}"" />" & vbNewLine &
                 $"</svg>"
 
             Return svg
